@@ -80,7 +80,7 @@ def uploadJsonFile(jsonFile):
 
   print("Discard counter:", discardCounter)
 
-#uploadJsonFile(u'Nooras_farm')
+uploadJsonFile(u'Nooras_farm')
 uploadJsonFile(u'ossi_farm')
-#uploadJsonFile(u'PartialTech')
-#uploadJsonFile(u'friman_metsola')
+uploadJsonFile(u'PartialTech')
+uploadJsonFile(u'friman_metsola')
