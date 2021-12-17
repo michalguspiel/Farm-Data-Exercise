@@ -1,0 +1,56 @@
+package com.erdees.farmdataexercise.feature_viewFarmData.data.repository
+
+import com.erdees.farmdataexercise.coreUtils.Constants
+import com.erdees.farmdataexercise.feature_viewFarmData.domain.model.FarmSingleDataRead
+import com.erdees.farmdataexercise.feature_viewFarmData.domain.model.Response
+import com.google.firebase.firestore.CollectionReference
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.tasks.await
+import javax.inject.Inject
+import javax.inject.Singleton
+
+@Singleton
+class FarmDataRepositoryImpl @Inject constructor(
+    private val farmDataReference : CollectionReference,
+) : FarmDataRepository {
+
+
+    @ExperimentalCoroutinesApi
+    override fun getFarmData(farmLocation: String) = callbackFlow {
+        val query = farmDataReference.document(farmLocation).collection(Constants.DATA)
+            .orderBy(Constants.DATETIME).limit(30)
+
+        val snapListener = query.addSnapshotListener { snapshot, error ->
+            val response = if (snapshot != null) {
+                val farmData = snapshot.toObjects(FarmSingleDataRead::class.java)
+                Response.Success(farmData)
+            } else {
+                Response.Error(error?.message ?: error.toString())
+            }
+            trySend(response).isSuccess
+        }
+        awaitClose {
+            snapListener.remove()
+        }
+    }
+
+    override suspend fun addFarmData(
+        locationName: String,
+        dateTime: String,
+        sensorType: String,
+        value: String
+    ) : Flow<Response<Void?>> = flow {
+        try {
+            emit(Response.Loading)
+            val farmData = FarmSingleDataRead(locationName, dateTime, sensorType, value)
+            val addition = farmDataReference.document(locationName).set(farmData).await()
+            emit(Response.Success(addition))
+        } catch (e: Exception) {
+            emit(Response.Error(e.message ?: e.toString()))
+        }
+    }
+}
