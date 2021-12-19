@@ -25,7 +25,7 @@ class AppModule {
     fun provideFirebaseFirestore() = FirebaseFirestore.getInstance()
 
     @Provides
-    fun provideFarmDataReference(db : FirebaseFirestore) = db.collection(Constants.FARM_DATA)
+    fun provideFarmDataReference(db : FirebaseFirestore) = db.collection("farm_data")
 
     @Provides
     fun provideFarmDataRepository(

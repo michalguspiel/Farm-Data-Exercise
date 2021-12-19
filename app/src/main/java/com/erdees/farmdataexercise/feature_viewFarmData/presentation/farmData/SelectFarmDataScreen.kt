@@ -18,6 +18,7 @@ import com.erdees.farmdataexercise.R
 import com.erdees.farmdataexercise.coreUtils.Screen
 import com.erdees.farmdataexercise.coreUtils.Constants
 import com.erdees.farmdataexercise.feature_viewFarmData.domain.model.Response
+import com.erdees.farmdataexercise.feature_viewFarmData.domain.util.ISO8601.formatDate
 import com.erdees.farmdataexercise.feature_viewFarmData.presentation.components.*
 import io.github.boguszpawlowski.composecalendar.Calendar
 import io.github.boguszpawlowski.composecalendar.selection.SelectionMode
@@ -67,7 +68,7 @@ fun SelectFarmDataScreen(viewModel: FarmDataViewModel = hiltViewModel(), navCont
         }
     }
     Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(text = "Choose farm", fontSize = 26.sp)
+        Text(text = stringResource(R.string.choose_farm), fontSize = 26.sp)
         Spacer(modifier = Modifier.height(20.dp))
         Spinner(
             onValueChange = { chosenFarm = it },
@@ -97,7 +98,9 @@ fun SelectFarmDataScreen(viewModel: FarmDataViewModel = hiltViewModel(), navCont
             Color.LightGray
         )
         Spacer(modifier = Modifier.height(20.dp))
-        Button(onClick = { navController.navigate(Screen.FarmDataScreen.route) },
+        Button(onClick = {Log.i("TAG",Screen.FarmDataScreen.withArgs(chosenFarm,sensorType,formatDate(timeRange.first()),formatDate(timeRange[1])) )
+            navController.navigate(Screen.FarmDataScreen.withArgs(chosenFarm,sensorType,formatDate(timeRange.first()),formatDate(timeRange[1])))
+                         },
             enabled = !(chosenFarm == "" || sensorType == "" || timeRange.isEmpty())
         ) {
             Text(text = stringResource(R.string.show_data))

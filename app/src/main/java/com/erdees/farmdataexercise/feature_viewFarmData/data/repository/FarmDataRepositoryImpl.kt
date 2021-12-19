@@ -16,14 +16,21 @@ import javax.inject.Singleton
 
 @Singleton
 class FarmDataRepositoryImpl @Inject constructor(
-    private val farmDataReference : CollectionReference,
+    private val farmDataReference: CollectionReference,
 ) : FarmDataRepository {
 
 
     @ExperimentalCoroutinesApi
-    override fun getFarmData(farmLocation: String) = callbackFlow {
+    override fun getFarmData(
+        farmLocation: String,
+        sensorType: String,
+        rangeFirst: String,
+        rangeSecond: String
+    ) = callbackFlow {
         val query = farmDataReference.document(farmLocation).collection(Constants.DATA)
-            .orderBy(Constants.DATETIME).limit(30)
+            .whereEqualTo(Constants.SENSOR_TYPE, sensorType)
+            .whereGreaterThan(Constants.DATETIME, rangeFirst)
+            .whereLessThan(Constants.DATETIME, rangeSecond)
 
         val snapListener = query.addSnapshotListener { snapshot, error ->
             val response = if (snapshot != null) {
@@ -44,11 +51,12 @@ class FarmDataRepositoryImpl @Inject constructor(
         dateTime: String,
         sensorType: String,
         value: String
-    ) : Flow<Response<Void?>> = flow {
+    ): Flow<Response<Void?>> = flow {
         try {
             emit(Response.Loading)
             val farmData = FarmData(locationName, dateTime, sensorType, value)
-            val newDocumentId = farmDataReference.document(locationName).collection("data").document()
+            val newDocumentId =
+                farmDataReference.document(locationName).collection("data").document()
             val addition = newDocumentId.set(farmData).await()
             emit(Response.Success(addition))
         } catch (e: Exception) {

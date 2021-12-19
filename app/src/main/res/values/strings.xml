@@ -9,5 +9,6 @@
     <string name="data_added_successfully">Data added successfully!</string>
     <string name="choose_time_range">Choose time range</string>
     <string name="choose_metric">Choose metric</string>
+    <string name="choose_farm">Choose farm</string>
     <string name="show_data">Show data</string>
 </resources>

@@ -27,8 +27,13 @@ import kotlinx.coroutines.InternalCoroutinesApi
 @InternalCoroutinesApi
 @ExperimentalCoroutinesApi
 fun FarmDataScreen(
+    location: String?,
+    sensorType : String?,
+    rangeFirst: String?,
+    rangeSecond: String?,
     viewModel: FarmDataViewModel = hiltViewModel()
 ) {
+    viewModel.getFarmData(location!!,sensorType!!,rangeFirst!!,rangeSecond!!)
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(
@@ -56,7 +61,6 @@ fun FarmDataScreen(
             ) {
                 LazyColumn {
                     items(farmDataResponse.data) { farmData ->
-                        Log.i("FARM DATA SCREEN", "${farmData.toString()}")
                         FarmDataCard(
 
                         )

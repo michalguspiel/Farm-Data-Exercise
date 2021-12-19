@@ -2,6 +2,9 @@ package com.erdees.farmdataexercise.feature_viewFarmData.domain.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -34,4 +37,13 @@ public final class ISO8601 {
         calendar.setTime(date);
         return calendar;
     }
+
+    public static String formatDate(LocalDate date) {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("uuuu-MM-dd'T'HH:mm:ssX");
+        // return date.atStartOfDay().atOffset(ZoneOffset.UTC).toString();
+        return date.atStartOfDay().atOffset(ZoneOffset.UTC).format(dtf);
+    }
+
+
+
 }

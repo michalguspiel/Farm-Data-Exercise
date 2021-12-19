@@ -24,28 +24,35 @@ class FarmDataViewModel @Inject constructor(
     var openDialogState = mutableStateOf(false)
 
 
-
-
-     fun getFarmData(farmLocation: String) {
+    fun getFarmData(
+        location: String,
+        sensorType: String,
+        rangeFirst: String,
+        rangeSecond: String,
+    ) {
         viewModelScope.launch {
-            useCases.getFarmData.invoke(farmLocation).collect { response ->
+            useCases.getFarmData.invoke(
+                location,
+                sensorType, rangeFirst, rangeSecond
+            ).collect { response ->
                 _farmDataState.value = response
             }
         }
     }
 
 
-     fun addFarmData(
-        farmLocation: String,
-        dateTime: String,
-        sensorType: String,
-        value: String
-    ) {
-        viewModelScope.launch{
-            useCases.addFarmData.invoke(farmLocation,dateTime, sensorType, value).collect {  response ->
+fun addFarmData(
+    farmLocation: String,
+    dateTime: String,
+    sensorType: String,
+    value: String
+) {
+    viewModelScope.launch {
+        useCases.addFarmData.invoke(farmLocation, dateTime, sensorType, value)
+            .collect { response ->
                 _isFarmDataAddedState.value = response
             }
-        }
     }
+}
 
 }
