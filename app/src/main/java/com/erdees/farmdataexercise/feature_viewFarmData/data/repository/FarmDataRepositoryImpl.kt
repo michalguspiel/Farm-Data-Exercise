@@ -1,8 +1,9 @@
 package com.erdees.farmdataexercise.feature_viewFarmData.data.repository
 
 import com.erdees.farmdataexercise.coreUtils.Constants
-import com.erdees.farmdataexercise.feature_viewFarmData.domain.model.FarmSingleDataRead
+import com.erdees.farmdataexercise.feature_viewFarmData.domain.model.FarmData
 import com.erdees.farmdataexercise.feature_viewFarmData.domain.model.Response
+import com.erdees.farmdataexercise.feature_viewFarmData.domain.repository.FarmDataRepository
 import com.google.firebase.firestore.CollectionReference
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
@@ -26,7 +27,7 @@ class FarmDataRepositoryImpl @Inject constructor(
 
         val snapListener = query.addSnapshotListener { snapshot, error ->
             val response = if (snapshot != null) {
-                val farmData = snapshot.toObjects(FarmSingleDataRead::class.java)
+                val farmData = snapshot.toObjects(FarmData::class.java)
                 Response.Success(farmData)
             } else {
                 Response.Error(error?.message ?: error.toString())
@@ -46,8 +47,9 @@ class FarmDataRepositoryImpl @Inject constructor(
     ) : Flow<Response<Void?>> = flow {
         try {
             emit(Response.Loading)
-            val farmData = FarmSingleDataRead(locationName, dateTime, sensorType, value)
-            val addition = farmDataReference.document(locationName).set(farmData).await()
+            val farmData = FarmData(locationName, dateTime, sensorType, value)
+            val newDocumentId = farmDataReference.document(locationName).collection("data").document()
+            val addition = newDocumentId.set(farmData).await()
             emit(Response.Success(addition))
         } catch (e: Exception) {
             emit(Response.Error(e.message ?: e.toString()))

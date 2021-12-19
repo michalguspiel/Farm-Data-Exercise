@@ -1,8 +1,12 @@
 package com.erdees.farmdataexercise.di
 
+import androidx.navigation.compose.rememberNavController
 import com.erdees.farmdataexercise.coreUtils.Constants
 import com.erdees.farmdataexercise.feature_viewFarmData.data.repository.FarmDataRepositoryImpl
-import com.erdees.farmdataexercise.feature_viewFarmData.data.repository.FarmDataRepository
+import com.erdees.farmdataexercise.feature_viewFarmData.domain.repository.FarmDataRepository
+import com.erdees.farmdataexercise.feature_viewFarmData.domain.use_case.AddFarmData
+import com.erdees.farmdataexercise.feature_viewFarmData.domain.use_case.GetFarmData
+import com.erdees.farmdataexercise.feature_viewFarmData.domain.use_case.UseCases
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.Module
@@ -28,5 +32,12 @@ class AppModule {
         farmDataReference: CollectionReference,
     ): FarmDataRepository = FarmDataRepositoryImpl(farmDataReference)
 
+    @Provides
+    fun provideFarmDataUseCases(
+        repository: FarmDataRepository
+    )= UseCases(
+        getFarmData = GetFarmData(repository),
+        addFarmData = AddFarmData(repository)
+    )
 
 }

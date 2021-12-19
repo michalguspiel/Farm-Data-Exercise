@@ -12,4 +12,7 @@ object Constants {
 
     const val NOORA_FARM = "Nooras_farm"
     const val OSSI_FARM = "ossi_farm"
+
+    val SENSOR_LIST = listOf("pH","temperature","rainfall")
+    val FARM_LIST = listOf(NOORA_FARM, OSSI_FARM) // SO FAR IN HERE, LATER DOWNLOADED FROM THE SERVER AND SAVED IN SHARED PREF
 }
