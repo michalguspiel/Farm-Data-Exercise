@@ -18,7 +18,7 @@ import com.erdees.farmdataexercise.R
 import com.erdees.farmdataexercise.coreUtils.Screen
 import com.erdees.farmdataexercise.coreUtils.Constants
 import com.erdees.farmdataexercise.feature_viewFarmData.domain.model.Response
-import com.erdees.farmdataexercise.feature_viewFarmData.domain.util.ISO8601.formatDate
+import com.erdees.farmdataexercise.feature_viewFarmData.domain.util.Format.formatDate
 import com.erdees.farmdataexercise.feature_viewFarmData.presentation.components.*
 import io.github.boguszpawlowski.composecalendar.Calendar
 import io.github.boguszpawlowski.composecalendar.selection.SelectionMode

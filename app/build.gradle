@@ -109,4 +109,7 @@ dependencies {
 
     implementation "androidx.constraintlayout:constraintlayout-compose:1.0.0-rc02"
 
+    //GRAPHS
+    implementation 'com.github.madrapps:plot:0.1.1'
+
 }
