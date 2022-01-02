@@ -8,7 +8,7 @@ import java.time.format.DateTimeFormatter
 object Format {
 
     fun formatISO8601String(string: String): String {
-        val desiredFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")
+        val desiredFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
         val dateTime = OffsetDateTime.parse(string)
         return dateTime.format(desiredFormat)
     }

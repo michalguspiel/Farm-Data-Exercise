@@ -6,6 +6,8 @@ object Constants {
     const val DATETIME = "datetime"
     const val SENSOR_TYPE = "sensorType"
     const val VALUE = "value"
+    const val RANGE_FIRST = "rangeFirst"
+    const val RANGE_SECOND = "rangeSecond"
 
     const val FARM_DATA = "farm_data"
     const val DATA = "data"

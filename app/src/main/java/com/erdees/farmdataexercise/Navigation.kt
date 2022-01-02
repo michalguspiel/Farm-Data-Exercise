@@ -7,6 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.erdees.farmdataexercise.coreUtils.Screen
+import com.erdees.farmdataexercise.feature_viewFarmData.presentation.farmData.DetailedFarmDataGraphScreen
 import com.erdees.farmdataexercise.feature_viewFarmData.presentation.farmData.FarmDataScreen
 import com.erdees.farmdataexercise.feature_viewFarmData.presentation.farmData.SelectFarmDataScreen
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -36,11 +37,9 @@ fun Navigation() {
                 nullable = false
             })
         ) { entry ->
-            FarmDataScreen(
-                location = entry.arguments?.getString("location"),
-            sensorType = entry.arguments?.getString("sensorType"),
-            rangeFirst = entry.arguments?.getString("rangeFirst"),
-            rangeSecond = entry.arguments?.getString("rangeSecond"))
+            FarmDataScreen(navController = navController)
         }
+        composable(route = Screen.DetailedFarmDataGraphScreen.route
+        ){entry -> DetailedFarmDataGraphScreen()}
     }
 }

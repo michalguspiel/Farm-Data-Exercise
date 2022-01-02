@@ -27,7 +27,10 @@ import java.time.LocalDate
 
 @InternalCoroutinesApi
 @Composable
-fun SelectFarmDataScreen(viewModel: FarmDataViewModel = hiltViewModel(), navController: NavController) {
+fun SelectFarmDataScreen(
+    viewModel: FarmDataViewModel = hiltViewModel(),
+    navController: NavController
+) {
 
     var chosenFarm by remember {
         mutableStateOf("")
@@ -80,13 +83,15 @@ fun SelectFarmDataScreen(viewModel: FarmDataViewModel = hiltViewModel(), navCont
         )
         Spacer(modifier = Modifier.height(40.dp))
         Text(text = stringResource(R.string.choose_time_range), fontSize = 20.sp)
-        Calendar(modifier = Modifier.padding(horizontal = 30.dp),calendarState = rememberSelectionState(
-            initialSelectionMode = SelectionMode.Period,
-            selectionState = CustomSelectionState({
-                timeRange = if(it.isNotEmpty()) listOf(it.first(), it.last()) else listOf()
-                Log.i("SelectFarmDataScreen",timeRange.joinToString(",") { it.toString() })
-            }, selectionMode = SelectionMode.Period, selection = timeRange)
-        ),monthHeader = { CalendarHeader(it) })
+        Calendar(modifier = Modifier.padding(horizontal = 30.dp),
+            calendarState = rememberSelectionState(
+                initialSelectionMode = SelectionMode.Period,
+                selectionState = CustomSelectionState({
+                    timeRange = if (it.isNotEmpty()) listOf(it.first(), it.last()) else listOf()
+                    Log.i("SelectFarmDataScreen", timeRange.joinToString(",") { it.toString() })
+                }, selectionMode = SelectionMode.Period, selection = timeRange)
+            ),
+            monthHeader = { CalendarHeader(it) })
         Text(text = stringResource(R.string.choose_metric), fontSize = 20.sp)
         Spacer(modifier = Modifier.height(20.dp))
         Spinner(
@@ -98,9 +103,26 @@ fun SelectFarmDataScreen(viewModel: FarmDataViewModel = hiltViewModel(), navCont
             Color.LightGray
         )
         Spacer(modifier = Modifier.height(20.dp))
-        Button(onClick = {Log.i("TAG",Screen.FarmDataScreen.withArgs(chosenFarm,sensorType,formatDate(timeRange.first()),formatDate(timeRange[1])) )
-            navController.navigate(Screen.FarmDataScreen.withArgs(chosenFarm,sensorType,formatDate(timeRange.first()),formatDate(timeRange[1])))
-                         },
+        Button(
+            onClick = {
+                Log.i(
+                    "TAG",
+                    Screen.FarmDataScreen.withArgs(
+                        chosenFarm,
+                        sensorType,
+                        formatDate(timeRange.first()),
+                        formatDate(timeRange[1])
+                    )
+                )
+                navController.navigate(
+                    Screen.FarmDataScreen.withArgs(
+                        chosenFarm,
+                        sensorType,
+                        formatDate(timeRange.first()),
+                        formatDate(timeRange[1])
+                    )
+                )
+            },
             enabled = !(chosenFarm == "" || sensorType == "" || timeRange.isEmpty())
         ) {
             Text(text = stringResource(R.string.show_data))

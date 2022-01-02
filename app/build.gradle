@@ -112,4 +112,6 @@ dependencies {
     //GRAPHS
     implementation 'com.github.madrapps:plot:0.1.1'
 
+    //LIVEDATA
+    implementation 'androidx.compose.runtime:runtime-livedata:1.1.0-rc01'
 }

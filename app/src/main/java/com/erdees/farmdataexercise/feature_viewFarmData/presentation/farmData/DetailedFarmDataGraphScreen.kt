@@ -1,0 +1,83 @@
+package com.erdees.farmdataexercise.feature_viewFarmData.presentation.farmData
+
+import android.content.pm.ActivityInfo
+import android.util.Log
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.Divider
+import androidx.compose.material.Text
+import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.erdees.farmdataexercise.coreUtils.Util.findActivity
+import com.erdees.farmdataexercise.feature_viewFarmData.domain.model.FarmData
+import com.erdees.farmdataexercise.feature_viewFarmData.domain.util.Format
+import com.erdees.farmdataexercise.feature_viewFarmData.presentation.components.CustomDetailedLineGraph
+import com.erdees.farmdataexercise.ui.theme.Typography
+import com.madrapps.plot.line.DataPoint
+
+@Composable
+fun DetailedFarmDataGraphScreen(
+    viewModel: FarmDataViewModel = hiltViewModel()
+) {
+
+    val temporaryFarmDataList by viewModel.getTemporaryFarmData().collectAsState()
+
+    LockScreenOrientation(orientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(top = 4.dp)
+    ) {
+        if (temporaryFarmDataList.isEmpty()) {
+            Text(
+                text = "Ooops... looks like there is no data in that time.",
+                modifier = Modifier.fillMaxSize(),
+                style = Typography.h3
+            )
+        } else {
+
+            Text(
+                text = temporaryFarmDataList.first().location,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth(),
+                style = Typography.h4
+            )
+            Divider(color = Color.LightGray, thickness = 2.dp)
+            val lines = temporaryFarmDataList.map {
+                DataPoint(
+                    Format.formatToSeconds(
+                        temporaryFarmDataList[temporaryFarmDataList.indexOf(
+                            it
+                        )].datetime
+                    ).toFloat(),
+                    it.value.toFloat()
+                )
+            }
+            CustomDetailedLineGraph(
+                lines = lines,
+                temporaryFarmDataList.map { it.datetime },
+                temporaryFarmDataList.first().sensorType,
+                Modifier.fillMaxSize()
+            )
+        }
+    }
+}
+
+@Composable
+fun LockScreenOrientation(orientation: Int) {
+    val context = LocalContext.current
+    DisposableEffect(Unit) {
+        val activity = context.findActivity() ?: return@DisposableEffect onDispose {}
+        val originalOrientation = activity.requestedOrientation
+        activity.requestedOrientation = orientation
+        onDispose {
+            activity.requestedOrientation = originalOrientation
+        }
+    }
+}
