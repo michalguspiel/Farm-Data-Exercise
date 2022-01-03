@@ -1,6 +1,5 @@
 package com.erdees.farmdataexercise.feature_viewFarmData.presentation.components
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -22,7 +21,6 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -42,10 +40,13 @@ import java.text.DecimalFormat
 
 val DATA_CARD_CORNER_RADIUS = 12.dp
 
-
 @Composable
-fun CustomDetailedLineGraph(lines: List<DataPoint>, dates: List<String>, sensorType: String, modifier: Modifier = Modifier) {
-
+fun CustomDetailedLineGraph(
+    lines: List<DataPoint>,
+    dates: List<String>,
+    sensorType: String,
+    modifier: Modifier = Modifier
+) {
 
     val density = LocalDensity.current
 
@@ -55,9 +56,12 @@ fun CustomDetailedLineGraph(lines: List<DataPoint>, dates: List<String>, sensorT
 
     val totalWidthOfChart = remember { mutableStateOf(0) }
     val totalScreenWidth = remember { mutableStateOf(0) }
+
     val padding = 16.dp
+
     Column(Modifier.onGloballyPositioned {
-        totalWidthOfChart.value = it.size.width.toFloat().toDp(density).toInt() - yAxisTotalWidth.toInt()
+        totalWidthOfChart.value =
+            it.size.width.toFloat().toDp(density).toInt() - yAxisTotalWidth.toInt()
         totalScreenWidth.value = it.size.width
     }) {
 
@@ -78,7 +82,7 @@ fun CustomDetailedLineGraph(lines: List<DataPoint>, dates: List<String>, sensorT
 
         val listTransformedIntoRatios = transformList(
             lines,
-            lastVisiblePointForScreenWidth(totalWidthOfChart.value.toInt())
+            lastVisiblePointForScreenWidth(totalWidthOfChart.value)
         )
 
         Box(Modifier.fillMaxSize()) {
@@ -153,7 +157,7 @@ fun CustomDetailedLineGraph(lines: List<DataPoint>, dates: List<String>, sensorT
                 onSelectionEnd = { visibility.value = false })
             { _, pts ->
                 points.value = pts
-                adjustedOffset.value = adjustOffset(
+                adjustedOffset.value = adjustOffsetOfDataCard(
                     offset.value,
                     cardSize.value,
                     totalScreenWidth.value,
@@ -268,7 +272,7 @@ private fun DataRow(value: Float) {
 
 /** ADJUST OFFSET OF DATA CARD TO KEEP IT TOTALLY VISIBLE ON THE SCREEN AT ALL TIMES.
  *  */
-private fun adjustOffset(
+private fun adjustOffsetOfDataCard(
     offset: Offset,
     cardSize: IntSize,
     totalWidth: Int,
@@ -304,17 +308,18 @@ private fun adjustOffset(
 
 
 @Composable
-fun CustomPreviewLineGraph(lines: List<DataPoint>, dates: List<String>, sensorType: String,modifier: Modifier = Modifier) {
+fun CustomPreviewLineGraph(
+    lines: List<DataPoint>,
+    dates: List<String>,
+    sensorType: String,
+    modifier: Modifier = Modifier
+) {
 
     val yAxisWidth = 36.dp
     val yAxisPadding = 6.dp
     val yAxisTotalWidth = yAxisPadding.value * 2 + yAxisWidth.value
 
     val density = LocalDensity.current
-
-
-    val configuration = LocalConfiguration.current
-    val screenWidth = configuration.screenWidthDp.dp
 
     val totalWidthOfChart = remember { mutableStateOf(0) }
     LineGraph(
@@ -323,7 +328,7 @@ fun CustomPreviewLineGraph(lines: List<DataPoint>, dates: List<String>, sensorTy
                 LinePlot.Line(
                     transformList(
                         lines,
-                        lastVisiblePointForScreenWidth(totalWidthOfChart.value.toInt())
+                        lastVisiblePointForScreenWidth(totalWidthOfChart.value)
                     ),
                     LinePlot.Connection(color = Color.Blue),
                     LinePlot.Intersection(color = Color.Blue, radius = 1.dp, alpha = 0.8f),
@@ -350,7 +355,10 @@ fun CustomPreviewLineGraph(lines: List<DataPoint>, dates: List<String>, sensorTy
                     }
                 }),
             yAxis = LinePlot.YAxis(
-                roundToInt = sensorType != "pH", steps = 5, paddingStart = yAxisPadding, paddingEnd = yAxisPadding,
+                roundToInt = sensorType != "pH",
+                steps = 5,
+                paddingStart = yAxisPadding,
+                paddingEnd = yAxisPadding,
                 content = { min, offset, _ ->
                     for (it in 0 until 5) {
                         val value = it * offset + min
@@ -368,11 +376,12 @@ fun CustomPreviewLineGraph(lines: List<DataPoint>, dates: List<String>, sensorTy
         ),
         modifier
             .onGloballyPositioned {
-                totalWidthOfChart.value = it.size.width.toFloat().toDp(density).toInt() - yAxisTotalWidth.toInt()
-                Log.i("TAG", "Total Width : ${totalWidthOfChart.value} Screen width : ${screenWidth.value}")
+                totalWidthOfChart.value =
+                    it.size.width.toFloat().toDp(density).toInt() - yAxisTotalWidth.toInt()
             },
     )
 }
+
 /**THE GRAPH PROVIDED BY USED LIBRARY IS INTENDED TO BE HORIZONTALLY SCROLLABLE, HOWEVER IN THIS APP THIS BEHAVIOUR ISN'T BENEFICIAL
  * THEREFORE APP CALCULATES LAST VISIBLE POINT ON X AXIS FOR DIFFERENT SCREEN SIZES.
  * */
@@ -387,7 +396,6 @@ private fun lastVisiblePointForScreenWidth(totalWidth: Int): Float {
  * */
 private fun transformList(list: List<DataPoint>, graphWidth: Float): List<DataPoint> {
     val listOfRatios = computeListOfXValuesAsRatios(list, graphWidth)
-    listOfRatios.forEach { Log.i("TAG", "List of ratios $it") }
     val newList: MutableList<DataPoint> = mutableListOf()
     for (dataPoint in list) {
         val newDataPoint =

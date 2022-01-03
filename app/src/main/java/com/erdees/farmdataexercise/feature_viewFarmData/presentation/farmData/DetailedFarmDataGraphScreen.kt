@@ -43,7 +43,7 @@ fun DetailedFarmDataGraphScreen(
         } else {
 
             Text(
-                text = temporaryFarmDataList.first().location,
+                text = "${temporaryFarmDataList.first().location} ${temporaryFarmDataList.first().sensorType}",
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth(),
                 style = Typography.h4

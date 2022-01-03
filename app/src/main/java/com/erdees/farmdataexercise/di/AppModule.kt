@@ -1,6 +1,5 @@
 package com.erdees.farmdataexercise.di
 
-import com.erdees.farmdataexercise.feature_viewFarmData.data.repository.FakeTempFarmDataRepoImpl
 import com.erdees.farmdataexercise.feature_viewFarmData.data.repository.FarmDataRepositoryImpl
 import com.erdees.farmdataexercise.feature_viewFarmData.data.repository.TemporaryFarmDataRepositoryImpl
 import com.erdees.farmdataexercise.feature_viewFarmData.domain.repository.FarmDataRepository
@@ -13,7 +12,6 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import javax.inject.Singleton
 
 
 @Module
