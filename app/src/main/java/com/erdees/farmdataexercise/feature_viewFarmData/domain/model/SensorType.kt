@@ -5,6 +5,7 @@ interface SensorType {
     val firebaseName : String
 
     val presentationName: String
+    
 }
 
 class Temperature : SensorType {
