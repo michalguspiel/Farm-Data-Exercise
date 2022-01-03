@@ -25,9 +25,10 @@ import com.erdees.farmdataexercise.coreUtils.Constants
 
 @Composable
 fun Spinner(
-    onValueChange: (String) -> Unit,
+    onValueChange: ((String, String) -> Unit) = { _,_ ->  },
     textToPresent: String,
-    list: List<String>,
+    firebaseDocumentsList: List<String>,
+    spinnerItemsList: List<String>,
     modifier: Modifier = Modifier,
     firstColor: Color,
     dropDownMenuColor: Color
@@ -45,7 +46,7 @@ fun Spinner(
             .clickable(onClick = { expanded = true }), contentAlignment = Alignment.CenterStart
     ) {
         Text(
-            if (selectedIndex == -1) textToPresent else list[selectedIndex],
+            if (selectedIndex == -1) textToPresent else spinnerItemsList[selectedIndex],
             modifier = Modifier
                 .padding(12.dp, 0.dp, 12.dp, 0.dp),
             fontSize = 18.sp,
@@ -59,13 +60,13 @@ fun Spinner(
                 .width(300.dp)
 
         ) {
-            list.forEachIndexed { index, s ->
+            firebaseDocumentsList.forEachIndexed { index, s ->
                 DropdownMenuItem(onClick = {
                     selectedIndex = index
-                    onValueChange(list[selectedIndex])
+                    onValueChange(firebaseDocumentsList[selectedIndex],spinnerItemsList[selectedIndex])
                     expanded = false
                 }) {
-                    Text(text = list[index],fontSize = 16.sp,fontWeight = FontWeight.W500)
+                    Text(text = spinnerItemsList[index],fontSize = 16.sp,fontWeight = FontWeight.W500)
                 }
             }
         }
@@ -77,12 +78,12 @@ fun Spinner(
 @Composable
 fun PreviewSpinner() {
     Spinner(
-        onValueChange = {},
         textToPresent = stringResource(id = R.string.sensorType),
-        list = Constants.FARM_LIST,
+        firebaseDocumentsList = Constants.SENSOR_LIST.map { it.firebaseName },
+        spinnerItemsList = Constants.SENSOR_LIST.map { it.presentationName },
         modifier = Modifier.padding(horizontal = 40.dp),
-        Color.Gray,
-        Color.LightGray
+        firstColor = Color.Gray,
+        dropDownMenuColor = Color.LightGray
     )
 }
 

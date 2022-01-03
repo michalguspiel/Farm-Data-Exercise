@@ -1,9 +1,7 @@
 package com.erdees.farmdataexercise.feature_viewFarmData.presentation.farmData
 
-import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -20,19 +18,15 @@ import javax.inject.Inject
 @HiltViewModel
 class FarmDataViewModel @Inject constructor(
     private val useCases: UseCases,
-    private val savedStateHandle: SavedStateHandle,
+    val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
     private val _farmDataState = mutableStateOf<Response<List<FarmData>>>(Response.Loading)
     val farmDataState: State<Response<List<FarmData>>> = _farmDataState
 
-    private val _isFarmDataAddedState = mutableStateOf<Response<Void?>>(Response.Success(null))
+    private val _isFarmDataAddedState = mutableStateOf<Response<Void?>>(Response.Empty(null))
     val isFarmDataAddedState: State<Response<Void?>> = _isFarmDataAddedState
     var openDialogState = mutableStateOf(false)
 
-
-    init {
-        Log.i("FarmDataViewModel","ViewModel initialized !")
-    }
 
     fun getFarmData() {
         viewModelScope.launch {
@@ -66,7 +60,7 @@ class FarmDataViewModel @Inject constructor(
     fun getTemporaryFarmData(): StateFlow<List<FarmData>> = useCases.getTemporaryFarmData.invoke()
 
 
-    fun saveTemporaryFarmData(farmDataList : List<FarmData>) {
+    fun saveTemporaryFarmData(farmDataList: List<FarmData>) {
         useCases.saveTemporaryFarmData.invoke(farmDataList)
     }
 

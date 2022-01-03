@@ -1,6 +1,5 @@
 package com.erdees.farmdataexercise.feature_viewFarmData.presentation.farmData
 
-import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -15,8 +14,8 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.erdees.farmdataexercise.R
-import com.erdees.farmdataexercise.coreUtils.Screen
 import com.erdees.farmdataexercise.coreUtils.Constants
+import com.erdees.farmdataexercise.coreUtils.Screen
 import com.erdees.farmdataexercise.feature_viewFarmData.domain.model.Response
 import com.erdees.farmdataexercise.feature_viewFarmData.domain.util.Format.formatDate
 import com.erdees.farmdataexercise.feature_viewFarmData.presentation.components.*
@@ -32,11 +31,19 @@ fun SelectFarmDataScreen(
     navController: NavController
 ) {
 
-    var chosenFarm by remember {
+    var chosenFarmDocument by remember {
         mutableStateOf("")
     }
 
-    var sensorType by remember {
+    var chosenFarmName by remember {
+        mutableStateOf("")
+    }
+
+    var sensorTypeDocument by remember {
+        mutableStateOf("")
+    }
+
+    var sensorTypeName by remember {
         mutableStateOf("")
     }
 
@@ -65,6 +72,8 @@ fun SelectFarmDataScreen(
             AlertDialog()
         }
         when (val additionResponse = viewModel.isFarmDataAddedState.value) {
+            is Response.Empty -> {
+            }
             is Response.Loading -> ProgressBar()
             is Response.Success -> Toast(stringResource(R.string.data_added_successfully))
             is Error -> Toast(additionResponse.message)
@@ -74,9 +83,13 @@ fun SelectFarmDataScreen(
         Text(text = stringResource(R.string.choose_farm), fontSize = 26.sp)
         Spacer(modifier = Modifier.height(20.dp))
         Spinner(
-            onValueChange = { chosenFarm = it },
+            onValueChange = { farmDocument, farmName ->
+                chosenFarmDocument = farmDocument
+                chosenFarmName = farmName
+            },
             textToPresent = stringResource(id = R.string.sensorType),
-            list = Constants.FARM_LIST,
+            firebaseDocumentsList = Constants.FARM_LIST,
+            spinnerItemsList = Constants.FARM_LIST,
             modifier = Modifier.padding(horizontal = 40.dp),
             Color.Gray,
             Color.LightGray
@@ -88,16 +101,19 @@ fun SelectFarmDataScreen(
                 initialSelectionMode = SelectionMode.Period,
                 selectionState = CustomSelectionState({
                     timeRange = if (it.isNotEmpty()) listOf(it.first(), it.last()) else listOf()
-                    Log.i("SelectFarmDataScreen", timeRange.joinToString(",") { it.toString() })
                 }, selectionMode = SelectionMode.Period, selection = timeRange)
             ),
             monthHeader = { CalendarHeader(it) })
         Text(text = stringResource(R.string.choose_metric), fontSize = 20.sp)
         Spacer(modifier = Modifier.height(20.dp))
         Spinner(
-            onValueChange = { sensorType = it },
+            onValueChange = { sensorDocument, sensorName ->
+                sensorTypeDocument = sensorDocument
+                sensorTypeName = sensorName
+            },
             textToPresent = stringResource(id = R.string.sensorType),
-            list = Constants.SENSOR_LIST,
+            firebaseDocumentsList = Constants.SENSOR_LIST.map { it.firebaseName },
+            spinnerItemsList = Constants.SENSOR_LIST.map { it.presentationName },
             modifier = Modifier.padding(horizontal = 40.dp),
             Color.Gray,
             Color.LightGray
@@ -105,25 +121,18 @@ fun SelectFarmDataScreen(
         Spacer(modifier = Modifier.height(20.dp))
         Button(
             onClick = {
-                Log.i(
-                    "TAG",
-                    Screen.FarmDataScreen.withArgs(
-                        chosenFarm,
-                        sensorType,
-                        formatDate(timeRange.first()),
-                        formatDate(timeRange[1])
-                    )
-                )
                 navController.navigate(
                     Screen.FarmDataScreen.withArgs(
-                        chosenFarm,
-                        sensorType,
+                        chosenFarmDocument,
+                        chosenFarmName,
+                        sensorTypeDocument,
                         formatDate(timeRange.first()),
-                        formatDate(timeRange[1])
+                        formatDate(timeRange[1]),
+                        sensorTypeName
                     )
                 )
             },
-            enabled = !(chosenFarm == "" || sensorType == "" || timeRange.isEmpty())
+            enabled = !(chosenFarmDocument == "" || sensorTypeDocument == "" || timeRange.isEmpty())
         ) {
             Text(text = stringResource(R.string.show_data))
         }

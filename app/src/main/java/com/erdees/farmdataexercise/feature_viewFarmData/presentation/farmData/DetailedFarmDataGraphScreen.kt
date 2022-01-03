@@ -1,21 +1,18 @@
 package com.erdees.farmdataexercise.feature_viewFarmData.presentation.farmData
 
 import android.content.pm.ActivityInfo
-import android.util.Log
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.erdees.farmdataexercise.coreUtils.Constants
 import com.erdees.farmdataexercise.coreUtils.Util.findActivity
-import com.erdees.farmdataexercise.feature_viewFarmData.domain.model.FarmData
 import com.erdees.farmdataexercise.feature_viewFarmData.domain.util.Format
 import com.erdees.farmdataexercise.feature_viewFarmData.presentation.components.CustomDetailedLineGraph
 import com.erdees.farmdataexercise.ui.theme.Typography
@@ -43,7 +40,7 @@ fun DetailedFarmDataGraphScreen(
         } else {
 
             Text(
-                text = "${temporaryFarmDataList.first().location} ${temporaryFarmDataList.first().sensorType}",
+                text = "${viewModel.savedStateHandle.get<String>(Constants.LOCATION_NAME).toString()} ${viewModel.savedStateHandle.get<String>(Constants.SENSOR_NAME).toString()}",
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth(),
                 style = Typography.h4

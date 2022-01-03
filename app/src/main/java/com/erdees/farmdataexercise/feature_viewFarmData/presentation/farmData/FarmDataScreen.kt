@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.erdees.farmdataexercise.R
+import com.erdees.farmdataexercise.coreUtils.Constants
 import com.erdees.farmdataexercise.coreUtils.Screen
 import com.erdees.farmdataexercise.feature_viewFarmData.domain.model.Response
 import com.erdees.farmdataexercise.feature_viewFarmData.domain.util.Format
@@ -65,13 +66,7 @@ fun FarmDataScreen(
                 if (farmDataResponse.data.isEmpty()) {
                     Text(
                         text = "Ooops... looks like there is no data in that time.",
-                        modifier = Modifier.fillMaxSize()
-                            .clickable(onClick = { // TODO TO DELETE AFTER TESTING
-                                viewModel.saveTemporaryFarmData(farmDataResponse.data)
-                                navController.navigate(
-                                    Screen.DetailedFarmDataGraphScreen.route
-                                )
-                            }),
+                        modifier = Modifier.fillMaxSize(),
                         style = Typography.h3
                     )
                 } else {
@@ -94,7 +89,10 @@ fun FarmDataScreen(
                     Box(modifier = Modifier.clickable(onClick = {
                         viewModel.saveTemporaryFarmData(farmDataResponse.data)
                         navController.navigate(
-                            Screen.DetailedFarmDataGraphScreen.route
+                            Screen.DetailedFarmDataGraphScreen.withArgs(
+                                viewModel.savedStateHandle.get<String>(Constants.LOCATION_NAME).toString(),
+                                viewModel.savedStateHandle.get<String>(Constants.SENSOR_NAME).toString(),
+                            )
                         )
                     }))
                     {

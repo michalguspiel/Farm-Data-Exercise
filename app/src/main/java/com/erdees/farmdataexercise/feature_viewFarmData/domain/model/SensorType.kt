@@ -5,7 +5,7 @@ interface SensorType {
     val firebaseName : String
 
     val presentationName: String
-    
+
 }
 
 class Temperature : SensorType {
@@ -30,11 +30,5 @@ class Rainfall : SensorType {
         get() = "rainFall"
 
     override val presentationName: String
-        get() = "Rain fall"
+        get() = "Rainfall"
 }
-
-data class SensorTypes(
-    val temperature: Temperature,
-    val rainFall: Rainfall,
-    val pH: PH
-)

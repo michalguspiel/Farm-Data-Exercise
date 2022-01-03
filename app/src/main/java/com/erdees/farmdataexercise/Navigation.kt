@@ -6,6 +6,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.erdees.farmdataexercise.coreUtils.Constants.LOCATION
+import com.erdees.farmdataexercise.coreUtils.Constants.LOCATION_NAME
+import com.erdees.farmdataexercise.coreUtils.Constants.RANGE_FIRST
+import com.erdees.farmdataexercise.coreUtils.Constants.RANGE_SECOND
+import com.erdees.farmdataexercise.coreUtils.Constants.SENSOR_NAME
+import com.erdees.farmdataexercise.coreUtils.Constants.SENSOR_TYPE
 import com.erdees.farmdataexercise.coreUtils.Screen
 import com.erdees.farmdataexercise.feature_viewFarmData.presentation.farmData.DetailedFarmDataGraphScreen
 import com.erdees.farmdataexercise.feature_viewFarmData.presentation.farmData.FarmDataScreen
@@ -22,24 +28,38 @@ fun Navigation() {
         composable(route = Screen.SelectFarmDataScreen.route) {
             SelectFarmDataScreen(navController = navController)
         }
-        composable(route = Screen.FarmDataScreen.route + "/{location}/{sensorType}/{rangeFirst}/{rangeSecond}", arguments = listOf(
-            navArgument("location") {
+        composable(route = Screen.FarmDataScreen.route + "/{$LOCATION}/{$LOCATION_NAME}/{$SENSOR_TYPE}/{$RANGE_FIRST}/{$RANGE_SECOND}/{$SENSOR_NAME}", arguments = listOf(
+            navArgument(LOCATION) {
                 type = NavType.StringType
                 nullable = false
-            }, navArgument("sensorType") {
+            },navArgument(LOCATION_NAME) {
                 type = NavType.StringType
                 nullable = false
-            }, navArgument("rangeFirst") {
+            }, navArgument(SENSOR_TYPE) {
                 type = NavType.StringType
                 nullable = false
-            }, navArgument("rangeSecond") {
+            }, navArgument(RANGE_FIRST) {
                 type = NavType.StringType
                 nullable = false
-            })
+            }, navArgument(RANGE_SECOND) {
+                type = NavType.StringType
+                nullable = false
+            }, navArgument(SENSOR_NAME) {
+            type = NavType.StringType
+            nullable = false
+        })
         ) { entry ->
             FarmDataScreen(navController = navController)
         }
-        composable(route = Screen.DetailedFarmDataGraphScreen.route
+        composable(route = Screen.DetailedFarmDataGraphScreen.route + "/{$LOCATION_NAME}/{$SENSOR_NAME}", arguments = listOf(
+            navArgument(LOCATION_NAME){
+                type = NavType.StringType
+                nullable = false
+            },navArgument(SENSOR_NAME){
+                type = NavType.StringType
+                nullable = false
+            }
+        )
         ){entry -> DetailedFarmDataGraphScreen()}
     }
 }

@@ -19,7 +19,6 @@ object Format {
     }
 
     fun formatToSeconds(string: String) :Long {
-        val netDate = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")
         val date = OffsetDateTime.parse(string)
         return date.toEpochSecond()
     }
