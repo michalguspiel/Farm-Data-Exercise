@@ -7,8 +7,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.erdees.farmdataexercise.coreUtils.Constants
 import com.erdees.farmdataexercise.feature_viewFarmData.domain.model.FarmData
-import com.erdees.farmdataexercise.feature_viewFarmData.domain.model.Response
 import com.erdees.farmdataexercise.feature_viewFarmData.domain.use_case.UseCases
+import com.erdees.farmdataexercise.model.Response
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
@@ -25,6 +25,8 @@ class FarmDataViewModel @Inject constructor(
 
     private val _isFarmDataAddedState = mutableStateOf<Response<Void?>>(Response.Empty(null))
     val isFarmDataAddedState: State<Response<Void?>> = _isFarmDataAddedState
+
+
     var openDialogState = mutableStateOf(false)
 
 

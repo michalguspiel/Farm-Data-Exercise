@@ -12,7 +12,8 @@ import com.erdees.farmdataexercise.coreUtils.Constants.RANGE_FIRST
 import com.erdees.farmdataexercise.coreUtils.Constants.RANGE_SECOND
 import com.erdees.farmdataexercise.coreUtils.Constants.SENSOR_NAME
 import com.erdees.farmdataexercise.coreUtils.Constants.SENSOR_TYPE
-import com.erdees.farmdataexercise.coreUtils.Screen
+import com.erdees.farmdataexercise.coreUtils.utils.Screen
+import com.erdees.farmdataexercise.feature_auth.presentation.farmData.SignUpScreen
 import com.erdees.farmdataexercise.feature_viewFarmData.presentation.farmData.DetailedFarmDataGraphScreen
 import com.erdees.farmdataexercise.feature_viewFarmData.presentation.farmData.FarmDataScreen
 import com.erdees.farmdataexercise.feature_viewFarmData.presentation.farmData.SelectFarmDataScreen
@@ -24,7 +25,10 @@ import kotlinx.coroutines.InternalCoroutinesApi
 @Composable
 fun Navigation() {
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = Screen.SelectFarmDataScreen.route) {
+    NavHost(navController = navController, startDestination = Screen.SignUpScreen.route) {
+        composable(route = Screen.SignUpScreen.route){
+            SignUpScreen(navController = navController)
+        }
         composable(route = Screen.SelectFarmDataScreen.route) {
             SelectFarmDataScreen(navController = navController)
         }

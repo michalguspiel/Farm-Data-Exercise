@@ -12,7 +12,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.erdees.farmdataexercise.coreUtils.Constants
-import com.erdees.farmdataexercise.coreUtils.Util.findActivity
+import com.erdees.farmdataexercise.coreUtils.utils.Util.findActivity
 import com.erdees.farmdataexercise.feature_viewFarmData.domain.util.Format
 import com.erdees.farmdataexercise.feature_viewFarmData.presentation.components.CustomDetailedLineGraph
 import com.erdees.farmdataexercise.ui.theme.Typography

@@ -1,4 +1,4 @@
-package com.erdees.farmdataexercise.coreUtils
+package com.erdees.farmdataexercise.coreUtils.utils
 
 import android.app.Activity
 import android.content.Context

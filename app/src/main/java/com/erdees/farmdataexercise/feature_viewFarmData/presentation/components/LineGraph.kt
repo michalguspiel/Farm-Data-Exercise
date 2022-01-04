@@ -27,8 +27,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
-import com.erdees.farmdataexercise.coreUtils.Util.toDp
-import com.erdees.farmdataexercise.coreUtils.Util.toPx
+import com.erdees.farmdataexercise.coreUtils.utils.Util.toDp
+import com.erdees.farmdataexercise.coreUtils.utils.Util.toPx
 import com.erdees.farmdataexercise.feature_viewFarmData.domain.model.CornerStatus
 import com.erdees.farmdataexercise.feature_viewFarmData.domain.model.HorizontalCorner
 import com.erdees.farmdataexercise.feature_viewFarmData.domain.model.VerticalCorner

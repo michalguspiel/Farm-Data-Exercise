@@ -2,8 +2,8 @@ package com.erdees.farmdataexercise.feature_viewFarmData.data.repository
 
 import com.erdees.farmdataexercise.coreUtils.Constants
 import com.erdees.farmdataexercise.feature_viewFarmData.domain.model.FarmData
-import com.erdees.farmdataexercise.feature_viewFarmData.domain.model.Response
 import com.erdees.farmdataexercise.feature_viewFarmData.domain.repository.FarmDataRepository
+import com.erdees.farmdataexercise.model.Response
 import com.google.firebase.firestore.CollectionReference
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
@@ -12,11 +12,12 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Singleton
 class FarmDataRepositoryImpl @Inject constructor(
-    private val farmDataReference: CollectionReference,
+    @Named("farmData") private val farmDataReference: CollectionReference,
 ) : FarmDataRepository {
 
 

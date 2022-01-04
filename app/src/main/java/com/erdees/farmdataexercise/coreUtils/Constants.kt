@@ -23,4 +23,9 @@ object Constants {
 
     val SENSOR_LIST = listOf(Temperature(),PH(),Rainfall())
     val FARM_LIST = listOf(NOORA_FARM, OSSI_FARM) // SO FAR IN HERE, LATER DOWNLOADED FROM THE SERVER AND SAVED IN SHARED PREF
+
+
+    //MESSAGES
+    const val ERROR_MESSAGE = "Error"
+
 }

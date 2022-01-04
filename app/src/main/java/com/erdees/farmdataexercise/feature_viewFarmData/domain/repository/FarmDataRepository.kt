@@ -1,7 +1,7 @@
 package com.erdees.farmdataexercise.feature_viewFarmData.domain.repository
 
 import com.erdees.farmdataexercise.feature_viewFarmData.domain.model.FarmData
-import com.erdees.farmdataexercise.feature_viewFarmData.domain.model.Response
+import com.erdees.farmdataexercise.model.Response
 import kotlinx.coroutines.flow.Flow
 
 interface FarmDataRepository {

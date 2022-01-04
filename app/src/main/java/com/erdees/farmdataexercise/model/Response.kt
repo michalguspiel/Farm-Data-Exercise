@@ -1,4 +1,4 @@
-package com.erdees.farmdataexercise.feature_viewFarmData.domain.model
+package com.erdees.farmdataexercise.model
 
 sealed class Response<out T> {
     object Loading: Response<Nothing>()
