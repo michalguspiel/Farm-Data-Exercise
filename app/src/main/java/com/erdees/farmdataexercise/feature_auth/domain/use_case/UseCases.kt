@@ -5,6 +5,6 @@ data class UseCases(
     val signUpWithEmail: SignUpWithEmail,
     val signInWithEmail: SignInWithEmail,
     val signOut: SignOut,
-    val getAuthState: GetAuthState
+    val getCurrentUserDocument: GetCurrentUserDocument
 )
 

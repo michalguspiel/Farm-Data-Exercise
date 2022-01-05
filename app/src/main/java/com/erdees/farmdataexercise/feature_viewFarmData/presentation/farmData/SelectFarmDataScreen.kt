@@ -15,6 +15,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.erdees.farmdataexercise.R
 import com.erdees.farmdataexercise.coreUtils.Constants
+import com.erdees.farmdataexercise.coreUtils.components.MyTopAppBar
 import com.erdees.farmdataexercise.coreUtils.utils.Screen
 import com.erdees.farmdataexercise.feature_viewFarmData.domain.util.Format.formatDate
 import com.erdees.farmdataexercise.feature_viewFarmData.presentation.components.*
@@ -66,6 +67,8 @@ fun SelectFarmDataScreen(
                     )
                 )
             }
+        },
+        topBar = { MyTopAppBar(screen = "Browse farm data",navController)
         }
     ) {
         if (viewModel.openDialogState.value) {

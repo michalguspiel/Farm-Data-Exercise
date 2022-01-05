@@ -58,10 +58,10 @@ class AppModule {
     fun provideAuthUseCases(repository: AuthRepository) =
         com.erdees.farmdataexercise.feature_auth.domain.use_case.UseCases(
             isUserAuthenticated = IsUserAuthenticated(repository),
-            getAuthState = GetAuthState(repository),
             signInWithEmail = SignInWithEmail(repository),
             signUpWithEmail = SignUpWithEmail(repository),
-            signOut = SignOut(repository)
+            signOut = SignOut(repository),
+            getCurrentUserDocument = GetCurrentUserDocument(repository)
         )
 
 

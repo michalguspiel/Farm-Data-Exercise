@@ -1,5 +1,6 @@
 package com.erdees.farmdataexercise.feature_auth.data
 
+import android.util.Log
 import com.erdees.farmdataexercise.coreUtils.Constants.ERROR_MESSAGE
 import com.erdees.farmdataexercise.feature_auth.domain.model.FarmDataUser
 import com.erdees.farmdataexercise.feature_auth.domain.repository.AuthRepository
@@ -25,15 +26,38 @@ class AuthRepositoryImpl @Inject constructor(
     @Named("userReference") private val usersReference: CollectionReference,
     ) : AuthRepository {
 
-    override fun isUserAuthenticatedInFirebase(): Boolean {
-        return auth.currentUser != null
-    }
+    override fun isUserAuthenticated() = auth.currentUser != null
 
+
+    override suspend fun getCurrentUserDocument(): Flow<Response<FarmDataUser>> = callbackFlow {
+        Log.i("AuthRepo","getCurrentUserDoc() Fired!")
+        if(!isUserAuthenticated()){
+            Log.i("AuthRepo", "USER LOGGED OUT!")
+            trySend(Response.Error("NO UID!"))
+            awaitClose()
+        }
+        else {
+            val userId = auth.currentUser!!.uid
+            val query = usersReference.document(userId)
+            val snapShotListener = query.addSnapshotListener { snapshot, error ->
+                val response = if (snapshot != null) {
+                    val farmDataUser = snapshot.toObject(FarmDataUser::class.java)
+                    Response.Success(farmDataUser!!)
+                } else Response.Error(error?.message ?: error.toString())
+                trySend(response).isSuccess
+            }
+
+            awaitClose {
+                snapShotListener.remove()
+            }
+        }
+    }
 
     override suspend fun signUpWithEmail(registration: Registration): Flow<Response<Boolean>> = flow {
         try {
             emit(Response.Loading)
             auth.createUserWithEmailAndPassword(registration.mail,registration.password).await()
+            emit(Response.Success(true))
             createUserDocument(registration)?.await()
             emit(Response.Success(true))
         } catch (e: Exception) {
@@ -62,12 +86,11 @@ class AuthRepositoryImpl @Inject constructor(
 
         }
 
-
     override suspend fun signOut(): Flow<Response<Boolean>> = flow {
         try {
             emit(Response.Loading)
-            auth.currentUser?.apply {
-                delete().await()
+            auth.apply {
+                this.signOut()
                 emit(Response.Success(true))
             }
         } catch (e: Exception) {
@@ -75,19 +98,4 @@ class AuthRepositoryImpl @Inject constructor(
         }
     }
 
-
-    @ExperimentalCoroutinesApi
-    override fun getFirebaseAuthState() = callbackFlow {
-        val authStateListener = FirebaseAuth.AuthStateListener { auth ->
-            trySend(auth.currentUser == null)
-        }
-        auth.addAuthStateListener(authStateListener)
-        awaitClose {
-            auth.removeAuthStateListener(authStateListener)
-        }
-    }
-
-    companion object {
-        const val TAG = "AuthRepoImpl"
-    }
 }

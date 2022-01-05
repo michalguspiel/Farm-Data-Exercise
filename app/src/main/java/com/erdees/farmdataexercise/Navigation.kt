@@ -13,7 +13,9 @@ import com.erdees.farmdataexercise.coreUtils.Constants.RANGE_SECOND
 import com.erdees.farmdataexercise.coreUtils.Constants.SENSOR_NAME
 import com.erdees.farmdataexercise.coreUtils.Constants.SENSOR_TYPE
 import com.erdees.farmdataexercise.coreUtils.utils.Screen
-import com.erdees.farmdataexercise.feature_auth.presentation.farmData.SignUpScreen
+import com.erdees.farmdataexercise.feature_auth.presentation.profile.ProfileScreen
+import com.erdees.farmdataexercise.feature_auth.presentation.signIn.SignInScreen
+import com.erdees.farmdataexercise.feature_auth.presentation.signUp.SignUpScreen
 import com.erdees.farmdataexercise.feature_viewFarmData.presentation.farmData.DetailedFarmDataGraphScreen
 import com.erdees.farmdataexercise.feature_viewFarmData.presentation.farmData.FarmDataScreen
 import com.erdees.farmdataexercise.feature_viewFarmData.presentation.farmData.SelectFarmDataScreen
@@ -29,8 +31,14 @@ fun Navigation() {
         composable(route = Screen.SignUpScreen.route){
             SignUpScreen(navController = navController)
         }
+        composable(route = Screen.SignInScreen.route){
+            SignInScreen(navController = navController)
+        }
         composable(route = Screen.SelectFarmDataScreen.route) {
             SelectFarmDataScreen(navController = navController)
+        }
+        composable(route = Screen.ProfileScreen.route){
+            ProfileScreen(navController = navController)
         }
         composable(route = Screen.FarmDataScreen.route + "/{$LOCATION}/{$LOCATION_NAME}/{$SENSOR_TYPE}/{$RANGE_FIRST}/{$RANGE_SECOND}/{$SENSOR_NAME}", arguments = listOf(
             navArgument(LOCATION) {
