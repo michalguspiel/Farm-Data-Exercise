@@ -25,11 +25,16 @@ fun ProfileScreen(
 ) {
 
     LaunchedEffect(Unit) {
-        profileViewModel.getCurrentUserDocument()
+        if (!profileViewModel.isUserAuthenticated) navController.navigate(Screen.SignInScreen.route) {
+            popUpTo(
+                Screen.SelectFarmDataScreen.route
+            )
+        }
+        else profileViewModel.getCurrentUserDocument()
     }
 
-        if (profileViewModel.isUserAuthenticated) {
-            Scaffold {
+    if (profileViewModel.isUserAuthenticated) {
+        Scaffold {
             when (val response = profileViewModel.isUserSignedOutState.value) {
                 is Response.Loading -> ProgressBar()
                 is Response.Success -> {

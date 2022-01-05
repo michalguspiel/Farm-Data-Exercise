@@ -31,7 +31,9 @@ fun SignUpScreen(
                 is Response.Loading -> ProgressBar()
                 is Response.Success -> {
                     if (response.data) {
-                        navController.navigate(Screen.ProfileScreen.route)
+                        navController.navigate(Screen.ProfileScreen.route){
+                            popUpTo(Screen.SelectFarmDataScreen.route)
+                        }
                     }
                 }
                 is Response.Error -> Log.d("sign_up_screen", response.message)

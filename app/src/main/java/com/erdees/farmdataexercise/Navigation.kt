@@ -27,7 +27,7 @@ import kotlinx.coroutines.InternalCoroutinesApi
 @Composable
 fun Navigation() {
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = Screen.SignUpScreen.route) {
+    NavHost(navController = navController, startDestination = Screen.SignInScreen.route) {
         composable(route = Screen.SignUpScreen.route){
             SignUpScreen(navController = navController)
         }

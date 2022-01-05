@@ -26,6 +26,8 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.erdees.farmdataexercise.coreUtils.Constants.CONTINUE_TAG
+import com.erdees.farmdataexercise.coreUtils.Constants.SIGN_UP_TAG
 import com.erdees.farmdataexercise.coreUtils.utils.Screen
 import com.erdees.farmdataexercise.feature_auth.presentation.signIn.SignInViewModel
 import com.erdees.farmdataexercise.ui.theme.*
@@ -36,10 +38,16 @@ fun SignInContent(
     navController: NavController
 ) {
 
-    val annotatedString = buildAnnotatedString {
+    val noAccountAnnotatedString = buildAnnotatedString {
         append("No account? ")
-        pushStringAnnotation("sign_up", "")
+        pushStringAnnotation(SIGN_UP_TAG, "")
         withStyle(style = SpanStyle(Color.Blue)) { append("Sign Up!") }
+        pop()
+    }
+
+    val continueAnonymouslyAnnotatedString = buildAnnotatedString {
+        pushStringAnnotation(CONTINUE_TAG, "")
+        withStyle(style = SpanStyle(Color.Blue)) { append("Continue without account!") }
         pop()
     }
 
@@ -115,12 +123,19 @@ fun SignInContent(
                 fontWeight = FontWeight.W500
             )
         }
-        Spacer(modifier = Modifier.padding(4.dp))
-        ClickableText(text = annotatedString, onClick = { offset ->
-            annotatedString.getStringAnnotations("sign_up", start = offset, end = offset)
+        Spacer(modifier = Modifier.padding(6.dp))
+        ClickableText(text = noAccountAnnotatedString, onClick = { offset ->
+            noAccountAnnotatedString.getStringAnnotations(SIGN_UP_TAG, start = offset, end = offset)
                 .firstOrNull().let {
                     navController.navigate(Screen.SignUpScreen.route)
                 }
         })
+        Spacer(modifier = Modifier.padding(6.dp))
+        ClickableText(text = continueAnonymouslyAnnotatedString, onClick = { offset ->
+            continueAnonymouslyAnnotatedString.getStringAnnotations(CONTINUE_TAG,start = offset, end = offset).firstOrNull().let {
+                navController.navigate(Screen.SelectFarmDataScreen.route)
+            }
+        } )
+
     }
 }

@@ -24,7 +24,12 @@ fun SignInScreen(signInViewModel: SignInViewModel = hiltViewModel(),navControlle
             when (val response = signInViewModel.signInState.value){
                 is Response.Loading -> ProgressBar()
                 is Response.Success ->{
-                    if (response.data) navController.navigate(Screen.ProfileScreen.route)
+                    if (response.data)
+                    {
+                        navController.navigate(Screen.ProfileScreen.route){
+                            popUpTo(Screen.SelectFarmDataScreen.route)
+                        }
+                    }
                 }
                 is Response.Error -> Log.i("sign_in_screen",response.message)
             }

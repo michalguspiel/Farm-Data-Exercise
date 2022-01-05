@@ -28,4 +28,8 @@ object Constants {
     //MESSAGES
     const val ERROR_MESSAGE = "Error"
 
+    // STRINGS
+    const val SIGN_UP_TAG = "sign_up"
+    const val CONTINUE_TAG = "continue"
+
 }
