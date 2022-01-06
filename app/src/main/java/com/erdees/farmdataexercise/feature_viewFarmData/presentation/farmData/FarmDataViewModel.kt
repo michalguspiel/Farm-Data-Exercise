@@ -27,7 +27,10 @@ class FarmDataViewModel @Inject constructor(
     val isFarmDataAddedState: State<Response<Void?>> = _isFarmDataAddedState
 
 
+
+
     var openDialogState = mutableStateOf(false)
+
 
 
     fun getFarmData() {

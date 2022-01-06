@@ -1,11 +1,16 @@
 package com.erdees.farmdataexercise.di
 
+import android.app.Application
+import androidx.room.Room
 import com.erdees.farmdataexercise.feature_auth.data.AuthRepositoryImpl
 import com.erdees.farmdataexercise.feature_auth.domain.repository.AuthRepository
 import com.erdees.farmdataexercise.feature_auth.domain.use_case.*
+import com.erdees.farmdataexercise.feature_viewFarmData.data.local.FarmInformationDatabase
 import com.erdees.farmdataexercise.feature_viewFarmData.data.repository.FarmDataRepositoryImpl
+import com.erdees.farmdataexercise.feature_viewFarmData.data.repository.FarmInfoRepositoryImpl
 import com.erdees.farmdataexercise.feature_viewFarmData.data.repository.TemporaryFarmDataRepositoryImpl
 import com.erdees.farmdataexercise.feature_viewFarmData.domain.repository.FarmDataRepository
+import com.erdees.farmdataexercise.feature_viewFarmData.domain.repository.FarmInfoRepository
 import com.erdees.farmdataexercise.feature_viewFarmData.domain.repository.TemporaryFarmDataRepository
 import com.erdees.farmdataexercise.feature_viewFarmData.domain.use_case.*
 import com.erdees.farmdataexercise.feature_viewFarmData.domain.use_case.UseCases
@@ -68,15 +73,35 @@ class AppModule {
     @Provides
     fun provideFarmDataUseCases(
         repository: FarmDataRepository,
-        temporaryFarmDataRepository: TemporaryFarmDataRepository
+        temporaryFarmDataRepository: TemporaryFarmDataRepository,
+        farmInfoRepository : FarmInfoRepository
     ) = UseCases(
         getFarmData = GetFarmData(repository),
         addFarmData = AddFarmData(repository),
         getTemporaryFarmData = GetTemporaryFarmData(temporaryFarmDataRepository),
-        saveTemporaryFarmData = SaveTemporaryFarmData(temporaryFarmDataRepository)
+        saveTemporaryFarmData = SaveTemporaryFarmData(temporaryFarmDataRepository),
+        getFarmsInformation = GetFarmsInformation(farmInfoRepository)
     )
 
     @Provides
     fun provideFirebaseAuth(): FirebaseAuth = FirebaseAuth.getInstance()
+
+
+    @Singleton
+    @Provides
+    fun provideFarmInformationDatabase(app: Application): FarmInformationDatabase {
+        return Room.databaseBuilder(app, FarmInformationDatabase::class.java, "farm_db").build()
+    }
+
+    @Singleton
+    @Provides
+    fun provideFarmInfoRepository(
+        db: FarmInformationDatabase,
+        @Named("farmData") farmDataReference: CollectionReference
+    ): FarmInfoRepository = FarmInfoRepositoryImpl(
+        dao = db.farmInformationDao,
+        farmDataReference = farmDataReference
+    )
+
 
 }

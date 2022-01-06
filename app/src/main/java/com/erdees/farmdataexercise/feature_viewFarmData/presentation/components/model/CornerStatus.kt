@@ -1,4 +1,4 @@
-package com.erdees.farmdataexercise.feature_viewFarmData.domain.model
+package com.erdees.farmdataexercise.feature_viewFarmData.presentation.components.model
 import com.erdees.farmdataexercise.feature_viewFarmData.presentation.farmData.DetailedFarmDataGraphScreen
 
 sealed class HorizontalCorner {
@@ -13,15 +13,15 @@ sealed class VerticalCorner {
 /**
  * It's a class which helps to detect which corner should stay sharp in [DetailedFarmDataGraphScreen], meaning without rounding.
  * */
-open class CornerStatus( val horizontalCorner : HorizontalCorner, val verticalCorner : VerticalCorner) {
+open class CornerStatus(val horizontalCorner : HorizontalCorner, val verticalCorner : VerticalCorner) {
 
-object TopEndCorner : CornerStatus(HorizontalCorner.EndCorner,VerticalCorner.TopCorner)
-object BottomEndCorner : CornerStatus(HorizontalCorner.EndCorner,VerticalCorner.BottomCorner)
-object BottomStartCorner : CornerStatus(HorizontalCorner.StartCorner,VerticalCorner.BottomCorner)
-object TopStartCorner : CornerStatus(HorizontalCorner.StartCorner,VerticalCorner.TopCorner)
+object TopEndCorner : CornerStatus(HorizontalCorner.EndCorner, VerticalCorner.TopCorner)
+object BottomEndCorner : CornerStatus(HorizontalCorner.EndCorner, VerticalCorner.BottomCorner)
+object BottomStartCorner : CornerStatus(HorizontalCorner.StartCorner, VerticalCorner.BottomCorner)
+object TopStartCorner : CornerStatus(HorizontalCorner.StartCorner, VerticalCorner.TopCorner)
 
 
-    fun cornerStatus(): CornerStatus{
+    fun cornerStatus(): CornerStatus {
         return when(horizontalCorner) {
            HorizontalCorner.StartCorner -> when(verticalCorner){
                VerticalCorner.TopCorner -> TopStartCorner

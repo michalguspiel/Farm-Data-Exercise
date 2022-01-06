@@ -20,6 +20,7 @@ android {
         vectorDrawables {
             useSupportLibrary true
         }
+
     }
 
     buildTypes {
@@ -55,6 +56,8 @@ android {
             includeAndroidResources = true
         }
     }
+
+
 }
 
 dependencies {
@@ -120,6 +123,19 @@ dependencies {
     //LIVEDATA
     implementation 'androidx.compose.runtime:runtime-livedata:1.1.0-rc01'
 
-    //LIVEDATA
+    //TESTS
     testImplementation 'org.robolectric:robolectric:4.6'
+
+    // Room
+    implementation "androidx.room:room-runtime:2.4.0"
+    implementation "androidx.room:room-ktx:2.4.0"
+    kapt "androidx.room:room-compiler:2.4.0"
+
+    // SplashScreen
+    implementation 'androidx.core:core-splashscreen:1.0.0-alpha02'
+
+    //MAPS SDK
+    implementation("com.google.android.libraries.maps:maps:3.1.0-beta")
+    implementation("com.google.maps.android:maps-v3-ktx:2.2.0")
+    implementation("androidx.fragment:fragment:1.4.0")
 }

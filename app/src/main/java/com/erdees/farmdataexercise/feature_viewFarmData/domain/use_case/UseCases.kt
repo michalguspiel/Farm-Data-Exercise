@@ -4,5 +4,6 @@ data class UseCases(
     val getFarmData: GetFarmData,
     val addFarmData: AddFarmData,
     val getTemporaryFarmData: GetTemporaryFarmData,
-    val saveTemporaryFarmData: SaveTemporaryFarmData
+    val saveTemporaryFarmData: SaveTemporaryFarmData,
+    val getFarmsInformation: GetFarmsInformation
 )

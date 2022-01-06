@@ -16,12 +16,12 @@ import javax.inject.Named
 import javax.inject.Singleton
 
 @Singleton
+@ExperimentalCoroutinesApi
 class FarmDataRepositoryImpl @Inject constructor(
     @Named("farmData") private val farmDataReference: CollectionReference,
 ) : FarmDataRepository {
 
 
-    @ExperimentalCoroutinesApi
     override fun getFarmData(
         farmLocation: String,
         sensorType: String,
@@ -65,3 +65,4 @@ class FarmDataRepositoryImpl @Inject constructor(
         }
     }
 }
+

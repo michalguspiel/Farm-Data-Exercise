@@ -54,9 +54,6 @@ fun SelectFarmDataScreen(
         mutableStateOf(listOf<LocalDate>())
     }
 
-    val offset = remember { mutableStateOf(0f) }
-
-
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(
@@ -91,8 +88,9 @@ fun SelectFarmDataScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .verticalScroll(rememberScrollState()
-            )
+                .verticalScroll(
+                    rememberScrollState()
+                )
             ,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
