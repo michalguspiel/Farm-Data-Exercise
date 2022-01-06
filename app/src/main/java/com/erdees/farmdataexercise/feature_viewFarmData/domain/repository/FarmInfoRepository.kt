@@ -7,6 +7,8 @@ import kotlinx.coroutines.flow.Flow
 
 interface FarmInfoRepository {
 
-    suspend fun getFarmsInformation() : Flow<Response<List<FarmInformation>>>
+    suspend fun downloadAndSaveFarmsInformation() : Flow<Response<List<FarmInformation>>>
+
+    suspend fun getLocalFarmsInformation() : Flow<Response<List<FarmInformation>>>
 
 }

@@ -1,5 +1,5 @@
 package com.erdees.farmdataexercise.feature_viewFarmData.presentation.components.model
-import com.erdees.farmdataexercise.feature_viewFarmData.presentation.farmData.DetailedFarmDataGraphScreen
+import com.erdees.farmdataexercise.feature_viewFarmData.presentation.detailedFarmDataGraphScreen.DetailedFarmDataGraphScreen
 
 sealed class HorizontalCorner {
     object StartCorner : HorizontalCorner()

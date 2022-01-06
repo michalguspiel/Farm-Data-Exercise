@@ -1,4 +1,4 @@
-package com.erdees.farmdataexercise.feature_viewFarmData.presentation.farmData
+package com.erdees.farmdataexercise.feature_viewFarmData.presentation.selectFarmData
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -30,7 +30,7 @@ import java.time.LocalDate
 @InternalCoroutinesApi
 @Composable
 fun SelectFarmDataScreen(
-    viewModel: FarmDataViewModel = hiltViewModel(),
+    viewModel: SelectFarmDataViewModel = hiltViewModel(),
     navController: NavController
 ) {
 

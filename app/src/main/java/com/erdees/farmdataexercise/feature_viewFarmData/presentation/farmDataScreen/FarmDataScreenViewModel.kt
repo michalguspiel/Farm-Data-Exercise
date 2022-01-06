@@ -1,4 +1,4 @@
-package com.erdees.farmdataexercise.feature_viewFarmData.presentation.farmData
+package com.erdees.farmdataexercise.feature_viewFarmData.presentation.farmDataScreen
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -10,27 +10,24 @@ import com.erdees.farmdataexercise.feature_viewFarmData.domain.model.FarmData
 import com.erdees.farmdataexercise.feature_viewFarmData.domain.use_case.UseCases
 import com.erdees.farmdataexercise.model.Response
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+
 @HiltViewModel
-class FarmDataViewModel @Inject constructor(
+class FarmDataScreenViewModel @Inject constructor(
     private val useCases: UseCases,
     val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
+
     private val _farmDataState = mutableStateOf<Response<List<FarmData>>>(Response.Loading)
     val farmDataState: State<Response<List<FarmData>>> = _farmDataState
 
     private val _isFarmDataAddedState = mutableStateOf<Response<Void?>>(Response.Empty(null))
     val isFarmDataAddedState: State<Response<Void?>> = _isFarmDataAddedState
 
-
-
-
     var openDialogState = mutableStateOf(false)
-
 
 
     fun getFarmData() {
@@ -45,25 +42,6 @@ class FarmDataViewModel @Inject constructor(
             }
         }
     }
-
-
-    fun addFarmData(
-        farmLocation: String,
-        dateTime: String,
-        sensorType: String,
-        value: String
-    ) {
-        viewModelScope.launch {
-            useCases.addFarmData.invoke(farmLocation, dateTime, sensorType, value)
-                .collect { response ->
-                    _isFarmDataAddedState.value = response
-                }
-        }
-    }
-
-
-    fun getTemporaryFarmData(): StateFlow<List<FarmData>> = useCases.getTemporaryFarmData.invoke()
-
 
     fun saveTemporaryFarmData(farmDataList: List<FarmData>) {
         useCases.saveTemporaryFarmData.invoke(farmDataList)

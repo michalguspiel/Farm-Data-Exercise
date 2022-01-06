@@ -133,7 +133,7 @@ fun SignInContent(
         Spacer(modifier = Modifier.padding(6.dp))
         ClickableText(text = continueAnonymouslyAnnotatedString, onClick = { offset ->
             continueAnonymouslyAnnotatedString.getStringAnnotations(CONTINUE_TAG,start = offset, end = offset).firstOrNull().let {
-                navController.navigate(Screen.SelectFarmDataScreen.route)
+                navController.navigate(Screen.SelectFarmScreen.route)
             }
         } )
 

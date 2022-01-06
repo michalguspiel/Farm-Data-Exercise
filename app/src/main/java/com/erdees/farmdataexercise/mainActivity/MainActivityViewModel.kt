@@ -1,4 +1,4 @@
-package com.erdees.farmdataexercise
+package com.erdees.farmdataexercise.mainActivity
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -22,14 +22,14 @@ class MainActivityViewModel @Inject constructor(
     private val farmInformationState: State<Response<List<FarmInformation>>> = _farmInformationState
 
     init {
-        getFarmsInformation()
+        downloadAndSaveFarmsInformation()
     }
 
     fun isLoading() = farmInformationState.value == Response.Loading
 
-    private fun getFarmsInformation() {
+    private fun downloadAndSaveFarmsInformation() {
         viewModelScope.launch {
-            useCases.getFarmsInformation.invoke().collect { response ->
+            useCases.downloadAndSaveFarmsInformation.invoke().collect { response ->
                 _farmInformationState.value = response
             }
         }

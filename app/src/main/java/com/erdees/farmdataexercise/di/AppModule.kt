@@ -80,7 +80,8 @@ class AppModule {
         addFarmData = AddFarmData(repository),
         getTemporaryFarmData = GetTemporaryFarmData(temporaryFarmDataRepository),
         saveTemporaryFarmData = SaveTemporaryFarmData(temporaryFarmDataRepository),
-        getFarmsInformation = GetFarmsInformation(farmInfoRepository)
+        downloadAndSaveFarmsInformation = DownloadAndSaveFarmsInformation(farmInfoRepository),
+        getLocalFarmsInformation = GetLocalFarmsInformation(farmInfoRepository)
     )
 
     @Provides

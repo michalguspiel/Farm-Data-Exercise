@@ -1,4 +1,4 @@
-package com.erdees.farmdataexercise.feature_viewFarmData.presentation.farmData
+package com.erdees.farmdataexercise.feature_viewFarmData.presentation.detailedFarmDataGraphScreen
 
 import android.content.pm.ActivityInfo
 import androidx.compose.foundation.layout.*
@@ -20,7 +20,7 @@ import com.madrapps.plot.line.DataPoint
 
 @Composable
 fun DetailedFarmDataGraphScreen(
-    viewModel: FarmDataViewModel = hiltViewModel()
+    viewModel: DetailedFarmDataGraphScreenViewModel = hiltViewModel()
 ) {
 
     val temporaryFarmDataList by viewModel.getTemporaryFarmData().collectAsState()

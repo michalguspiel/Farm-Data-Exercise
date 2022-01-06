@@ -15,6 +15,7 @@ object Constants {
     const val RANGE_FIRST = "rangeFirst"
     const val RANGE_SECOND = "rangeSecond"
 
+
     const val FARM_DATA = "farm_data"
     const val DATA = "data"
 

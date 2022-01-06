@@ -1,4 +1,4 @@
-package com.erdees.farmdataexercise.feature_viewFarmData.presentation.farmData
+package com.erdees.farmdataexercise.feature_viewFarmData.presentation.farmDataScreen
 
 
 import androidx.compose.foundation.clickable
@@ -32,7 +32,7 @@ import kotlinx.coroutines.InternalCoroutinesApi
 @InternalCoroutinesApi
 @ExperimentalCoroutinesApi
 fun FarmDataScreen(
-    viewModel: FarmDataViewModel = hiltViewModel(),
+    viewModel: FarmDataScreenViewModel = hiltViewModel(),
     navController: NavController,
 ) {
     viewModel.getFarmData()

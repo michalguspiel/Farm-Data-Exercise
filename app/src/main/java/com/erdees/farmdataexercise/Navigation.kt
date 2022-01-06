@@ -16,9 +16,10 @@ import com.erdees.farmdataexercise.coreUtils.utils.Screen
 import com.erdees.farmdataexercise.feature_auth.presentation.profile.ProfileScreen
 import com.erdees.farmdataexercise.feature_auth.presentation.signIn.SignInScreen
 import com.erdees.farmdataexercise.feature_auth.presentation.signUp.SignUpScreen
-import com.erdees.farmdataexercise.feature_viewFarmData.presentation.farmData.DetailedFarmDataGraphScreen
-import com.erdees.farmdataexercise.feature_viewFarmData.presentation.farmData.FarmDataScreen
-import com.erdees.farmdataexercise.feature_viewFarmData.presentation.farmData.SelectFarmDataScreen
+import com.erdees.farmdataexercise.feature_viewFarmData.presentation.detailedFarmDataGraphScreen.DetailedFarmDataGraphScreen
+import com.erdees.farmdataexercise.feature_viewFarmData.presentation.farmDataScreen.FarmDataScreen
+import com.erdees.farmdataexercise.feature_viewFarmData.presentation.selectFarm.SelectFarmScreen
+import com.erdees.farmdataexercise.feature_viewFarmData.presentation.selectFarmData.SelectFarmDataScreen
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 
@@ -30,6 +31,9 @@ fun Navigation() {
     NavHost(navController = navController, startDestination = Screen.SignInScreen.route) {
         composable(route = Screen.SignUpScreen.route){
             SignUpScreen(navController = navController)
+        }
+        composable(route = Screen.SelectFarmScreen.route){
+            SelectFarmScreen(navController = navController)
         }
         composable(route = Screen.SignInScreen.route){
             SignInScreen(navController = navController)
@@ -72,6 +76,6 @@ fun Navigation() {
                 nullable = false
             }
         )
-        ){entry -> DetailedFarmDataGraphScreen()}
+        ){entry -> DetailedFarmDataGraphScreen() }
     }
 }

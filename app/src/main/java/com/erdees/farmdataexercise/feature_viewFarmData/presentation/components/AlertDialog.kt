@@ -15,12 +15,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.erdees.farmdataexercise.coreUtils.Constants
-import com.erdees.farmdataexercise.feature_viewFarmData.presentation.farmData.FarmDataViewModel
+import com.erdees.farmdataexercise.feature_viewFarmData.presentation.selectFarmData.SelectFarmDataViewModel
 import kotlinx.coroutines.InternalCoroutinesApi
 
 @InternalCoroutinesApi
 @Composable
-fun AlertDialog(viewModel: FarmDataViewModel = hiltViewModel()) {
+fun AlertDialog(viewModel: SelectFarmDataViewModel = hiltViewModel()) {
 
     var dateTime by remember {
         mutableStateOf("")
