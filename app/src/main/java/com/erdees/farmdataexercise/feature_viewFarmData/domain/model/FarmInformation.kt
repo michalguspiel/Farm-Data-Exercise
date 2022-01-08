@@ -8,8 +8,9 @@ data class FarmInformation(
     val locationName :String = "",
     val geoPoint: GeoPoint = GeoPoint(0.0,0.0),
     @DocumentId
-    val docId: String = ""
+    val docId: String = "",
+    val farmImageUrl : String = ""
 ) {
 
-    fun toFarmInformationEntity() = FarmInformationEntity(locationName = locationName,geoPoint =  geoPoint, docId = docId)
+    fun toFarmInformationEntity() = FarmInformationEntity(locationName = locationName,geoPoint =  geoPoint, docId = docId,farmImageUrl = farmImageUrl)
 }

@@ -10,10 +10,11 @@ import com.google.firebase.firestore.GeoPoint
 class FarmInformationEntity(
      val locationName: String,
     @TypeConverters(GeoPointConverter::class) val  geoPoint: GeoPoint,
+     val farmImageUrl : String,
      val docId : String,
     @PrimaryKey val id: Int? = null
 ) {
 
-    fun toFarmInformation() : FarmInformation = FarmInformation(this.locationName,this.geoPoint,this.docId)
+    fun toFarmInformation() : FarmInformation = FarmInformation(this.locationName,this.geoPoint,this.docId,this.farmImageUrl)
 
 }
