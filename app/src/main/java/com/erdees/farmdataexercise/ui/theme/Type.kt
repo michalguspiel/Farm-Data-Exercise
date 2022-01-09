@@ -34,7 +34,17 @@ val Typography = Typography(
         fontSize = 30.sp,
         letterSpacing = (-0.05).sp
     )
-
+    ,button = TextStyle(
+        fontFamily = FontFamily.Default,
+        fontWeight = FontWeight.W600,
+        fontSize = 16.sp
+    ),
+    caption = TextStyle(
+        fontFamily = FontFamily.Default,
+        fontWeight = FontWeight.Normal,
+        fontSize = 10.sp,
+        color = OnPrimaryLightest
+    )
 /* Other default text styles to override
 button = TextStyle(
     fontFamily = FontFamily.Default,

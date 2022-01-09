@@ -9,11 +9,13 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ExpandLess
+import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
@@ -24,10 +26,13 @@ import androidx.navigation.NavController
 import com.erdees.farmdataexercise.R
 import com.erdees.farmdataexercise.coreUtils.Constants
 import com.erdees.farmdataexercise.coreUtils.Constants.SENSOR_NAME
+import com.erdees.farmdataexercise.coreUtils.components.MyButton
 import com.erdees.farmdataexercise.coreUtils.utils.Screen
 import com.erdees.farmdataexercise.feature_viewFarmData.domain.model.FarmData
+import com.erdees.farmdataexercise.feature_viewFarmData.domain.model.Temperature
 import com.erdees.farmdataexercise.feature_viewFarmData.domain.util.Format.formatDateToYearMonthDay
-import com.erdees.farmdataexercise.feature_viewFarmData.presentation.components.AlertDialog
+import com.erdees.farmdataexercise.feature_viewFarmData.domain.util.Format.formatISO8601String
+import com.erdees.farmdataexercise.feature_viewFarmData.domain.util.Format.formatTemperature
 import com.erdees.farmdataexercise.feature_viewFarmData.presentation.components.CustomPreviewLineGraph
 import com.erdees.farmdataexercise.feature_viewFarmData.presentation.components.ProgressBar
 import com.erdees.farmdataexercise.feature_viewFarmData.presentation.components.Toast
@@ -36,6 +41,7 @@ import com.erdees.farmdataexercise.ui.theme.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 
+@ExperimentalMaterialApi
 @Composable
 @InternalCoroutinesApi
 @ExperimentalCoroutinesApi
@@ -45,94 +51,87 @@ fun FarmDataScreen(
 ) {
     viewModel.getFarmData()
 
+    val locationName = viewModel.savedStateHandle.get<String>(Constants.LOCATION_NAME).toString()
     val timeRange = viewModel.savedStateHandle.get<String>(Constants.RANGE_FIRST).toString()
     val timeRange2 = viewModel.savedStateHandle.get<String>(Constants.RANGE_SECOND).toString()
     val sensorType = viewModel.savedStateHandle.get<String>(SENSOR_NAME).toString()
 
 
-    Scaffold(
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = {
-                    viewModel.openDialogState.value = true
-                },
-                backgroundColor = MaterialTheme.colors.primary
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = stringResource(
-                        R.string.add_farm_data
-                    )
-                )
-            }
-        }
-    ) {
-        if (viewModel.openDialogState.value) {
-            AlertDialog()
-        }
+    Scaffold{
         when (val farmDataResponse = viewModel.farmDataState.value) {
             is Response.Loading -> ProgressBar()
             is Response.Success -> Column(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .padding(top = 12.dp)
+                    .fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 if (farmDataResponse.data.isEmpty()) {
-                    Text(
-                        text = "Ooops... looks like there is no data in that time.",
-                        modifier = Modifier.fillMaxSize(),
-                        textAlign = TextAlign.Center,
-                        style = Typography.h4
-                    )
+                    NoDataContent(navController = navController)
                 } else {
-                    Text(
-                        text = farmDataResponse.data.first().location,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.fillMaxWidth(),
-                        style = Typography.h5
+                    FarmDataInformationCard(
+                        locationName = locationName,
+                        sensorType = sensorType,
+                        timeRange = timeRange,
+                        timeRange2 = timeRange2
                     )
-                    Text(
-                        text = sensorType,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.fillMaxWidth(),
-                        style = Typography.h3
-                    )
-                    Text(
-                        text = "Time range: ${formatDateToYearMonthDay(timeRange)} - ${
-                            formatDateToYearMonthDay(
-                                timeRange2
+                    Divider(color = OnPrimary, thickness = 1.dp)
+
+                    Card(
+                        shape = RectangleShape,
+                        modifier = Modifier,
+                        onClick = { viewModel.graphStateChanged() },
+                        elevation = 6.dp
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .background(
+                                    BackgroundColorDarker
+                                )
+                                .fillMaxWidth(), horizontalArrangement = Arrangement.Center
+                        ) {
+                            Text(
+                                text = if (viewModel.isGraphShown.value) stringResource(R.string.hide_graph) else stringResource(
+                                    R.string.show_graph
+                                ),textAlign = TextAlign.Center,
+                                modifier = Modifier
+                                    .padding(horizontal = 8.dp, vertical = 2.dp).width(120.dp),
+                                style = Typography.h6
                             )
-                        }",
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.fillMaxWidth(),
-                        style = Typography.body2
-                    )
-
-                    Spacer(modifier = Modifier.height(4.dp))
-
-
-                    Box(modifier = Modifier.clickable(onClick = {
-                        viewModel.saveTemporaryFarmData(farmDataResponse.data)
-                        navController.navigate(
-                            Screen.DetailedFarmDataGraphScreen.withArgs(
-                                viewModel.savedStateHandle.get<String>(Constants.LOCATION_NAME)
-                                    .toString(),
-                                viewModel.savedStateHandle.get<String>(Constants.SENSOR_NAME)
-                                    .toString(),
+                            Icon(
+                                imageVector = if (viewModel.isGraphShown.value) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
+                                contentDescription = "Expand icon",
+                                modifier = Modifier
+                                    .padding(horizontal = 8.dp, vertical = 2.dp)
                             )
-                        )
-                    }))
-                    {
-                        CustomPreviewLineGraph(
-                            lines = viewModel.getLines(),
-                            farmDataResponse.data.map { it.datetime },
-                            farmDataResponse.data.first().sensorType,
-                            Modifier
-                                .fillMaxWidth()
-                                .height(200.dp)
-                        )
+                        }
                     }
-                    DataTable(farmDataResponse.data)
+
+                    if (viewModel.isGraphShown.value) {
+                        Box(modifier = Modifier.clickable(onClick = {
+                            viewModel.saveTemporaryFarmData(farmDataResponse.data)
+                            navController.navigate(
+                                Screen.DetailedFarmDataGraphScreen.withArgs(
+                                    viewModel.savedStateHandle.get<String>(Constants.LOCATION_NAME)
+                                        .toString(),
+                                    viewModel.savedStateHandle.get<String>(SENSOR_NAME)
+                                        .toString(),
+                                )
+                            )
+                        }))
+                        {
+                            CustomPreviewLineGraph(
+                                lines = viewModel.getLines(),
+                                farmDataResponse.data.map { it.datetime },
+                                farmDataResponse.data.first().sensorType,
+                                Modifier
+                                    .fillMaxWidth()
+                                    .height(200.dp)
+                            )
+                        }
+                    }
+                    DataTable(
+                        farmDataResponse.data,
+                        modifier = Modifier.padding(horizontal = 16.dp)
+                    )
 
                     Box(
                         modifier = Modifier.fillMaxSize(),
@@ -150,6 +149,75 @@ fun FarmDataScreen(
         }
     }
 
+}
+
+@Composable
+fun NoDataContent(navController: NavController) {
+    Spacer(Modifier.height(36.dp))
+    Text(
+        text = stringResource(id = R.string.oops_no_data),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp),
+        textAlign = TextAlign.Center,
+        style = Typography.h4
+    )
+    Spacer(modifier = Modifier.height(12.dp))
+    MyButton(onClick = { navController.popBackStack() }, text = stringResource(id = R.string.back))
+
+}
+
+@Composable
+fun FarmDataInformationCard(
+    locationName: String,
+    sensorType: String,
+    timeRange: String,
+    timeRange2: String
+) {
+    Card(
+        shape = RectangleShape,
+        modifier = Modifier.background(BackgroundColor),
+        elevation = 8.dp
+    ) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Text(
+                text = locationName,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth(),
+                style = Typography.h4
+            )
+            Text(
+                text = sensorType,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth(),
+                style = Typography.h5
+            )
+            Divider(color = OnPrimary, thickness = 1.dp)
+            Text(
+                text = "Time range: ${formatDateToYearMonthDay(timeRange)} - ${
+                    formatDateToYearMonthDay(
+                        timeRange2
+                    )
+                }",
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(BackgroundColor),
+                style = Typography.body1
+            )
+        }
+    }
+}
+
+@Preview
+@Composable
+fun PreviewFarmDataInfoCard() {
+    FarmDataInformationCard(
+        locationName = "Michal farm",
+        sensorType = "Ph",
+        timeRange = "09.01.2021",
+        timeRange2 = "12.01.2022"
+    )
 }
 
 @Composable
@@ -171,19 +239,31 @@ fun RowScope.TableCell(
 
 @Composable
 fun DataRow(farmData: FarmData) {
+    val farmDataValue =
+        if (farmData.sensorType == Temperature().firebaseName) formatTemperature(farmData.value) else farmData.value
     Row(Modifier.background(BackgroundColor)) {
-        TableCell(text = farmData.datetime, weight = 1f)
-        TableCell(text = farmData.value, weight = 1f)
+        TableCell(text = formatISO8601String(farmData.datetime), weight = 0.7f)
+        TableCell(text = farmDataValue, weight = 0.3f)
     }
 }
 
 @Composable
-fun DataTable(farmDataList: List<FarmData>) {
-    LazyColumn {
+fun DataTable(farmDataList: List<FarmData>, modifier: Modifier) {
+    LazyColumn(modifier = modifier.padding(bottom = 8.dp)) {
         item {
             Row(Modifier.background(BackgroundColorDarkest)) {
-                TableCell(text = "Date time", weight = 1f, style = Typography.h6, OnPrimary)
-                TableCell(text = "Value", weight = 1f, style = Typography.h6, OnPrimary)
+                TableCell(
+                    text = stringResource(R.string.date_time),
+                    weight = 0.7f,
+                    style = Typography.h6,
+                    OnPrimary
+                )
+                TableCell(
+                    text = stringResource(R.string.value),
+                    weight = 0.3f,
+                    style = Typography.h6,
+                    OnPrimary
+                )
             }
         }
         items(farmDataList) { farmData ->
@@ -203,6 +283,6 @@ fun PreviewDataTable() {
             FarmData("Location", "20:20:20:20", "", "13"),
             FarmData("Location", "20:20:20:20", "", "13"),
             FarmData("Location", "20:20:20:20", "", "13"),
-        )
+        ), Modifier
     )
 }

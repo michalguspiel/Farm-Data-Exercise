@@ -11,7 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import com.erdees.farmdataexercise.coreUtils.utils.Screen
-import com.erdees.farmdataexercise.ui.theme.Yellow400
+import com.erdees.farmdataexercise.ui.theme.BackgroundColor
 
 @Composable
 fun MyTopAppBar(screen: String, navController: NavController) {
@@ -19,7 +19,7 @@ fun MyTopAppBar(screen: String, navController: NavController) {
     var expandedMenu by remember { mutableStateOf(false) }
 
     TopAppBar(
-        backgroundColor = Yellow400,
+        backgroundColor = BackgroundColor,
         title = {
             Row(
                 modifier = Modifier.fillMaxWidth(),

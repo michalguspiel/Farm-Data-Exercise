@@ -18,6 +18,10 @@ object Format {
         return date.atStartOfDay().atOffset(ZoneOffset.UTC).format(desiredFormat)
     }
 
+    fun formatTemperature(value: String): String {
+        return "$value \u2103"
+    }
+
     fun formatDateToYearMonthDay(string: String): String {
         val desiredFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd")
         val date = OffsetDateTime.parse(string)

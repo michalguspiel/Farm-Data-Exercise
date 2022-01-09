@@ -33,6 +33,10 @@ import com.erdees.farmdataexercise.feature_viewFarmData.domain.util.Format.forma
 import com.erdees.farmdataexercise.feature_viewFarmData.presentation.components.model.CornerStatus
 import com.erdees.farmdataexercise.feature_viewFarmData.presentation.components.model.HorizontalCorner
 import com.erdees.farmdataexercise.feature_viewFarmData.presentation.components.model.VerticalCorner
+import com.erdees.farmdataexercise.ui.theme.Green200
+import com.erdees.farmdataexercise.ui.theme.Green400
+import com.erdees.farmdataexercise.ui.theme.Green500
+import com.erdees.farmdataexercise.ui.theme.Yellow300
 import com.madrapps.plot.line.DataPoint
 import com.madrapps.plot.line.LineGraph
 import com.madrapps.plot.line.LinePlot
@@ -91,10 +95,10 @@ fun CustomDetailedLineGraph(
                     listOf(
                         LinePlot.Line(
                             listTransformedIntoRatios,
-                            LinePlot.Connection(color = Color.Blue),
+                            LinePlot.Connection(color = Green500),
                             LinePlot.Intersection(
-                                color = Color.Blue,
-                                radius = 1.dp,
+                                color = Green400,
+                                radius = 2.dp,
                                 alpha = 0.8f
                             ),
                             LinePlot.Highlight { center ->
@@ -102,9 +106,9 @@ fun CustomDetailedLineGraph(
                                 val color = Color.Gray
                                 drawCircle(color, 9.dp.toPx(), center, alpha = 0.3f)
                                 drawCircle(color, 6.dp.toPx(), center)
-                                drawCircle(Color.DarkGray, 3.dp.toPx(), center)
+                                drawCircle(Green500, 3.dp.toPx(), center)
                             },
-                            LinePlot.AreaUnderLine(color = Color(0xFF4747FF))
+                            LinePlot.AreaUnderLine(color = Yellow300)
                         )
                     ),
                     horizontalExtraSpace = 0.dp,
@@ -242,7 +246,7 @@ private fun DataRow(value: Float) {
     ) {
         Row(modifier = Modifier.align(Alignment.CenterStart)) {
             Image(
-                painter = ColorPainter(Color.Blue),
+                painter = ColorPainter(Green200),
                 contentDescription = "Data decoration circle",
                 modifier = Modifier
                     .align(CenterVertically)
@@ -330,10 +334,10 @@ fun CustomPreviewLineGraph(
                         lines,
                         lastVisiblePointForScreenWidth(totalWidthOfChart.value)
                     ),
-                    LinePlot.Connection(color = Color.Blue),
-                    LinePlot.Intersection(color = Color.Blue, radius = 1.dp, alpha = 0.8f),
-                    LinePlot.Highlight(color = Color.Blue),
-                    LinePlot.AreaUnderLine(color = Color(0xFF4747FF))
+                    LinePlot.Connection(color = Green500),
+                    LinePlot.Intersection(color = Green500, radius = 1.dp, alpha = 0.8f),
+                    LinePlot.Highlight(color = Green500),
+                    LinePlot.AreaUnderLine(color = Yellow300)
                 )
             ), horizontalExtraSpace = 0.dp, isZoomAllowed = false,
             selection = LinePlot.Selection(enabled = false),

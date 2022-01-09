@@ -31,6 +31,11 @@ class FarmDataScreenViewModel @Inject constructor(
 
     var openDialogState = mutableStateOf(false)
 
+    var isGraphShown = mutableStateOf(true)
+
+    fun graphStateChanged(){
+        isGraphShown.value = isGraphShown.value.not()
+    }
 
     fun getFarmData() {
         viewModelScope.launch {

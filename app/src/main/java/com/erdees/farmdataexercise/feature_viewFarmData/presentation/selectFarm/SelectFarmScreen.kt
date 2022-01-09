@@ -20,7 +20,6 @@ import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -51,11 +50,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-
-/**
- * TODO : MAKE LAYOUT, MAP NEEDS TO BE INSIDE MAIN LAYOUT OF THIS SCREEN
- * TODO : SEARCH BAR
- * */
 @ExperimentalAnimationApi
 @Composable
 fun SelectFarmScreen(
@@ -66,8 +60,6 @@ fun SelectFarmScreen(
     var isMapCentered = remember {
         false
     }
-
-    val density = LocalDensity.current
 
     val mapView = rememberMapViewWithLifecycle()
     viewModel.getLocalFarmsInformation()
@@ -181,7 +173,7 @@ fun BottomCard(
                 Screen.SelectFarmDataScreen.route +
                         "?$LOCATION_DOC_ID=${farmInformation?.docId}&$LOCATION_NAME=${farmInformation?.locationName}&$FARM_IMAGE_URL=${farmInformation?.farmImageUrl}"
             )}, text = "Select farm")
-                Spacer(Modifier.height(2.dp))
+                Spacer(Modifier.height(6.dp))
         }
     }
 }

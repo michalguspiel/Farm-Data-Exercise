@@ -1,6 +1,7 @@
 package com.erdees.farmdataexercise
 
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -26,6 +27,7 @@ import com.erdees.farmdataexercise.feature_viewFarmData.presentation.selectFarmD
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 
+@ExperimentalMaterialApi
 @ExperimentalAnimationApi
 @ExperimentalCoroutinesApi
 @InternalCoroutinesApi

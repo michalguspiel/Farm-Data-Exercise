@@ -1,30 +1,17 @@
 package com.erdees.farmdataexercise.feature_viewFarmData.presentation.components
 
-import android.util.Log
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.runtime.saveable.rememberSaveable
-import io.github.boguszpawlowski.composecalendar.Calendar
 import io.github.boguszpawlowski.composecalendar.CalendarState
-import io.github.boguszpawlowski.composecalendar.header.DefaultMonthHeader
 import io.github.boguszpawlowski.composecalendar.header.MonthState
 import io.github.boguszpawlowski.composecalendar.selection.DynamicSelectionHandler
-import io.github.boguszpawlowski.composecalendar.selection.DynamicSelectionState
 import io.github.boguszpawlowski.composecalendar.selection.SelectionMode
 import io.github.boguszpawlowski.composecalendar.selection.SelectionState
 import java.time.LocalDate
 import java.time.YearMonth
 
-
-@Composable
-fun CustomCalendar() {
-    Calendar(
-        calendarState = rememberSelectionState(),
-        monthHeader = { CalendarHeader(it) },
-    )
-}
 
 class CustomSelectionState(
     private val onSelectionChanged: (List<LocalDate>) -> Unit,
@@ -68,8 +55,8 @@ class CustomSelectionState(
         @Suppress("FunctionName") // Factory function
         fun Saver(onSelectionChanged: (List<LocalDate>) -> Unit): Saver<CustomSelectionState, Any> =
             listSaver(
-                save = {
-                    listOf(it.selectionMode, it.selection.map { it.toString() })
+                save = { saverScope ->
+                    listOf(saverScope.selectionMode, saverScope.selection.map { it.toString() })
                 },
                 restore = { restored ->
                     CustomSelectionState(
@@ -101,7 +88,3 @@ fun rememberSelectionState(
         CustomSelectionState(onSelectionChanged, initialSelection, initialSelectionMode)
     },
 ): CalendarState<CustomSelectionState> = remember { CalendarState(monthState, selectionState) }
-
-
-private val LocalDate.yearMonth: YearMonth
-    get() = YearMonth.of(year, month)

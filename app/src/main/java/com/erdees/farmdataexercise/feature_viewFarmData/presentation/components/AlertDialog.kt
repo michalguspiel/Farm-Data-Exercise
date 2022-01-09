@@ -53,9 +53,8 @@ fun AlertDialog(viewModel: SelectFarmDataViewModel = hiltViewModel()) {
                         firebaseDocumentsList = Constants.SENSOR_LIST.map { it.firebaseName },
                         spinnerItemsList = Constants.SENSOR_LIST.map { it.presentationName },
                         modifier = Modifier.padding(horizontal = 40.dp),
-                        Color.Gray,
-                        Color.LightGray
-
+                        firstColor = Color.Yellow,
+                        dropDownMenuColor = Color.LightGray
                     )
                     //DisposableEffect(Unit) {
                   //      focusRequester.requestFocus()

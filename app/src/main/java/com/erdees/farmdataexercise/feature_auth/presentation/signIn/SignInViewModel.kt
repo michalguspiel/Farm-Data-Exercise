@@ -21,6 +21,11 @@ class SignInViewModel @Inject constructor(
     private val _signInState = mutableStateOf<Response<Boolean>>(Response.Success(false))
     val signInState: State<Response<Boolean>> = _signInState
 
+
+    fun resetSignInState(){
+        _signInState.value = Response.Success(false)
+    }
+
     fun signInWithEmail(email: String, password: String){
         viewModelScope.launch{
             useCases.signInWithEmail(email,password).collect{ response ->

@@ -23,6 +23,11 @@ class SignUpViewModel @Inject constructor(
     private val _signUpState = mutableStateOf<Response<Boolean>>(Response.Success(false))
     val signUpState: State<Response<Boolean>> = _signUpState
 
+    fun resetSignUpState(){
+        _signUpState.value = Response.Success(false)
+    }
+
+
     fun startSigningUpWithEmail(
         password: String,
         confirmPassword: String,

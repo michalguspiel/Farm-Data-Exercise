@@ -2,13 +2,12 @@ package com.erdees.farmdataexercise.feature_auth.presentation.signUp.components
 
 import android.util.Log
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
@@ -16,6 +15,7 @@ import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material.icons.outlined.MailOutline
+import androidx.compose.material.icons.outlined.Person
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -67,7 +67,10 @@ fun SignUpContent(
         modifier = Modifier
             .fillMaxSize()
             .background(color = BackgroundColor)
-            .padding(12.dp),
+            .padding(12.dp)
+            .verticalScroll(
+                rememberScrollState()
+            ),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(Modifier.padding(24.dp))
@@ -92,39 +95,50 @@ fun SignUpContent(
             singleLine = true
         )
         Spacer(Modifier.padding(12.dp))
-        TextField(
-            value = password, onValueChange = { password = it },
-            leadingIcon = { Icon(Icons.Outlined.Lock, "Email icon", tint = OnPrimary) },
-            textStyle = Typography.body2,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-            visualTransformation = PasswordVisualTransformation(),
-            shape = RoundedCornerShape(8.dp),
-            colors = TextFieldDefaults.textFieldColors(
-                textColor = OnPrimaryLightest,
-                backgroundColor = Yellow300
-            ), placeholder = { Text(text = "Enter your password") },
-            singleLine = true
-        )
+        Column(Modifier.width(IntrinsicSize.Min)) {
+            TextField(
+                value = password, onValueChange = { password = it },
+                leadingIcon = { Icon(Icons.Outlined.Lock, "Lock icon", tint = OnPrimary) },
+                textStyle = Typography.body2,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                visualTransformation = PasswordVisualTransformation(),
+                shape = RoundedCornerShape(8.dp),
+                colors = TextFieldDefaults.textFieldColors(
+                    textColor = OnPrimaryLightest,
+                    backgroundColor = Yellow300
+                ), placeholder = { Text(text = "Enter your password") },
+                singleLine = true
+            )
+            Text(
+                text = "Make sure your password is longer than 7 characters and contains at least one digit.",
+                style = Typography.caption,
+                modifier = Modifier.padding(horizontal = 2.dp)
+            )
+        }
         Spacer(Modifier.padding(12.dp))
-        TextField(
-            value = confirmPassword, onValueChange = { confirmPassword = it },
-            leadingIcon = { Icon(Icons.Outlined.Lock, "Email icon", tint = OnPrimary) },
-            visualTransformation = PasswordVisualTransformation(),
-            textStyle = Typography.body2,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-            shape = RoundedCornerShape(8.dp),
-            colors = TextFieldDefaults.textFieldColors(
-                textColor = OnPrimaryLightest,
-                backgroundColor = Yellow300
-            ), placeholder = { Text(text = "Confirm your password") },
-            singleLine = true
-        )
+        Column() {
+            TextField(
+                value = confirmPassword, onValueChange = { confirmPassword = it },
+                leadingIcon = { Icon(Icons.Outlined.Lock, "Lock icon", tint = OnPrimary) },
+                visualTransformation = PasswordVisualTransformation(),
+                textStyle = Typography.body2,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                shape = RoundedCornerShape(8.dp),
+                colors = TextFieldDefaults.textFieldColors(
+                    textColor = OnPrimaryLightest,
+                    backgroundColor = Yellow300
+                ), placeholder = { Text(text = "Confirm your password") },
+                singleLine = true
+            )
+            Text(text = "Make sure passwords are the same", style = Typography.caption,
+                modifier = Modifier.padding(horizontal = 2.dp))
+        }
         Spacer(Modifier.padding(12.dp))
         TextField(
             value = firstName, onValueChange = { firstName = it },
-            leadingIcon = { },
+            leadingIcon = { Icon(Icons.Outlined.Person, "Person icon", tint = OnPrimary) },
             textStyle = Typography.body2,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
             shape = RoundedCornerShape(8.dp),
             colors = TextFieldDefaults.textFieldColors(
                 textColor = OnPrimaryLightest,
@@ -135,9 +149,9 @@ fun SignUpContent(
         Spacer(Modifier.padding(12.dp))
         TextField(
             value = lastName, onValueChange = { lastName = it },
-            leadingIcon = { },
+            leadingIcon = { Icon(Icons.Outlined.Person, "Person icon", tint = OnPrimary) },
             textStyle = Typography.body2,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
             shape = RoundedCornerShape(8.dp),
             colors = TextFieldDefaults.textFieldColors(
                 textColor = OnPrimaryLightest,
@@ -155,8 +169,8 @@ fun SignUpContent(
                 lastName
             )
         }, text = "Sign up")
-        Spacer(modifier = Modifier.padding(4.dp))
-        ClickableText(text = annotatedString, onClick = { offset ->
+        Spacer(modifier = Modifier.padding(8.dp))
+        ClickableText(text = annotatedString, style = Typography.body1, onClick = { offset ->
             annotatedString.getStringAnnotations("sign_in", start = offset, end = offset)
                 .firstOrNull().let {
                     navController.navigate(Screen.SignInScreen.route)
@@ -165,3 +179,4 @@ fun SignUpContent(
         })
     }
 }
+
