@@ -9,7 +9,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
+import androidx.compose.material.Icon
+import androidx.compose.material.Text
+import androidx.compose.material.TextField
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material.icons.outlined.MailOutline
@@ -19,7 +22,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
@@ -27,12 +29,16 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.erdees.farmdataexercise.coreUtils.components.MyButton
 import com.erdees.farmdataexercise.coreUtils.utils.Screen
 import com.erdees.farmdataexercise.feature_auth.presentation.signUp.SignUpViewModel
 import com.erdees.farmdataexercise.ui.theme.*
 
 @Composable
-fun SignUpContent(signUpViewModel: SignUpViewModel = hiltViewModel(), navController: NavController) {
+fun SignUpContent(
+    signUpViewModel: SignUpViewModel = hiltViewModel(),
+    navController: NavController
+) {
 
     val annotatedString = buildAnnotatedString {
         append("Got an account? ")
@@ -140,30 +146,15 @@ fun SignUpContent(signUpViewModel: SignUpViewModel = hiltViewModel(), navControl
             singleLine = true
         )
         Spacer(Modifier.padding(12.dp))
-        Button(
-            onClick = {
-                signUpViewModel.startSigningUpWithEmail(
-                    password,
-                    confirmPassword,
-                    email,
-                    firstName,
-                    lastName
-                )
-            },
-            colors = ButtonDefaults.buttonColors(backgroundColor = Yellow100),
-            elevation = ButtonDefaults.elevation(
-                defaultElevation = 10.dp,
-                pressedElevation = 16.dp,
-                disabledElevation = 0.dp
-            ),
-            shape = RoundedCornerShape(4.dp)
-        ) {
-            Text(
-                text = "Sign up",
-                modifier = Modifier.padding(horizontal = 14.dp, vertical = 4.dp),
-                fontWeight = FontWeight.W500
+        MyButton(onClick = {
+            signUpViewModel.startSigningUpWithEmail(
+                password,
+                confirmPassword,
+                email,
+                firstName,
+                lastName
             )
-        }
+        }, text = "Sign up")
         Spacer(modifier = Modifier.padding(4.dp))
         ClickableText(text = annotatedString, onClick = { offset ->
             annotatedString.getStringAnnotations("sign_in", start = offset, end = offset)

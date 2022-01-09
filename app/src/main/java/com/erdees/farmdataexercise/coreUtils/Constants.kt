@@ -6,25 +6,23 @@ import com.erdees.farmdataexercise.feature_viewFarmData.domain.model.Temperature
 
 object Constants {
     //FIRESTORE FARM DATA
-    const val LOCATION = "location"
+    const val LOCATION_DOC_ID = "locationDocId"
     const val LOCATION_NAME = "locationName"
+    const val FARM_IMAGE_URL = "farmImageUrl"
     const val DATETIME = "datetime"
     const val SENSOR_TYPE = "sensorType"
     const val SENSOR_NAME = "sensorTypeName"
-    const val VALUE = "value"
     const val RANGE_FIRST = "rangeFirst"
     const val RANGE_SECOND = "rangeSecond"
 
 
-    const val FARM_DATA = "farm_data"
+    const val FARM_DEFAULT_IMAGE = "https://images.pexels.com/photos/1108807/pexels-photo-1108807.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260"
+
     const val DATA = "data"
 
     const val NOORA_FARM = "Nooras_farm"
-    const val OSSI_FARM = "ossi_farm"
 
     val SENSOR_LIST = listOf(Temperature(),PH(),Rainfall())
-    val FARM_LIST = listOf(NOORA_FARM, OSSI_FARM) // SO FAR IN HERE, LATER DOWNLOADED FROM THE SERVER AND SAVED IN SHARED PREF
-
 
     //MESSAGES
     const val ERROR_MESSAGE = "Error"

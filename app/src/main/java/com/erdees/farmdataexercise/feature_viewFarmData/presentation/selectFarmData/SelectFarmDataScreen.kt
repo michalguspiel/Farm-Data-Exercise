@@ -1,5 +1,6 @@
 package com.erdees.farmdataexercise.feature_viewFarmData.presentation.selectFarmData
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -11,17 +12,23 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import coil.compose.rememberImagePainter
 import com.erdees.farmdataexercise.R
 import com.erdees.farmdataexercise.coreUtils.Constants
+import com.erdees.farmdataexercise.coreUtils.Constants.FARM_IMAGE_URL
+import com.erdees.farmdataexercise.coreUtils.Constants.LOCATION_NAME
+import com.erdees.farmdataexercise.coreUtils.components.MyButton
 import com.erdees.farmdataexercise.coreUtils.components.MyTopAppBar
 import com.erdees.farmdataexercise.coreUtils.utils.Screen
 import com.erdees.farmdataexercise.feature_viewFarmData.domain.util.Format.formatDate
 import com.erdees.farmdataexercise.feature_viewFarmData.presentation.components.*
 import com.erdees.farmdataexercise.model.Response
+import com.erdees.farmdataexercise.ui.theme.Typography
 import io.github.boguszpawlowski.composecalendar.Calendar
 import io.github.boguszpawlowski.composecalendar.selection.SelectionMode
 import kotlinx.coroutines.InternalCoroutinesApi
@@ -33,14 +40,6 @@ fun SelectFarmDataScreen(
     viewModel: SelectFarmDataViewModel = hiltViewModel(),
     navController: NavController
 ) {
-
-    var chosenFarmDocument by remember {
-        mutableStateOf("")
-    }
-
-    var chosenFarmName by remember {
-        mutableStateOf("")
-    }
 
     var sensorTypeDocument by remember {
         mutableStateOf("")
@@ -90,26 +89,21 @@ fun SelectFarmDataScreen(
                 .fillMaxSize()
                 .verticalScroll(
                     rememberScrollState()
-                )
-            ,
+                ),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(modifier = Modifier.height(20.dp))
-            Text(text = stringResource(R.string.choose_farm), fontSize = 26.sp)
-            Spacer(modifier = Modifier.height(20.dp))
-            Spinner(
-                onValueChange = { farmDocument, farmName ->
-                    chosenFarmDocument = farmDocument
-                    chosenFarmName = farmName
-                },
-                textToPresent = stringResource(id = R.string.choose_farm),
-                firebaseDocumentsList = Constants.FARM_LIST,
-                spinnerItemsList = Constants.FARM_LIST,
-                modifier = Modifier.padding(horizontal = 40.dp),
-                Color.Gray,
-                Color.LightGray
+            Text(
+                text = viewModel.savedStateHandle.get<String>(LOCATION_NAME).toString(),
+                style = Typography.h4, textAlign = TextAlign.Center
             )
-            Spacer(modifier = Modifier.height(40.dp))
+            Image(
+                rememberImagePainter(
+                    data = viewModel.savedStateHandle.get<String>(FARM_IMAGE_URL).toString()
+                ),
+                contentDescription = "Farm picture",
+                Modifier.size(height = 128.dp, width = 256.dp)
+            )
             Text(text = stringResource(R.string.choose_time_range), fontSize = 20.sp)
             Calendar(modifier = Modifier.padding(horizontal = 30.dp),
                 calendarState = rememberSelectionState(
@@ -119,8 +113,10 @@ fun SelectFarmDataScreen(
                     }, selectionMode = SelectionMode.Period, selection = timeRange)
                 ),
                 monthHeader = { CalendarHeader(it) })
+            Spacer(modifier = Modifier.height(26.dp))
+
             Text(text = stringResource(R.string.choose_metric), fontSize = 20.sp)
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(12.dp))
             Spinner(
                 onValueChange = { sensorDocument, sensorName ->
                     sensorTypeDocument = sensorDocument
@@ -134,12 +130,14 @@ fun SelectFarmDataScreen(
                 Color.LightGray
             )
             Spacer(modifier = Modifier.height(20.dp))
-            Button(
+            MyButton(
                 onClick = {
                     navController.navigate(
                         Screen.FarmDataScreen.withArgs(
-                            chosenFarmDocument,
-                            chosenFarmName,
+                            viewModel.savedStateHandle.get<String>(Constants.LOCATION_DOC_ID)
+                                .toString(),
+                            viewModel.savedStateHandle.get<String>(LOCATION_NAME)
+                                .toString(),
                             sensorTypeDocument,
                             formatDate(timeRange.first()),
                             formatDate(timeRange[1]),
@@ -147,10 +145,11 @@ fun SelectFarmDataScreen(
                         )
                     )
                 },
-                enabled = !(chosenFarmDocument == "" || sensorTypeDocument == "" || timeRange.isEmpty())
-            ) {
-                Text(text = stringResource(R.string.show_data))
-            }
+                enabled = !(sensorTypeDocument == "" || timeRange.isEmpty()),
+                text = stringResource(R.string.show_data)
+            )
+            Spacer(modifier = Modifier.height(20.dp))
+
 
         }
     }

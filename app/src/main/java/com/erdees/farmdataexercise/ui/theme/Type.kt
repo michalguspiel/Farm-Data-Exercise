@@ -29,6 +29,10 @@ val Typography = Typography(
         fontWeight = FontWeight.W400,
         fontSize = 36.sp,
         letterSpacing = (-0.10).sp
+    ),h5 = TextStyle(
+        fontWeight = FontWeight.W400,
+        fontSize = 30.sp,
+        letterSpacing = (-0.05).sp
     )
 
 /* Other default text styles to override

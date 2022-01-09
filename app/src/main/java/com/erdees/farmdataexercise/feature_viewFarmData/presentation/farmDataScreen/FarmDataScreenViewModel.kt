@@ -8,7 +8,9 @@ import androidx.lifecycle.viewModelScope
 import com.erdees.farmdataexercise.coreUtils.Constants
 import com.erdees.farmdataexercise.feature_viewFarmData.domain.model.FarmData
 import com.erdees.farmdataexercise.feature_viewFarmData.domain.use_case.UseCases
+import com.erdees.farmdataexercise.feature_viewFarmData.domain.util.Format
 import com.erdees.farmdataexercise.model.Response
+import com.madrapps.plot.line.DataPoint
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -33,13 +35,29 @@ class FarmDataScreenViewModel @Inject constructor(
     fun getFarmData() {
         viewModelScope.launch {
             useCases.getFarmData.invoke(
-                savedStateHandle.get<String>(Constants.LOCATION).toString(),
+                savedStateHandle.get<String>(Constants.LOCATION_DOC_ID).toString(),
                 savedStateHandle.get<String>(Constants.SENSOR_TYPE).toString(),
                 savedStateHandle.get<String>(Constants.RANGE_FIRST).toString(),
                 savedStateHandle.get<String>(Constants.RANGE_SECOND).toString(),
             ).collect { response ->
                 _farmDataState.value = response
             }
+        }
+    }
+
+    fun getLines():List<DataPoint>{
+        return when(val farmDataState = farmDataState.value){
+            is Response.Success -> farmDataState.data.map {
+                DataPoint(
+                    Format.formatToSeconds(
+                        farmDataState.data[farmDataState.data.indexOf(
+                            it
+                        )].datetime
+                    ).toFloat(),
+                    it.value.toFloat()
+                )
+            }
+            else -> listOf()
         }
     }
 

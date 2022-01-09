@@ -18,10 +18,11 @@ import com.google.android.libraries.maps.model.Marker
 
 /**This is adapter which sets how the farm information window should be displayed on the map.
  * Although whole project is made with Jetpack compose, this works on views since GoogleMaps SDK is not compatible with Jetpack compose.*/
-class WindowAdapter(private val layoutInflater: LayoutInflater, val context: Context) :
+class WindowAdapter(val context: Context) :
 
     GoogleMap.InfoWindowAdapter {
     var drawable: Drawable? = null
+
 
     override fun getInfoWindow(p0: Marker): View? {
         return null
@@ -29,7 +30,7 @@ class WindowAdapter(private val layoutInflater: LayoutInflater, val context: Con
 
     @SuppressLint("InflateParams")
     override fun getInfoContents(marker: Marker): View? {
-        val view = layoutInflater.inflate(R.layout.popup_window, null)
+        val view = LayoutInflater.from(context).inflate(R.layout.popup_window, null)
 
         val title = view.findViewById<TextView>(R.id.title)
         val image = view.findViewById<ImageView>(R.id.farm_pic)
@@ -39,25 +40,20 @@ class WindowAdapter(private val layoutInflater: LayoutInflater, val context: Con
         if (drawable != null) {
             image.setImageDrawable(drawable)
         }
-
         val imageLoader = ImageLoader.Builder(context).build()
 
         val request = ImageRequest.Builder(context).data(marker.snippet).allowHardware(false).target(
-
             onSuccess = { result ->
                 Log.i("TAG", "success $result")
                 drawable = result
-                marker.hideInfoWindow()
                 marker.showInfoWindow()
             },
             onError = { error ->
                 Log.i("TAG", "error no picture" + error.toString())
                 drawable = AppCompatResources.getDrawable(context,R.drawable.ic_baseline_house_24)
-                marker.hideInfoWindow()
-                marker.showInfoWindow()
+                image.setImageDrawable(drawable)
             }
         )
-            .transformations()
             .build()
         if (drawable == null) imageLoader.enqueue(request)
         return view

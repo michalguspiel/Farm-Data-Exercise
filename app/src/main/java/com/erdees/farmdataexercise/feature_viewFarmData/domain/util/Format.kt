@@ -13,12 +13,18 @@ object Format {
         return dateTime.format(desiredFormat)
     }
 
-    fun formatDate(date: LocalDate) : String{
+    fun formatDate(date: LocalDate): String {
         val desiredFormat = DateTimeFormatter.ofPattern("uuuu-MM-dd'T'HH:mm:ssX")
         return date.atStartOfDay().atOffset(ZoneOffset.UTC).format(desiredFormat)
     }
 
-    fun formatToSeconds(string: String) :Long {
+    fun formatDateToYearMonthDay(string: String): String {
+        val desiredFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        val date = OffsetDateTime.parse(string)
+        return date.format(desiredFormat)
+    }
+
+    fun formatToSeconds(string: String): Long {
         val date = OffsetDateTime.parse(string)
         return date.toEpochSecond()
     }

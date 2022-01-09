@@ -25,17 +25,12 @@ class SelectFarmDataViewModel @Inject constructor(
     private val _isFarmDataAddedState = mutableStateOf<Response<Void?>>(Response.Empty(null))
     val isFarmDataAddedState: State<Response<Void?>> = _isFarmDataAddedState
 
-
-
-
     var openDialogState = mutableStateOf(false)
-
-
 
     fun getFarmData() {
         viewModelScope.launch {
             useCases.getFarmData.invoke(
-                savedStateHandle.get<String>(Constants.LOCATION).toString(),
+                savedStateHandle.get<String>(Constants.LOCATION_DOC_ID).toString(),
                 savedStateHandle.get<String>(Constants.SENSOR_TYPE).toString(),
                 savedStateHandle.get<String>(Constants.RANGE_FIRST).toString(),
                 savedStateHandle.get<String>(Constants.RANGE_SECOND).toString(),

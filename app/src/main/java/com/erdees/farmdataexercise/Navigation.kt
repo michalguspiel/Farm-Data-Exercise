@@ -1,12 +1,15 @@
 package com.erdees.farmdataexercise
 
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.erdees.farmdataexercise.coreUtils.Constants.LOCATION
+import com.erdees.farmdataexercise.coreUtils.Constants.FARM_DEFAULT_IMAGE
+import com.erdees.farmdataexercise.coreUtils.Constants.FARM_IMAGE_URL
+import com.erdees.farmdataexercise.coreUtils.Constants.LOCATION_DOC_ID
 import com.erdees.farmdataexercise.coreUtils.Constants.LOCATION_NAME
 import com.erdees.farmdataexercise.coreUtils.Constants.RANGE_FIRST
 import com.erdees.farmdataexercise.coreUtils.Constants.RANGE_SECOND
@@ -23,6 +26,7 @@ import com.erdees.farmdataexercise.feature_viewFarmData.presentation.selectFarmD
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 
+@ExperimentalAnimationApi
 @ExperimentalCoroutinesApi
 @InternalCoroutinesApi
 @Composable
@@ -38,14 +42,27 @@ fun Navigation() {
         composable(route = Screen.SignInScreen.route){
             SignInScreen(navController = navController)
         }
-        composable(route = Screen.SelectFarmDataScreen.route) {
+        composable(route = Screen.SelectFarmDataScreen.route + "?$LOCATION_DOC_ID={$LOCATION_DOC_ID}&$LOCATION_NAME={$LOCATION_NAME}&$FARM_IMAGE_URL={$FARM_IMAGE_URL}",arguments = listOf(
+            navArgument(LOCATION_DOC_ID){
+                type = NavType.StringType
+                nullable = true
+            },
+            navArgument(LOCATION_NAME){
+                type = NavType.StringType
+                nullable = true
+            },
+            navArgument("argName"){
+                type = NavType.StringType
+                defaultValue = FARM_DEFAULT_IMAGE
+            }
+        )) {
             SelectFarmDataScreen(navController = navController)
         }
         composable(route = Screen.ProfileScreen.route){
             ProfileScreen(navController = navController)
         }
-        composable(route = Screen.FarmDataScreen.route + "/{$LOCATION}/{$LOCATION_NAME}/{$SENSOR_TYPE}/{$RANGE_FIRST}/{$RANGE_SECOND}/{$SENSOR_NAME}", arguments = listOf(
-            navArgument(LOCATION) {
+        composable(route = Screen.FarmDataScreen.route + "/{$LOCATION_DOC_ID}/{$LOCATION_NAME}/{$SENSOR_TYPE}/{$RANGE_FIRST}/{$RANGE_SECOND}/{$SENSOR_NAME}", arguments = listOf(
+            navArgument(LOCATION_DOC_ID) {
                 type = NavType.StringType
                 nullable = false
             },navArgument(LOCATION_NAME) {
@@ -64,7 +81,7 @@ fun Navigation() {
             type = NavType.StringType
             nullable = false
         })
-        ) { entry ->
+        ) {
             FarmDataScreen(navController = navController)
         }
         composable(route = Screen.DetailedFarmDataGraphScreen.route + "/{$LOCATION_NAME}/{$SENSOR_NAME}", arguments = listOf(
@@ -76,6 +93,6 @@ fun Navigation() {
                 nullable = false
             }
         )
-        ){entry -> DetailedFarmDataGraphScreen() }
+        ){DetailedFarmDataGraphScreen() }
     }
 }
