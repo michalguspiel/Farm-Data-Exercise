@@ -1,6 +1,11 @@
 package com.erdees.farmdataexercise.feature_viewFarmData.presentation.farmDataScreen
 
 
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -41,6 +46,7 @@ import com.erdees.farmdataexercise.ui.theme.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 
+@ExperimentalAnimationApi
 @ExperimentalMaterialApi
 @Composable
 @InternalCoroutinesApi
@@ -57,7 +63,7 @@ fun FarmDataScreen(
     val sensorType = viewModel.savedStateHandle.get<String>(SENSOR_NAME).toString()
 
 
-    Scaffold{
+    Scaffold {
         when (val farmDataResponse = viewModel.farmDataState.value) {
             is Response.Loading -> ProgressBar()
             is Response.Success -> Column(
@@ -91,9 +97,10 @@ fun FarmDataScreen(
                             Text(
                                 text = if (viewModel.isGraphShown.value) stringResource(R.string.hide_graph) else stringResource(
                                     R.string.show_graph
-                                ),textAlign = TextAlign.Center,
+                                ), textAlign = TextAlign.Center,
                                 modifier = Modifier
-                                    .padding(horizontal = 8.dp, vertical = 2.dp).width(120.dp),
+                                    .padding(horizontal = 8.dp, vertical = 2.dp)
+                                    .width(120.dp),
                                 style = Typography.h6
                             )
                             Icon(
@@ -105,7 +112,24 @@ fun FarmDataScreen(
                         }
                     }
 
-                    if (viewModel.isGraphShown.value) {
+                    androidx.compose.animation.AnimatedVisibility(
+                        viewModel.isGraphShown.value,
+                        modifier = Modifier,
+                        enter = expandVertically(
+                            expandFrom = Alignment.Top,
+                            animationSpec = spring(
+                                stiffness = Spring.StiffnessMedium,
+                                dampingRatio = Spring.DampingRatioLowBouncy
+                            ),
+                        ),
+                        exit = shrinkVertically(
+                            shrinkTowards = Alignment.Top,
+                            animationSpec = spring(
+                                stiffness = Spring.StiffnessMedium,
+                                dampingRatio = Spring.DampingRatioMediumBouncy
+                            )
+                        )
+                    ) {
                         Box(modifier = Modifier.clickable(onClick = {
                             viewModel.saveTemporaryFarmData(farmDataResponse.data)
                             navController.navigate(
