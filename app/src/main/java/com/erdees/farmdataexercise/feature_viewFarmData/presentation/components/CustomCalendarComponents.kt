@@ -10,12 +10,13 @@ import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester.Companion.createRefs
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.constraintlayout.widget.ConstraintLayout
+import com.erdees.farmdataexercise.R
+import com.erdees.farmdataexercise.ui.theme.LocalSpacing
 import io.github.boguszpawlowski.composecalendar.header.MonthState
 
 @Composable
@@ -24,18 +25,22 @@ fun CalendarHeader (
     modifier: Modifier = Modifier,
 ) {
     ConstraintLayout(
-        modifier = modifier.fillMaxWidth().padding(horizontal = 12.dp),
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = LocalSpacing.current.medium),
     ) {
         val (leftArrow, rightArrow, text) = createRefs()
         IconButton(
-            modifier = Modifier.testTag("Decrement").constrainAs(leftArrow){start.linkTo(parent.start)},
+            modifier = Modifier
+                .testTag("Decrement")
+                .constrainAs(leftArrow) { start.linkTo(parent.start) },
             onClick = { monthState.currentMonth = monthState.currentMonth.minusMonths(1)
                 }
         ) {
             Image(
                 imageVector = Icons.Default.KeyboardArrowLeft,
                 colorFilter = ColorFilter.tint(MaterialTheme.colors.onSurface),
-                contentDescription = "Previous",
+                contentDescription = stringResource(id = R.string.previous),
             )
         }
         Row(modifier = Modifier.constrainAs(text){start.linkTo(leftArrow.end)
@@ -49,13 +54,15 @@ fun CalendarHeader (
         Text(text = monthState.currentMonth.year.toString(), style = MaterialTheme.typography.h5)
         }
         IconButton(
-            modifier = Modifier.testTag("Increment").constrainAs(rightArrow){end.linkTo(parent.end)},
+            modifier = Modifier
+                .testTag("Increment")
+                .constrainAs(rightArrow) { end.linkTo(parent.end) },
             onClick = { monthState.currentMonth = monthState.currentMonth.plusMonths(1) }
         ) {
             Image(
                 imageVector = Icons.Default.KeyboardArrowRight,
                 colorFilter = ColorFilter.tint(MaterialTheme.colors.onSurface),
-                contentDescription = "Next",
+                contentDescription = stringResource(id = R.string.next),
             )
         }
     }

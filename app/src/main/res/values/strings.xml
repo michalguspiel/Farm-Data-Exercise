@@ -6,16 +6,40 @@
     <string name="value">Value</string>
     <string name="add">Add</string>
     <string name="cancel">Cancel</string>
+    <string name="error">Error</string>
     <string name="data_added_successfully">Data added successfully!</string>
     <string name="choose_time_range">Choose time range</string>
     <string name="choose_metric">Choose metric</string>
     <string name="choose_farm">Choose farm</string>
     <string name="show_data">Show data</string>
 
-    <string name="oops_no_data">Ooops... looks like there is no data in that time.</string>
+    <string name="oops_no_data">Ooops… looks like there is no data in that time.</string>
     <string name="back">Back</string>
     <string name="date_time">Date time</string>
     <string name="hide_graph">Hide graph</string>
     <string name="show_graph">Show graph</string>
+
+    <string name="icon">Icon</string>
+    <string name="expand_icon">Expand icon</string>
+    <string name="previous">Previous</string>
+    <string name="next">Next</string>
+    <string name="farm_pic">Farm picture</string>
+
+
+    <string name="got_an_account">Got an account?\u0020</string>
+    <string name="continue_without_acc">Continue without account!</string>
+    <string name="no_account">No account?\u0020</string>
+    <string name="sign_up">Sign up</string>
+    <string name="sign_out">Sign out</string>
+    <string name="sign_up_excl">Sign up!</string>
+    <string name="sign_in">Sign in</string>
+    <string name="sign_in_excl">Sign in!</string>
+    <string name="confirm_password">Confirm your password</string>
+    <string name="enter_password">Enter your password</string>
+    <string name="enter_mail">Enter your email</string>
+    <string name="password_req">Make sure your password is longer than 7 characters and contains at least one digit.</string>
+    <string name="enter_last_name">Enter your last name</string>
+    <string name="enter_first_name">Enter your first name</string>
+    <string name="make_sure_passwords_are_same">Make sure passwords are the same</string>
 
 </resources>

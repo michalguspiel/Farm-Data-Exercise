@@ -8,13 +8,16 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.erdees.farmdataexercise.R
 import com.erdees.farmdataexercise.coreUtils.Constants
 import com.erdees.farmdataexercise.coreUtils.utils.Util.findActivity
 import com.erdees.farmdataexercise.feature_viewFarmData.domain.util.Format
 import com.erdees.farmdataexercise.feature_viewFarmData.presentation.components.CustomDetailedLineGraph
+import com.erdees.farmdataexercise.ui.theme.LocalSpacing
 import com.erdees.farmdataexercise.ui.theme.Typography
 import com.madrapps.plot.line.DataPoint
 
@@ -29,11 +32,11 @@ fun DetailedFarmDataGraphScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(top = 4.dp)
+            .padding(top = LocalSpacing.current.xSmall)
     ) {
         if (temporaryFarmDataList.isEmpty()) {
             Text(
-                text = "Ooops... looks like there is no data in that time.",
+                text = stringResource(id = R.string.oops_no_data),
                 modifier = Modifier.fillMaxSize(),
                 style = Typography.h3
             )

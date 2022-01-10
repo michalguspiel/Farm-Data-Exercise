@@ -1,6 +1,5 @@
 package com.erdees.farmdataexercise.feature_auth.presentation.signIn
 
-import android.util.Log
 import androidx.compose.material.Button
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
@@ -9,9 +8,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.erdees.farmdataexercise.R
+import com.erdees.farmdataexercise.coreUtils.components.ProgressBar
 import com.erdees.farmdataexercise.coreUtils.utils.Screen
 import com.erdees.farmdataexercise.feature_auth.presentation.signIn.components.SignInContent
-import com.erdees.farmdataexercise.feature_viewFarmData.presentation.components.ProgressBar
 import com.erdees.farmdataexercise.model.Response
 
 @Composable
@@ -36,7 +35,7 @@ fun SignInScreen(signInViewModel: SignInViewModel = hiltViewModel(), navControll
                 androidx.compose.material.AlertDialog(onDismissRequest = {
                     openDialogState.value = false
                 },
-                    title = { Text(text = "Error") },
+                    title = { Text(text = stringResource(id = R.string.error)) },
                     text = { Text(text = errorMessageState) },
                     confirmButton = {},
                     dismissButton = {
@@ -65,7 +64,6 @@ fun SignInScreen(signInViewModel: SignInViewModel = hiltViewModel(), navControll
                     errorMessageState = response.message
                     openDialogState.value = true
                     signInViewModel.resetSignInState()
-                    Log.i("sign_in_screen", response.message)
                 }
             }
 

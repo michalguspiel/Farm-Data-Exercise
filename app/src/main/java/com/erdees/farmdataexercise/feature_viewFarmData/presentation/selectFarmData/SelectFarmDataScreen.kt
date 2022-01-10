@@ -27,14 +27,12 @@ import com.erdees.farmdataexercise.coreUtils.Constants.FARM_IMAGE_URL
 import com.erdees.farmdataexercise.coreUtils.Constants.LOCATION_NAME
 import com.erdees.farmdataexercise.coreUtils.components.MyButton
 import com.erdees.farmdataexercise.coreUtils.components.MyTopAppBar
+import com.erdees.farmdataexercise.coreUtils.components.ProgressBar
 import com.erdees.farmdataexercise.coreUtils.utils.Screen
 import com.erdees.farmdataexercise.feature_viewFarmData.domain.util.Format.formatDate
 import com.erdees.farmdataexercise.feature_viewFarmData.presentation.components.*
 import com.erdees.farmdataexercise.model.Response
-import com.erdees.farmdataexercise.ui.theme.BackgroundColor
-import com.erdees.farmdataexercise.ui.theme.Typography
-import com.erdees.farmdataexercise.ui.theme.Yellow100
-import com.erdees.farmdataexercise.ui.theme.Yellow200
+import com.erdees.farmdataexercise.ui.theme.*
 import io.github.boguszpawlowski.composecalendar.Calendar
 import io.github.boguszpawlowski.composecalendar.selection.SelectionMode
 import kotlinx.coroutines.InternalCoroutinesApi
@@ -80,14 +78,14 @@ fun SelectFarmDataScreen(
                 ),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(LocalSpacing.current.large))
             FarmCard(
                 locationName = viewModel.savedStateHandle.get<String>(LOCATION_NAME).toString(),
                 farmImageUrl = viewModel.savedStateHandle.get<String>(FARM_IMAGE_URL).toString()
             )
-            Spacer(Modifier.height(24.dp))
+            Spacer(Modifier.height(LocalSpacing.current.large))
             Text(text = stringResource(R.string.choose_time_range), fontSize = 20.sp)
-            Calendar(modifier = Modifier.padding(horizontal = 30.dp),
+            Calendar(modifier = Modifier.padding(horizontal = (LocalSpacing.current.xLarge)),
                 calendarState = rememberSelectionState(
                     initialSelectionMode = SelectionMode.Period,
                     selectionState = CustomSelectionState({
@@ -95,7 +93,7 @@ fun SelectFarmDataScreen(
                     }, selectionMode = SelectionMode.Period, selection = timeRange)
                 ),
                 monthHeader = { CalendarHeader(it) })
-            Spacer(modifier = Modifier.height(26.dp))
+            Spacer(modifier = Modifier.height(LocalSpacing.current.large))
 
 
             Spinner(
@@ -106,12 +104,15 @@ fun SelectFarmDataScreen(
                 textToPresent = stringResource(id = R.string.choose_metric),
                 firebaseDocumentsList = Constants.SENSOR_LIST.map { it.firebaseName },
                 spinnerItemsList = Constants.SENSOR_LIST.map { it.presentationName },
-                modifier = Modifier.padding(horizontal = 40.dp,vertical = 12.dp),
-                firstColor =Yellow100,
-                 dropDownMenuColor = Yellow200
+                modifier = Modifier.padding(
+                    horizontal = (LocalSpacing.current.xLarge),
+                    vertical = (LocalSpacing.current.default)
+                ),
+                firstColor = Yellow100,
+                dropDownMenuColor = Yellow200
             )
 
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(LocalSpacing.current.large))
             MyButton(
                 onClick = {
                     navController.navigate(
@@ -130,29 +131,18 @@ fun SelectFarmDataScreen(
                 enabled = !(sensorTypeDocument == "" || timeRange.isEmpty()),
                 text = stringResource(R.string.show_data)
             )
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(LocalSpacing.current.large))
         }
     }
-}
-
-@Composable
-fun ChooseMetricCard(spinnerOnValueChange: ((String, String) -> Unit) = { _, _ -> }) {
-    Card(shape = RoundedCornerShape(4), elevation = 8.dp, modifier = Modifier.padding(12.dp)) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.background(BackgroundColor)
-        ) {
-            Spacer(modifier = Modifier.height(12.dp))
-
-
-        }
-    }
-
 }
 
 @Composable
 fun FarmCard(locationName: String, farmImageUrl: String) {
-    Card(shape = RoundedCornerShape(4), elevation = 14.dp, modifier = Modifier.padding(12.dp)) {
+    Card(
+        shape = RoundedCornerShape(LocalCorner.current.default),
+        elevation = LocalElevation.current.large,
+        modifier = Modifier.padding(LocalElevation.current.default)
+    ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.background(BackgroundColor)
@@ -165,10 +155,10 @@ fun FarmCard(locationName: String, farmImageUrl: String) {
                 rememberImagePainter(
                     data = farmImageUrl
                 ),
-                contentDescription = "Farm picture",
+                contentDescription = stringResource(id = R.string.farm_pic),
                 Modifier
                     .size(height = 128.dp, width = 256.dp)
-                    .padding(vertical = 8.dp)
+                    .padding(vertical = (LocalElevation.current.default))
             )
         }
     }

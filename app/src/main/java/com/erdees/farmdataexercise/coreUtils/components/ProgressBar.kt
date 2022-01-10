@@ -1,4 +1,4 @@
-package com.erdees.farmdataexercise.feature_viewFarmData.presentation.components
+package com.erdees.farmdataexercise.coreUtils.components
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize

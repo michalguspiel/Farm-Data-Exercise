@@ -33,10 +33,7 @@ import com.erdees.farmdataexercise.feature_viewFarmData.domain.util.Format.forma
 import com.erdees.farmdataexercise.feature_viewFarmData.presentation.components.model.CornerStatus
 import com.erdees.farmdataexercise.feature_viewFarmData.presentation.components.model.HorizontalCorner
 import com.erdees.farmdataexercise.feature_viewFarmData.presentation.components.model.VerticalCorner
-import com.erdees.farmdataexercise.ui.theme.Green200
-import com.erdees.farmdataexercise.ui.theme.Green400
-import com.erdees.farmdataexercise.ui.theme.Green500
-import com.erdees.farmdataexercise.ui.theme.Yellow300
+import com.erdees.farmdataexercise.ui.theme.*
 import com.madrapps.plot.line.DataPoint
 import com.madrapps.plot.line.LineGraph
 import com.madrapps.plot.line.LinePlot
@@ -61,7 +58,7 @@ fun CustomDetailedLineGraph(
     val totalWidthOfChart = remember { mutableStateOf(0) }
     val totalScreenWidth = remember { mutableStateOf(0) }
 
-    val padding = 16.dp
+    val padding = LocalSpacing.current.medium
 
     Column(Modifier.onGloballyPositioned {
         totalWidthOfChart.value =
@@ -187,42 +184,42 @@ fun CustomDetailedLineGraph(
                     when (cornerStatus.value.cornerStatus()) {
                         CornerStatus.TopEndCorner -> RoundedCornerShape(
                             topEnd = 0.dp,
-                            bottomEnd = DATA_CARD_CORNER_RADIUS,
-                            bottomStart = DATA_CARD_CORNER_RADIUS,
-                            topStart = DATA_CARD_CORNER_RADIUS
+                            bottomEnd =LocalCorner.current.large,
+                            bottomStart = LocalCorner.current.large,
+                            topStart = LocalCorner.current.large
                         )
                         CornerStatus.BottomEndCorner -> RoundedCornerShape(
-                            topEnd = DATA_CARD_CORNER_RADIUS,
+                            topEnd = LocalCorner.current.large,
                             bottomEnd = 0.dp,
-                            bottomStart = DATA_CARD_CORNER_RADIUS,
-                            topStart = DATA_CARD_CORNER_RADIUS
+                            bottomStart = LocalCorner.current.large,
+                            topStart = LocalCorner.current.large
                         )
                         CornerStatus.BottomStartCorner -> RoundedCornerShape(
-                            topEnd = DATA_CARD_CORNER_RADIUS,
-                            bottomEnd = DATA_CARD_CORNER_RADIUS,
+                            topEnd = LocalCorner.current.large,
+                            bottomEnd = LocalCorner.current.large,
                             bottomStart = 0.dp,
-                            topStart = DATA_CARD_CORNER_RADIUS
+                            topStart = LocalCorner.current.large
                         )
                         CornerStatus.TopStartCorner -> RoundedCornerShape(
-                            topEnd = 12.dp,
-                            bottomEnd = 12.dp,
-                            bottomStart = 12.dp,
+                            topEnd = LocalCorner.current.large,
+                            bottomEnd = LocalCorner.current.large,
+                            bottomStart = LocalCorner.current.large,
                             topStart = 0.dp
                         )
-                        else -> RoundedCornerShape(12.dp)
+                        else -> RoundedCornerShape(LocalCorner.current.large)
                     },
                     color = Color.Gray
                 ) {
                     Column(
                         Modifier
-                            .padding(horizontal = 8.dp)
+                            .padding(horizontal = LocalSpacing.current.default)
                     ) {
                         val value = points.value
                         if (value.isNotEmpty()) {
                             val date = dates[listTransformedIntoRatios.indexOf(value[0])]
                             val dateFormatted = formatISO8601String(date)
                             Text(
-                                modifier = Modifier.padding(vertical = 8.dp),
+                                modifier = Modifier.padding(vertical = LocalSpacing.current.default),
                                 text = dateFormatted,
                                 style = MaterialTheme.typography.h6,
                                 color = Color.Black
@@ -242,7 +239,7 @@ private fun DataRow(value: Float) {
     Box(
         Modifier
             .fillMaxWidth()
-            .padding(bottom = 8.dp)
+            .padding(bottom = LocalSpacing.current.default)
     ) {
         Row(modifier = Modifier.align(Alignment.CenterStart)) {
             Image(
@@ -254,7 +251,7 @@ private fun DataRow(value: Float) {
                     .clip(CircleShape)
                     .shadow(2.dp, CircleShape)
             )
-            Spacer(Modifier.padding(1.dp))
+            Spacer(Modifier.padding(LocalSpacing.current.xxSmall))
             Text(
                 text = "Value:",
                 style = MaterialTheme.typography.subtitle1,
@@ -263,7 +260,7 @@ private fun DataRow(value: Float) {
         }
         Text(
             modifier = Modifier
-                .padding(end = 8.dp)
+                .padding(end = LocalSpacing.current.default)
                 .align(Alignment.CenterEnd),
             text = formatted,
             style = MaterialTheme.typography.body1,

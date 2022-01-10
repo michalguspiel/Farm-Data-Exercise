@@ -10,10 +10,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.erdees.farmdataexercise.R
+import com.erdees.farmdataexercise.coreUtils.components.ProgressBar
 import com.erdees.farmdataexercise.coreUtils.utils.Screen
-import com.erdees.farmdataexercise.feature_viewFarmData.presentation.components.ProgressBar
 import com.erdees.farmdataexercise.model.Response
 import kotlinx.coroutines.InternalCoroutinesApi
 
@@ -57,7 +59,7 @@ fun ProfileScreen(
                         Button(onClick = {
                             profileViewModel.signOut()
                         }) {
-                            Text(text = "Sign out!")
+                            Text(text = stringResource(id = R.string.sign_out))
                         }
                     }
                 }

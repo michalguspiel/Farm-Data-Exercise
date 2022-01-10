@@ -9,9 +9,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.erdees.farmdataexercise.R
+import com.erdees.farmdataexercise.coreUtils.components.ProgressBar
 import com.erdees.farmdataexercise.coreUtils.utils.Screen
 import com.erdees.farmdataexercise.feature_auth.presentation.signUp.components.SignUpContent
-import com.erdees.farmdataexercise.feature_viewFarmData.presentation.components.ProgressBar
 import com.erdees.farmdataexercise.model.Response
 
 @Composable

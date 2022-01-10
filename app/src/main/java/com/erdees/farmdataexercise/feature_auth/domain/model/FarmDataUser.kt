@@ -5,5 +5,4 @@ data class FarmDataUser(
     val lastName : String = "",
     val email : String = "",
     val accessedFarms: List<String> = listOf(),
-) {
-}
+)

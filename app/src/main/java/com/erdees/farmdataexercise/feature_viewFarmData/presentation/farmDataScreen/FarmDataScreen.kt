@@ -32,6 +32,7 @@ import com.erdees.farmdataexercise.R
 import com.erdees.farmdataexercise.coreUtils.Constants
 import com.erdees.farmdataexercise.coreUtils.Constants.SENSOR_NAME
 import com.erdees.farmdataexercise.coreUtils.components.MyButton
+import com.erdees.farmdataexercise.coreUtils.components.ProgressBar
 import com.erdees.farmdataexercise.coreUtils.utils.Screen
 import com.erdees.farmdataexercise.feature_viewFarmData.domain.model.FarmData
 import com.erdees.farmdataexercise.feature_viewFarmData.domain.model.Temperature
@@ -39,7 +40,6 @@ import com.erdees.farmdataexercise.feature_viewFarmData.domain.util.Format.forma
 import com.erdees.farmdataexercise.feature_viewFarmData.domain.util.Format.formatISO8601String
 import com.erdees.farmdataexercise.feature_viewFarmData.domain.util.Format.formatTemperature
 import com.erdees.farmdataexercise.feature_viewFarmData.presentation.components.CustomPreviewLineGraph
-import com.erdees.farmdataexercise.feature_viewFarmData.presentation.components.ProgressBar
 import com.erdees.farmdataexercise.feature_viewFarmData.presentation.components.Toast
 import com.erdees.farmdataexercise.model.Response
 import com.erdees.farmdataexercise.ui.theme.*
@@ -85,7 +85,7 @@ fun FarmDataScreen(
                         shape = RectangleShape,
                         modifier = Modifier,
                         onClick = { viewModel.graphStateChanged() },
-                        elevation = 6.dp
+                        elevation = LocalElevation.current.default
                     ) {
                         Row(
                             modifier = Modifier
@@ -99,15 +99,18 @@ fun FarmDataScreen(
                                     R.string.show_graph
                                 ), textAlign = TextAlign.Center,
                                 modifier = Modifier
-                                    .padding(horizontal = 8.dp, vertical = 2.dp)
+                                    .padding(
+                                        horizontal = LocalSpacing.current.default,
+                                        vertical = LocalSpacing.current.xxSmall
+                                    )
                                     .width(120.dp),
                                 style = Typography.h6
                             )
                             Icon(
                                 imageVector = if (viewModel.isGraphShown.value) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
-                                contentDescription = "Expand icon",
+                                contentDescription = stringResource(id = R.string.expand_icon),
                                 modifier = Modifier
-                                    .padding(horizontal = 8.dp, vertical = 2.dp)
+                                    .padding(horizontal = LocalSpacing.current.default, vertical = LocalSpacing.current.xxSmall)
                             )
                         }
                     }
@@ -154,7 +157,7 @@ fun FarmDataScreen(
                     }
                     DataTable(
                         farmDataResponse.data,
-                        modifier = Modifier.padding(horizontal = 16.dp)
+                        modifier = Modifier.padding(horizontal = LocalSpacing.current.medium)
                     )
 
                     Box(
@@ -177,16 +180,16 @@ fun FarmDataScreen(
 
 @Composable
 fun NoDataContent(navController: NavController) {
-    Spacer(Modifier.height(36.dp))
+    Spacer(Modifier.height(LocalSpacing.current.xLarge))
     Text(
         text = stringResource(id = R.string.oops_no_data),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp),
+            .padding(LocalSpacing.current.default),
         textAlign = TextAlign.Center,
         style = Typography.h4
     )
-    Spacer(modifier = Modifier.height(12.dp))
+    Spacer(modifier = Modifier.height(LocalSpacing.current.medium))
     MyButton(onClick = { navController.popBackStack() }, text = stringResource(id = R.string.back))
 
 }
@@ -201,7 +204,7 @@ fun FarmDataInformationCard(
     Card(
         shape = RectangleShape,
         modifier = Modifier.background(BackgroundColor),
-        elevation = 8.dp
+        elevation = LocalElevation.current.default
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Text(
@@ -256,7 +259,10 @@ fun RowScope.TableCell(
         modifier = Modifier
             .border(1.dp, Green400)
             .weight(weight)
-            .padding(horizontal = 4.dp, vertical = 2.dp),
+            .padding(
+                horizontal = LocalSpacing.current.xSmall,
+                vertical = LocalSpacing.current.xxSmall
+            ),
         color = textColor,
     )
 }
@@ -273,7 +279,7 @@ fun DataRow(farmData: FarmData) {
 
 @Composable
 fun DataTable(farmDataList: List<FarmData>, modifier: Modifier) {
-    LazyColumn(modifier = modifier.padding(bottom = 8.dp)) {
+    LazyColumn(modifier = modifier.padding(bottom = LocalSpacing.current.default)) {
         item {
             Row(Modifier.background(BackgroundColorDarkest)) {
                 TableCell(

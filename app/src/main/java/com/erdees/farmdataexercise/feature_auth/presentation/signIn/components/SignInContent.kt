@@ -21,17 +21,18 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.erdees.farmdataexercise.R
 import com.erdees.farmdataexercise.coreUtils.Constants.CONTINUE_TAG
-import com.erdees.farmdataexercise.coreUtils.Constants.SIGN_UP_TAG
+import com.erdees.farmdataexercise.coreUtils.Constants.SIGN_IN_TAG
 import com.erdees.farmdataexercise.coreUtils.components.MyButton
 import com.erdees.farmdataexercise.coreUtils.utils.Screen
 import com.erdees.farmdataexercise.feature_auth.presentation.signIn.SignInViewModel
@@ -44,15 +45,15 @@ fun SignInContent(
 ) {
 
     val noAccountAnnotatedString = buildAnnotatedString {
-        append("No account? ")
-        pushStringAnnotation(SIGN_UP_TAG, "")
-        withStyle(style = SpanStyle(Color.Blue)) { append("Sign Up!") }
+        append(stringResource(id = R.string.no_account))
+        pushStringAnnotation(SIGN_IN_TAG, "")
+        withStyle(style = SpanStyle(Color.Blue)) { append(stringResource(id = R.string.sign_up_excl)) }
         pop()
     }
 
     val continueAnonymouslyAnnotatedString = buildAnnotatedString {
         pushStringAnnotation(CONTINUE_TAG, "")
-        withStyle(style = SpanStyle(Color.Blue)) { append("Continue without account!") }
+        withStyle(style = SpanStyle(Color.Blue)) { append(stringResource(id = R.string.continue_without_acc)) }
         pop()
     }
 
@@ -67,71 +68,82 @@ fun SignInContent(
         modifier = Modifier
             .fillMaxSize()
             .background(color = BackgroundColor)
-            .padding(12.dp).verticalScroll(
+            .padding(LocalSpacing.current.medium)
+            .verticalScroll(
                 rememberScrollState()
             ),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(Modifier.padding(24.dp))
+        Spacer(Modifier.padding(LocalSpacing.current.large))
         Text(
-            text = "SIGN IN",
+            text = stringResource(id = R.string.sign_in),
             style = Typography.h4,
             textAlign = TextAlign.Center,
             color = OnPrimary,
         )
-        Spacer(Modifier.padding(24.dp))
+        Spacer(Modifier.padding(LocalSpacing.current.default))
         TextField(
             value = email,
             onValueChange = { email = it },
-            modifier = Modifier.padding(2.dp),
-            leadingIcon = { Icon(Icons.Outlined.MailOutline, "Email icon", tint = OnPrimary) },
+            modifier = Modifier.padding(LocalSpacing.current.xxSmall),
+            leadingIcon = { Icon(Icons.Outlined.MailOutline, stringResource(id = R.string.icon), tint = OnPrimary) },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-            shape = RoundedCornerShape(8.dp),
+            shape = RoundedCornerShape(LocalCorner.current.default),
             colors = TextFieldDefaults.textFieldColors(
                 textColor = OnPrimaryLightest,
                 backgroundColor = Yellow300
-            ), placeholder = { Text(text = "Enter your email") },
+            ), placeholder = { Text(text = stringResource(id = R.string.enter_mail)) },
             singleLine = true
         )
-        Spacer(Modifier.padding(12.dp))
+        Spacer(Modifier.padding(LocalSpacing.current.default))
         TextField(
             value = password, onValueChange = { password = it },
-            leadingIcon = { Icon(Icons.Outlined.Lock, "Email icon", tint = OnPrimary) },
+            leadingIcon = { Icon(Icons.Outlined.Lock, stringResource(id = R.string.icon), tint = OnPrimary) },
             textStyle = Typography.body2,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
             visualTransformation = PasswordVisualTransformation(),
-            shape = RoundedCornerShape(8.dp),
+            shape = RoundedCornerShape(LocalCorner.current.default),
             colors = TextFieldDefaults.textFieldColors(
                 textColor = OnPrimaryLightest,
                 backgroundColor = Yellow300
-            ), placeholder = { Text(text = "Enter your password") },
+            ), placeholder = { Text(text = stringResource(id = R.string.enter_password)) },
             singleLine = true
         )
 
-        Spacer(Modifier.padding(12.dp))
+        Spacer(Modifier.padding(LocalSpacing.current.large))
         MyButton(onClick = {
             signInViewModel.signInWithEmail(
                 email,
                 password,
             )
-        }, text = "Sign in")
-        Spacer(modifier = Modifier.padding(8.dp))
-        ClickableText(text = noAccountAnnotatedString,style= Typography.body1, onClick = { offset ->
-            noAccountAnnotatedString.getStringAnnotations(SIGN_UP_TAG, start = offset, end = offset)
-                .firstOrNull().let {
-                    navController.navigate(Screen.SignUpScreen.route)
+        }, text = stringResource(id = R.string.sign_in))
+        Spacer(Modifier.padding(LocalSpacing.current.medium))
+        ClickableText(
+            text = noAccountAnnotatedString,
+            style = Typography.body1,
+            onClick = { offset ->
+                noAccountAnnotatedString.getStringAnnotations(
+                    SIGN_IN_TAG,
+                    start = offset,
+                    end = offset
+                )
+                    .firstOrNull().let {
+                        navController.navigate(Screen.SignUpScreen.route)
+                    }
+            })
+        Spacer(Modifier.padding(LocalSpacing.current.small))
+        ClickableText(
+            text = continueAnonymouslyAnnotatedString,
+            style = Typography.body1,
+            onClick = { offset ->
+                continueAnonymouslyAnnotatedString.getStringAnnotations(
+                    CONTINUE_TAG,
+                    start = offset,
+                    end = offset
+                ).firstOrNull().let {
+                    navController.navigate(Screen.SelectFarmScreen.route)
                 }
-        })
-        Spacer(modifier = Modifier.padding(6.dp))
-        ClickableText(text = continueAnonymouslyAnnotatedString,style= Typography.body1, onClick = { offset ->
-            continueAnonymouslyAnnotatedString.getStringAnnotations(
-                CONTINUE_TAG,
-                start = offset,
-                end = offset
-            ).firstOrNull().let {
-                navController.navigate(Screen.SelectFarmScreen.route)
-            }
-        })
+            })
 
     }
 }

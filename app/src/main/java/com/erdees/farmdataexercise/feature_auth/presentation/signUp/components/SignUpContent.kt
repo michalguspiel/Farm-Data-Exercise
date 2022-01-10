@@ -1,6 +1,5 @@
 package com.erdees.farmdataexercise.feature_auth.presentation.signUp.components
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -20,15 +19,17 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.erdees.farmdataexercise.R
+import com.erdees.farmdataexercise.coreUtils.Constants.SIGN_UP_TAG
 import com.erdees.farmdataexercise.coreUtils.components.MyButton
 import com.erdees.farmdataexercise.coreUtils.utils.Screen
 import com.erdees.farmdataexercise.feature_auth.presentation.signUp.SignUpViewModel
@@ -41,9 +42,9 @@ fun SignUpContent(
 ) {
 
     val annotatedString = buildAnnotatedString {
-        append("Got an account? ")
-        pushStringAnnotation("sign_in", "")
-        withStyle(style = SpanStyle(Color.Blue)) { append("Sign In!") }
+        append(stringResource(id = R.string.got_an_account))
+        pushStringAnnotation(SIGN_UP_TAG, "")
+        withStyle(style = SpanStyle(Color.Blue)) { append(stringResource(id = R.string.sign_in_excl)) }
         pop()
     }
 
@@ -67,99 +68,132 @@ fun SignUpContent(
         modifier = Modifier
             .fillMaxSize()
             .background(color = BackgroundColor)
-            .padding(12.dp)
+            .padding(LocalSpacing.current.default)
             .verticalScroll(
                 rememberScrollState()
             ),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(Modifier.padding(24.dp))
+        Spacer(Modifier.padding(LocalSpacing.current.large))
         Text(
-            text = "SIGN UP",
+            text = stringResource(id = R.string.sign_up),
             style = Typography.h4,
             textAlign = TextAlign.Center,
             color = OnPrimary,
         )
-        Spacer(Modifier.padding(24.dp))
+        Spacer(Modifier.padding(LocalSpacing.current.large))
         TextField(
             value = email,
             onValueChange = { email = it },
-            modifier = Modifier.padding(2.dp),
-            leadingIcon = { Icon(Icons.Outlined.MailOutline, "Email icon", tint = OnPrimary) },
+            modifier = Modifier.padding(LocalSpacing.current.xxSmall),
+            leadingIcon = {
+                Icon(
+                    Icons.Outlined.MailOutline,
+                    stringResource(id = R.string.icon),
+                    tint = OnPrimary
+                )
+            },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-            shape = RoundedCornerShape(8.dp),
+            shape = RoundedCornerShape(LocalCorner.current.default),
             colors = TextFieldDefaults.textFieldColors(
                 textColor = OnPrimaryLightest,
                 backgroundColor = Yellow300
-            ), placeholder = { Text(text = "Enter your email") },
+            ), placeholder = { Text(text = stringResource(id = R.string.enter_mail)) },
             singleLine = true
         )
-        Spacer(Modifier.padding(12.dp))
+        Spacer(Modifier.padding(LocalSpacing.current.default))
         Column(Modifier.width(IntrinsicSize.Min)) {
             TextField(
                 value = password, onValueChange = { password = it },
-                leadingIcon = { Icon(Icons.Outlined.Lock, "Lock icon", tint = OnPrimary) },
+                leadingIcon = {
+                    Icon(
+                        Icons.Outlined.Lock,
+                        stringResource(id = R.string.icon),
+                        tint = OnPrimary
+                    )
+                },
                 textStyle = Typography.body2,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 visualTransformation = PasswordVisualTransformation(),
-                shape = RoundedCornerShape(8.dp),
+                shape = RoundedCornerShape(LocalCorner.current.default),
                 colors = TextFieldDefaults.textFieldColors(
                     textColor = OnPrimaryLightest,
                     backgroundColor = Yellow300
-                ), placeholder = { Text(text = "Enter your password") },
+                ), placeholder = { Text(text = stringResource(id = R.string.enter_password)) },
                 singleLine = true
             )
             Text(
-                text = "Make sure your password is longer than 7 characters and contains at least one digit.",
+                text = stringResource(id = R.string.password_req),
                 style = Typography.caption,
-                modifier = Modifier.padding(horizontal = 2.dp)
+                modifier = Modifier.padding(horizontal = LocalSpacing.current.xxSmall)
             )
         }
-        Spacer(Modifier.padding(12.dp))
-        Column() {
+        Spacer(Modifier.padding(LocalSpacing.current.default))
+        Column {
             TextField(
                 value = confirmPassword, onValueChange = { confirmPassword = it },
-                leadingIcon = { Icon(Icons.Outlined.Lock, "Lock icon", tint = OnPrimary) },
+                leadingIcon = {
+                    Icon(
+                        Icons.Outlined.Lock,
+                        stringResource(id = R.string.icon),
+                        tint = OnPrimary
+                    )
+                },
                 visualTransformation = PasswordVisualTransformation(),
                 textStyle = Typography.body2,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                shape = RoundedCornerShape(8.dp),
+                shape = RoundedCornerShape(LocalCorner.current.default),
                 colors = TextFieldDefaults.textFieldColors(
                     textColor = OnPrimaryLightest,
                     backgroundColor = Yellow300
-                ), placeholder = { Text(text = "Confirm your password") },
+                ), placeholder = { Text(text = stringResource(id = R.string.confirm_password)) },
                 singleLine = true
             )
-            Text(text = "Make sure passwords are the same", style = Typography.caption,
-                modifier = Modifier.padding(horizontal = 2.dp))
+            Text(
+                text = stringResource(id = R.string.make_sure_passwords_are_same),
+                style = Typography.caption,
+                modifier = Modifier.padding(horizontal = LocalSpacing.current.xxSmall)
+            )
         }
-        Spacer(Modifier.padding(12.dp))
+        Spacer(Modifier.padding(LocalSpacing.current.default))
         TextField(
             value = firstName, onValueChange = { firstName = it },
-            leadingIcon = { Icon(Icons.Outlined.Person, "Person icon", tint = OnPrimary) },
+            leadingIcon = {
+                Icon(
+                    Icons.Outlined.Person,
+                    stringResource(id = R.string.icon),
+                    tint = OnPrimary
+                )
+            },
             textStyle = Typography.body2,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-            shape = RoundedCornerShape(8.dp),
+            shape = RoundedCornerShape(LocalCorner.current.default),
             colors = TextFieldDefaults.textFieldColors(
                 textColor = OnPrimaryLightest,
                 backgroundColor = Yellow300
-            ), placeholder = { Text(text = "Enter your first name") },
+            ), placeholder = { Text(text = stringResource(R.string.enter_first_name)) },
             singleLine = true
         )
-        Spacer(Modifier.padding(12.dp))
+        Spacer(Modifier.padding(LocalSpacing.current.default))
         TextField(
             value = lastName, onValueChange = { lastName = it },
-            leadingIcon = { Icon(Icons.Outlined.Person, "Person icon", tint = OnPrimary) },
+            leadingIcon = {
+                Icon(
+                    Icons.Outlined.Person,
+                    stringResource(id = R.string.icon),
+                    tint = OnPrimary
+                )
+            },
             textStyle = Typography.body2,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-            shape = RoundedCornerShape(8.dp),
+            shape = RoundedCornerShape(LocalCorner.current.default),
             colors = TextFieldDefaults.textFieldColors(
                 textColor = OnPrimaryLightest,
                 backgroundColor = Yellow300
-            ), placeholder = { Text(text = "Enter your last name") },
+            ), placeholder = { Text(text = stringResource(R.string.enter_last_name)) },
             singleLine = true
         )
-        Spacer(Modifier.padding(12.dp))
+        Spacer(Modifier.padding(LocalSpacing.current.default))
         MyButton(onClick = {
             signUpViewModel.startSigningUpWithEmail(
                 password,
@@ -168,13 +202,12 @@ fun SignUpContent(
                 firstName,
                 lastName
             )
-        }, text = "Sign up")
-        Spacer(modifier = Modifier.padding(8.dp))
+        }, text = stringResource(R.string.sign_up))
+        Spacer(modifier = Modifier.padding(LocalSpacing.current.default))
         ClickableText(text = annotatedString, style = Typography.body1, onClick = { offset ->
-            annotatedString.getStringAnnotations("sign_in", start = offset, end = offset)
+            annotatedString.getStringAnnotations(SIGN_UP_TAG, start = offset, end = offset)
                 .firstOrNull().let {
                     navController.navigate(Screen.SignInScreen.route)
-                    Log.i("TAG", "Text Clicked!! Navigation goes!")
                 }
         })
     }

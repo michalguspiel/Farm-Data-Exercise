@@ -29,6 +29,7 @@ object Constants {
 
     // STRINGS
     const val SIGN_UP_TAG = "sign_up"
+    const val SIGN_IN_TAG = "sign_in"
     const val CONTINUE_TAG = "continue"
 
 }

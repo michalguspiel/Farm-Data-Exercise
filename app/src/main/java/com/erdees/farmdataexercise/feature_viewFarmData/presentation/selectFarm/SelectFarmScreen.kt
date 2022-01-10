@@ -33,13 +33,16 @@ import com.erdees.farmdataexercise.coreUtils.Constants.LOCATION_DOC_ID
 import com.erdees.farmdataexercise.coreUtils.Constants.LOCATION_NAME
 import com.erdees.farmdataexercise.coreUtils.components.MyButton
 import com.erdees.farmdataexercise.coreUtils.components.MyTopAppBar
+import com.erdees.farmdataexercise.coreUtils.components.ProgressBar
 import com.erdees.farmdataexercise.coreUtils.utils.Screen
 import com.erdees.farmdataexercise.feature_viewFarmData.domain.model.FarmInformation
-import com.erdees.farmdataexercise.feature_viewFarmData.presentation.components.ProgressBar
 import com.erdees.farmdataexercise.feature_viewFarmData.presentation.components.Toast
 import com.erdees.farmdataexercise.feature_viewFarmData.presentation.selectFarm.utils.WindowAdapter
 import com.erdees.farmdataexercise.feature_viewFarmData.presentation.selectFarm.utils.rememberMapViewWithLifecycle
 import com.erdees.farmdataexercise.model.Response
+import com.erdees.farmdataexercise.ui.theme.LocalCorner
+import com.erdees.farmdataexercise.ui.theme.LocalElevation
+import com.erdees.farmdataexercise.ui.theme.LocalSpacing
 import com.erdees.farmdataexercise.ui.theme.Typography
 import com.google.android.libraries.maps.CameraUpdateFactory
 import com.google.android.libraries.maps.GoogleMap
@@ -152,13 +155,13 @@ fun BottomCard(
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .padding(top = 30.dp),
-        shape = RoundedCornerShape(18.dp, 18.dp, 0.dp, 0.dp), elevation = 8.dp
+            .padding(top = LocalSpacing.current.xLarge),
+        shape = RoundedCornerShape(LocalCorner.current.xLarge, LocalCorner.current.xLarge, 0.dp, 0.dp), elevation = LocalElevation.current.default
     ) {
         Column(
             Modifier
                 .fillMaxWidth()
-                .padding(top = 12.dp),
+                .padding(top = LocalSpacing.current.default),
             horizontalAlignment = CenterHorizontally
         ) {
             farmInformation?.locationName?.let {
@@ -168,12 +171,12 @@ fun BottomCard(
                     textAlign = TextAlign.Center
                 )
             }
-            Spacer(Modifier.height(2.dp))
+            Spacer(Modifier.height(LocalSpacing.current.xxSmall))
             MyButton(onClick = {  navController.navigate(
                 Screen.SelectFarmDataScreen.route +
                         "?$LOCATION_DOC_ID=${farmInformation?.docId}&$LOCATION_NAME=${farmInformation?.locationName}&$FARM_IMAGE_URL=${farmInformation?.farmImageUrl}"
             )}, text = "Select farm")
-                Spacer(Modifier.height(6.dp))
+                Spacer(Modifier.height(LocalSpacing.current.default))
         }
     }
 }
