@@ -11,6 +11,9 @@ interface FarmInformationDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertFarmInformation(information: List<FarmInformationEntity>)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertOneFarmInformation(information : FarmInformationEntity)
+
     @Query("DELETE FROM FarmInformationEntity")
     suspend fun deleteFarmInformation()
 

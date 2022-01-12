@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name" translatable="false">Farm Data Exercise</string>
     <string name="add_farm_data">Add farm data</string>
+    <string name="add_farm">Add farm</string>
+    <string name="farm_name">Farm name</string>
 
     <string name="sensorType">Sensor Type</string>
     <string name="value">Value</string>
@@ -8,6 +10,8 @@
     <string name="cancel">Cancel</string>
     <string name="error">Error</string>
     <string name="data_added_successfully">Data added successfully!</string>
+    <string name="farm_added_successfully">Farm added successfully!</string>
+    <string name="farm_addition_error_message">Something went wrong, farm was not added.</string>
     <string name="choose_time_range">Choose time range</string>
     <string name="choose_metric">Choose metric</string>
     <string name="choose_farm">Choose farm</string>

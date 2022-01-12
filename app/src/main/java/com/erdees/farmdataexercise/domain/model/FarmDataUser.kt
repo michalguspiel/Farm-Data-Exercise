@@ -1,4 +1,4 @@
-package com.erdees.farmdataexercise.feature_auth.domain.model
+package com.erdees.farmdataexercise.domain.model
 
 data class FarmDataUser(
     val firstName : String = "",

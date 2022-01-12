@@ -10,5 +10,4 @@ interface FarmDataRepository {
 
     suspend fun addFarmData(locationName : String,dateTime: String, sensorType:String,value: String ) : Flow<Response<Void?>>
 
-
 }

@@ -5,6 +5,7 @@ import com.erdees.farmdataexercise.feature_viewFarmData.domain.model.FarmInforma
 import com.erdees.farmdataexercise.feature_viewFarmData.domain.repository.FarmInfoRepository
 import com.erdees.farmdataexercise.model.Response
 import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.GeoPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.awaitClose
@@ -48,7 +49,24 @@ class FarmInfoRepositoryImpl @Inject constructor(
        catch (e : Exception){
            emit(Response.Error(e.message ?: "Error!"))
        }
+    }
 
+
+    override suspend fun addFarm(
+        locationName: String,
+        geoPoint: GeoPoint,
+        userOwnerId: String
+    ): Flow<Response<Void?>> = flow {
+        try{
+            emit(Response.Loading)
+            val docId = farmDataReference.document()
+            val farm = FarmInformation(locationName = locationName,geoPoint = geoPoint,farmOwnerId = userOwnerId,docId = docId.id)
+            val addition = docId.set(farm).await()
+            dao.insertOneFarmInformation(farm.toFarmInformationEntity())
+            emit(Response.Success(addition))
+        }catch (e: Exception) {
+            emit(Response.Error(e.message ?: e.toString()))
+        }
     }
 
 

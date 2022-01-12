@@ -14,7 +14,7 @@ import com.erdees.farmdataexercise.coreUtils.utils.Screen
 import com.erdees.farmdataexercise.ui.theme.BackgroundColor
 
 @Composable
-fun MyTopAppBar(screen: String, navController: NavController) {
+fun MyTopAppBar(modifier: Modifier = Modifier ,screen: Screen, navController: NavController) {
 
     var expandedMenu by remember { mutableStateOf(false) }
 
@@ -22,11 +22,14 @@ fun MyTopAppBar(screen: String, navController: NavController) {
         backgroundColor = BackgroundColor,
         title = {
             Row(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = screen
+                    text = when(screen){
+                        Screen.ProfileScreen -> "Profile"
+                        else -> "Select farm"
+                    }
                 )
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -52,15 +55,41 @@ fun MyTopAppBar(screen: String, navController: NavController) {
                     expandedMenu = !expandedMenu
                 }
             ) {
-                DropdownMenuItem(
-                    onClick = {
-                        navController.navigate(Screen.ProfileScreen.route)
+                when(screen) {
+                    Screen.SelectFarmScreen -> {
+                        DropdownMenuItem(
+                            onClick = {
+                                navController.navigate(Screen.ProfileScreen.route)
+                            }
+                        ) {
+                            Text(
+                                text = "My account"
+                            )
+                        }
                     }
-                ) {
-                    Text(
-                        text = "My account"
-                    )
+                    Screen.SelectFarmDataScreen -> {
+                        DropdownMenuItem(
+                            onClick = {
+                                navController.navigate(Screen.ProfileScreen.route)
+                            }
+                        ) {
+                            Text(
+                                text = "My account"
+                            )
+                        }
+                    }
+                        else -> {DropdownMenuItem(
+                            onClick = {
+                                navController.navigate(Screen.SelectFarmScreen.route)
+                            }
+                        ) {
+                            Text(
+                                text = "Browse farm data"
+                            )
+                        }}
                 }
+
+
             }
         }
     )

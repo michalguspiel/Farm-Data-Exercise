@@ -10,16 +10,19 @@ import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Button
 import androidx.compose.material.Card
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment.Companion.BottomCenter
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -35,8 +38,13 @@ import com.erdees.farmdataexercise.coreUtils.components.MyButton
 import com.erdees.farmdataexercise.coreUtils.components.MyTopAppBar
 import com.erdees.farmdataexercise.coreUtils.components.ProgressBar
 import com.erdees.farmdataexercise.coreUtils.utils.Screen
+import com.erdees.farmdataexercise.coreUtils.utils.Util.toDp
 import com.erdees.farmdataexercise.feature_viewFarmData.domain.model.FarmInformation
+import com.erdees.farmdataexercise.feature_viewFarmData.presentation.components.AddFarmDialog
 import com.erdees.farmdataexercise.feature_viewFarmData.presentation.components.Toast
+import com.erdees.farmdataexercise.feature_viewFarmData.presentation.components.model.CornerStatus
+import com.erdees.farmdataexercise.feature_viewFarmData.presentation.components.model.HorizontalCorner
+import com.erdees.farmdataexercise.feature_viewFarmData.presentation.components.model.VerticalCorner
 import com.erdees.farmdataexercise.feature_viewFarmData.presentation.selectFarm.utils.WindowAdapter
 import com.erdees.farmdataexercise.feature_viewFarmData.presentation.selectFarm.utils.rememberMapViewWithLifecycle
 import com.erdees.farmdataexercise.model.Response
@@ -60,88 +68,266 @@ fun SelectFarmScreen(
     navController: NavController
 ) {
 
+    val horizontalCornerStatus: MutableState<HorizontalCorner> = remember {
+        mutableStateOf(HorizontalCorner.StartCorner)
+    }
+
+    val verticalCornerStatus: MutableState<VerticalCorner> = remember {
+        mutableStateOf(VerticalCorner.TopCorner)
+    }
+
     var isMapCentered = remember {
         false
     }
 
+    var clickPosAsDpOffset by remember {
+        mutableStateOf(Pair(0f, 0f))
+    }
+
+    var buttonHeight by remember {
+        mutableStateOf(0f)
+    }
+
+    var buttonWidth by remember {
+        mutableStateOf(0f)
+    }
+
+    var totalScreenWidth by remember {
+        mutableStateOf(0f)
+    }
+
+    var scaffoldHeight by remember {
+        mutableStateOf(0f)
+    }
+
     val mapView = rememberMapViewWithLifecycle()
-    viewModel.getLocalFarmsInformation()
+    LaunchedEffect(Unit) {
+        viewModel.getLocalFarmsInformation()
+    }
 
     val context = LocalContext.current
+    val density = LocalDensity.current
+    val padding = LocalSpacing.current.large.value
 
-    Scaffold(topBar = { MyTopAppBar(screen = "Select farm", navController = navController) }) {
-        Column(
-            modifier = Modifier
-                .fillMaxHeight()
-                .fillMaxWidth()
-                .background(Color.White)
-        ) {
+    Scaffold(topBar = {
+        MyTopAppBar(
+            screen = Screen.SelectFarmScreen,
+            navController = navController,
+            modifier = Modifier.onGloballyPositioned {
+                scaffoldHeight = it.size.height.toFloat().toDp(density)
+            }
+        )
+    }) {
+        if (viewModel.isOpenDialogState.value) {
+            AddFarmDialog()
+        }
 
-            when (val farmsInformationResponse = viewModel.farmsInformationState.value) {
-                is Response.Loading -> ProgressBar()
-                is Response.Success -> Box(
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .fillMaxWidth()
-                        .background(Color.White)
-                ) {
-                    AndroidView({ mapView }) { mapView ->
-                        CoroutineScope(Dispatchers.Main).launch {
-                            val adapter = WindowAdapter(context)
-                            val map = mapView.awaitMap()
+        when (viewModel.farmAdditionState.value) {
+            is Response.Loading -> ProgressBar()
+            is Response.Success -> {
+                Toast(stringResource(R.string.farm_added_successfully))
+            }
+            is Response.Error -> {
+                Toast(stringResource(R.string.farm_addition_error_message))
+            }
+            else -> {
+            }
+        }
+        when (val farmsInformationResponse = viewModel.farmsInformationState.value) {
+            is Response.Loading -> ProgressBar()
+            is Response.Success -> Box(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .fillMaxWidth()
+                    .background(Color.White)
+                    .onGloballyPositioned {
+                        totalScreenWidth = it.size.width
+                            .toFloat()
+                            .toDp(density)
+                    }
+            ) {
+                AndroidView({ mapView }) { mapView ->
+                    CoroutineScope(Dispatchers.Main).launch {
 
-                            map.setInfoWindowAdapter(
-                                adapter
+                        val adapter = WindowAdapter(context)
+                        val map = mapView.awaitMap()
+
+                        if (viewModel.farmAdditionState.value is Response.Success) {
+                            viewModel.getLocalFarmsInformation()
+                            viewModel.resetFarmAdditionResponse()
+                        }
+                        map.uiSettings.isZoomControlsEnabled = true
+                        map.setInfoWindowAdapter(
+                            adapter
+                        )
+
+                        map.setOnMarkerClickListener { marker ->
+                            viewModel.selectFarm(marker)
+                            marker.showInfoWindow()
+                            map.moveCamera(CameraUpdateFactory.newLatLng(marker.position))
+                            true
+                        }
+
+                        if (viewModel.isUserAuthenticated) map.setOnMapLongClickListener { latLng ->
+                            viewModel.isAddFarmButtonShownState.value = true
+                            viewModel.clickedLatLngState.value = latLng
+                            val screenLocation = map.projection.toScreenLocation(latLng)
+                            clickPosAsDpOffset = Pair(
+                                screenLocation.x.toFloat().toDp(density),
+                                screenLocation.y.toFloat().toDp(density)
                             )
-                            map.setOnMarkerClickListener { marker ->
-                                viewModel.selectFarm(marker)
-                                Log.i("Select farm screen", "${marker.position}")
-                                marker.showInfoWindow()
-                                map.moveCamera(CameraUpdateFactory.newLatLng(marker.position))
-                                Log.i("Select farm screen", "Click! ${marker.title}")
-                                true
-                            }
+                        }
 
-                            map.setOnInfoWindowCloseListener {
-                                viewModel.clearSelectedFarm()
-                                adapter.drawable = null
-                            }
-                            map.uiSettings.isZoomControlsEnabled = true
+                        map.setOnMapClickListener {
+                            viewModel.isAddFarmButtonShownState.value = false
+                        }
 
-                            farmsInformationResponse.data.forEach {
-                                val marker = map.markFarmOnTheMap(
-                                    it.locationName,
-                                    LatLng(it.geoPoint.latitude, it.geoPoint.longitude),
-                                    it.farmImageUrl,
-                                    context
-                                )
-                                viewModel.markerMap.add(Pair(marker, it))
-                            }
-                            if (!isMapCentered) {
-                                map.centerMapAtHelsinki()
-                                isMapCentered = true
-                            }
+                        map.setOnCameraMoveListener {
+                            viewModel.isAddFarmButtonShownState.value = false
+                        }
+
+                        map.setOnInfoWindowCloseListener {
+                            viewModel.clearSelectedFarm()
+                            adapter.drawable = null
+                        }
+
+
+                        farmsInformationResponse.data.forEach {
+                            val marker = map.markFarmOnTheMap(
+                                it.locationName,
+                                LatLng(it.geoPoint.latitude, it.geoPoint.longitude),
+                                it.farmImageUrl,
+                                context
+                            )
+                            marker.tag = it.docId
+                            viewModel.addPairToMap(Pair(marker.tag.toString(), it))
+                        }
+
+                        if (!isMapCentered) {
+                            map.centerMapAtHelsinki()
+                            isMapCentered = true
                         }
                     }
+                }
 
-                    androidx.compose.animation.AnimatedVisibility(
-                        viewModel.selectedFarmState.value != null,
-                        modifier = Modifier.align(
-                            BottomCenter
-                        ),
-                        enter = slideInVertically(initialOffsetY = { fullHeight -> fullHeight / 2 }),
-                        exit = slideOutVertically(targetOffsetY = { fullHeight -> fullHeight / 2 })
+                if (viewModel.isAddFarmButtonShownState.value) {
+                    Button(
+                        onClick = {
+                            viewModel.isOpenDialogState.value = true
+                            viewModel.isAddFarmButtonShownState.value = false
+                        },
+                        modifier = Modifier
+                            .onGloballyPositioned {
+                                buttonHeight = it.size.height
+                                    .toFloat()
+                                    .toDp(density)
+                                buttonWidth = it.size.width
+                                    .toFloat()
+                                    .toDp(density)
+                            }
+                            .absoluteOffset(
+                                calculateXOffset(
+                                    offset = clickPosAsDpOffset.first,
+                                    buttonWidth = buttonWidth,
+                                    screenWidth = totalScreenWidth,
+                                    padding = padding,
+                                    cornerStatus = horizontalCornerStatus
+                                ).dp,
+                                calculateYOffset(
+                                    offset = clickPosAsDpOffset.second,
+                                    buttonHeight = buttonHeight,
+                                    scaffoldHeight = scaffoldHeight,
+                                    padding = padding,
+                                    cornerStatus = verticalCornerStatus
+                                ).dp
+                            ),
+                        shape = CornerStatus(
+                            horizontalCorner = horizontalCornerStatus.value,
+                            verticalCorner = verticalCornerStatus.value
+                        ).provideShape(rounding = LocalCorner.current.large)
                     ) {
-                        BottomCard(
-                            viewModel.selectedFarmState.value, Modifier.align(
-                                BottomCenter
-                            ), navController
+                        Text(
+                            text = stringResource(R.string.add_farm),
+                            modifier = Modifier.padding(LocalSpacing.current.small)
                         )
                     }
                 }
-                is Response.Error -> Toast(farmsInformationResponse.message)
-            }
 
+                androidx.compose.animation.AnimatedVisibility(
+                    viewModel.selectedFarmState.value != null,
+                    modifier = Modifier.align(
+                        BottomCenter
+                    ),
+                    enter = slideInVertically(initialOffsetY = { fullHeight -> fullHeight / 2 }),
+                    exit = slideOutVertically(targetOffsetY = { fullHeight -> fullHeight / 2 })
+                ) {
+                    BottomCard(
+                        viewModel.selectedFarmState.value, Modifier.align(
+                            BottomCenter
+                        ), navController
+                    )
+                }
+            }
+            is Response.Error -> Toast(farmsInformationResponse.message)
+        }
+
+    }
+}
+
+
+fun setHorizontalCorner(
+    horizontalCorner: HorizontalCorner,
+    cornerStatus: MutableState<HorizontalCorner>
+) {
+    cornerStatus.value = horizontalCorner
+}
+
+@Composable
+fun calculateXOffset(
+    offset: Float,
+    buttonWidth: Float,
+    screenWidth: Float,
+    padding: Float,
+    cornerStatus: MutableState<HorizontalCorner>
+): Float {
+    return when {
+        offset + buttonWidth + padding > screenWidth -> {
+            setHorizontalCorner(
+                horizontalCorner = HorizontalCorner.EndCorner,
+                cornerStatus = cornerStatus
+            )
+            offset - buttonWidth - padding
+        }
+        else -> {
+            setHorizontalCorner(
+                horizontalCorner = HorizontalCorner.StartCorner,
+                cornerStatus = cornerStatus
+            )
+            offset + padding
+        }
+    }
+}
+
+fun setVerticalCorner(verticalCorner: VerticalCorner, cornerStatus: MutableState<VerticalCorner>) {
+    cornerStatus.value = verticalCorner
+}
+
+@Composable
+fun calculateYOffset(
+    offset: Float,
+    buttonHeight: Float,
+    scaffoldHeight: Float,
+    padding: Float,
+    cornerStatus: MutableState<VerticalCorner>
+): Float {
+    return when {
+        offset - padding - buttonHeight < scaffoldHeight -> {
+            setVerticalCorner(VerticalCorner.TopCorner, cornerStatus)
+            offset + padding
+        }
+        else -> {
+            setVerticalCorner(VerticalCorner.BottomCorner, cornerStatus)
+            offset - buttonHeight - padding
         }
     }
 }
@@ -156,7 +342,12 @@ fun BottomCard(
         modifier = modifier
             .fillMaxWidth()
             .padding(top = LocalSpacing.current.xLarge),
-        shape = RoundedCornerShape(LocalCorner.current.xLarge, LocalCorner.current.xLarge, 0.dp, 0.dp), elevation = LocalElevation.current.default
+        shape = RoundedCornerShape(
+            LocalCorner.current.xLarge,
+            LocalCorner.current.xLarge,
+            0.dp,
+            0.dp
+        ), elevation = LocalElevation.current.default
     ) {
         Column(
             Modifier
@@ -172,11 +363,13 @@ fun BottomCard(
                 )
             }
             Spacer(Modifier.height(LocalSpacing.current.xxSmall))
-            MyButton(onClick = {  navController.navigate(
-                Screen.SelectFarmDataScreen.route +
-                        "?$LOCATION_DOC_ID=${farmInformation?.docId}&$LOCATION_NAME=${farmInformation?.locationName}&$FARM_IMAGE_URL=${farmInformation?.farmImageUrl}"
-            )}, text = "Select farm")
-                Spacer(Modifier.height(LocalSpacing.current.default))
+            MyButton(onClick = {
+                navController.navigate(
+                    Screen.SelectFarmDataScreen.route +
+                            "?$LOCATION_DOC_ID=${farmInformation?.docId}&$LOCATION_NAME=${farmInformation?.locationName}&$FARM_IMAGE_URL=${farmInformation?.farmImageUrl}"
+                )
+            }, text = "Select farm")
+            Spacer(Modifier.height(LocalSpacing.current.default))
         }
     }
 }
@@ -194,18 +387,18 @@ fun BottomCardPreview() {
     )
 }
 
+
 fun GoogleMap.markFarmOnTheMap(
     locationName: String,
     latLng: LatLng,
     farmImageUrl: String,
     context: Context
 ): Marker {
-    Log.i("Select farm screen", farmImageUrl)
     val markerOption = MarkerOptions()
         .title(locationName)
         .position(latLng)
         .snippet(farmImageUrl)
-        .icon(bitmapDescriptorFromVector(context, R.drawable.ic_farm_map_marker))
+        .icon(bitmapDescriptorFromVector(context, R.drawable.ic_baseline_room_48))
     return this.addMarker(markerOption)
 }
 

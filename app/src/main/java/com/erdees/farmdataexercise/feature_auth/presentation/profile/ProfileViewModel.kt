@@ -4,7 +4,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.erdees.farmdataexercise.feature_auth.domain.model.FarmDataUser
+import com.erdees.farmdataexercise.domain.model.FarmDataUser
 import com.erdees.farmdataexercise.feature_auth.domain.use_case.UseCases
 import com.erdees.farmdataexercise.model.Response
 import dagger.hilt.android.lifecycle.HiltViewModel

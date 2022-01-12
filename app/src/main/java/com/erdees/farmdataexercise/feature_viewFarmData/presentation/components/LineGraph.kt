@@ -3,7 +3,6 @@ package com.erdees.farmdataexercise.feature_viewFarmData.presentation.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -39,7 +38,6 @@ import com.madrapps.plot.line.LineGraph
 import com.madrapps.plot.line.LinePlot
 import java.text.DecimalFormat
 
-val DATA_CARD_CORNER_RADIUS = 12.dp
 
 @Composable
 fun CustomDetailedLineGraph(
@@ -180,34 +178,7 @@ fun CustomDetailedLineGraph(
                         )
                         .padding(4.dp)
                         .alpha(0.9f),
-                    shape =
-                    when (cornerStatus.value.cornerStatus()) {
-                        CornerStatus.TopEndCorner -> RoundedCornerShape(
-                            topEnd = 0.dp,
-                            bottomEnd =LocalCorner.current.large,
-                            bottomStart = LocalCorner.current.large,
-                            topStart = LocalCorner.current.large
-                        )
-                        CornerStatus.BottomEndCorner -> RoundedCornerShape(
-                            topEnd = LocalCorner.current.large,
-                            bottomEnd = 0.dp,
-                            bottomStart = LocalCorner.current.large,
-                            topStart = LocalCorner.current.large
-                        )
-                        CornerStatus.BottomStartCorner -> RoundedCornerShape(
-                            topEnd = LocalCorner.current.large,
-                            bottomEnd = LocalCorner.current.large,
-                            bottomStart = 0.dp,
-                            topStart = LocalCorner.current.large
-                        )
-                        CornerStatus.TopStartCorner -> RoundedCornerShape(
-                            topEnd = LocalCorner.current.large,
-                            bottomEnd = LocalCorner.current.large,
-                            bottomStart = LocalCorner.current.large,
-                            topStart = 0.dp
-                        )
-                        else -> RoundedCornerShape(LocalCorner.current.large)
-                    },
+                    shape = cornerStatus.value.provideShape(rounding = LocalCorner.current.large),
                     color = Color.Gray
                 ) {
                     Column(

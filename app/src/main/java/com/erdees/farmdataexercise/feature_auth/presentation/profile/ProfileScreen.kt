@@ -14,6 +14,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.erdees.farmdataexercise.R
+import com.erdees.farmdataexercise.coreUtils.components.MyTopAppBar
 import com.erdees.farmdataexercise.coreUtils.components.ProgressBar
 import com.erdees.farmdataexercise.coreUtils.utils.Screen
 import com.erdees.farmdataexercise.model.Response
@@ -36,7 +37,7 @@ fun ProfileScreen(
     }
 
     if (profileViewModel.isUserAuthenticated) {
-        Scaffold {
+        Scaffold(topBar = { MyTopAppBar(screen = Screen.ProfileScreen, navController = navController) }) {
             when (val response = profileViewModel.isUserSignedOutState.value) {
                 is Response.Loading -> ProgressBar()
                 is Response.Success -> {

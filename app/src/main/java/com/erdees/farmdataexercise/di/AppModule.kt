@@ -2,9 +2,10 @@ package com.erdees.farmdataexercise.di
 
 import android.app.Application
 import androidx.room.Room
-import com.erdees.farmdataexercise.feature_auth.data.AuthRepositoryImpl
-import com.erdees.farmdataexercise.feature_auth.domain.repository.AuthRepository
+import com.erdees.farmdataexercise.data.AuthRepositoryImpl
+import com.erdees.farmdataexercise.domain.repository.AuthRepository
 import com.erdees.farmdataexercise.feature_auth.domain.use_case.*
+import com.erdees.farmdataexercise.feature_auth.domain.use_case.IsUserAuthenticated
 import com.erdees.farmdataexercise.feature_viewFarmData.data.local.FarmInformationDatabase
 import com.erdees.farmdataexercise.feature_viewFarmData.data.repository.FarmDataRepositoryImpl
 import com.erdees.farmdataexercise.feature_viewFarmData.data.repository.FarmInfoRepositoryImpl
@@ -74,14 +75,18 @@ class AppModule {
     fun provideFarmDataUseCases(
         repository: FarmDataRepository,
         temporaryFarmDataRepository: TemporaryFarmDataRepository,
-        farmInfoRepository : FarmInfoRepository
+        farmInfoRepository : FarmInfoRepository,
+        authRepository: AuthRepository
     ) = UseCases(
         getFarmData = GetFarmData(repository),
         addFarmData = AddFarmData(repository),
         getTemporaryFarmData = GetTemporaryFarmData(temporaryFarmDataRepository),
         saveTemporaryFarmData = SaveTemporaryFarmData(temporaryFarmDataRepository),
         downloadAndSaveFarmsInformation = DownloadAndSaveFarmsInformation(farmInfoRepository),
-        getLocalFarmsInformation = GetLocalFarmsInformation(farmInfoRepository)
+        getLocalFarmsInformation = GetLocalFarmsInformation(farmInfoRepository),
+        isUserAuthenticated = com.erdees.farmdataexercise.feature_viewFarmData.domain.use_case.IsUserAuthenticated(authRepository),
+        addFarm = AddFarm(farmInfoRepository),
+        getCurrentUserId = GetCurrentUserId(authRepository)
     )
 
     @Provides

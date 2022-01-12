@@ -1,9 +1,9 @@
-package com.erdees.farmdataexercise.feature_auth.data
+package com.erdees.farmdataexercise.data
 
 import android.util.Log
 import com.erdees.farmdataexercise.coreUtils.Constants.ERROR_MESSAGE
-import com.erdees.farmdataexercise.feature_auth.domain.model.FarmDataUser
-import com.erdees.farmdataexercise.feature_auth.domain.repository.AuthRepository
+import com.erdees.farmdataexercise.domain.model.FarmDataUser
+import com.erdees.farmdataexercise.domain.repository.AuthRepository
 import com.erdees.farmdataexercise.feature_auth.domain.util.Registration
 import com.erdees.farmdataexercise.model.Response
 import com.google.android.gms.tasks.Task
@@ -27,6 +27,10 @@ class AuthRepositoryImpl @Inject constructor(
     ) : AuthRepository {
 
     override fun isUserAuthenticated() = auth.currentUser != null
+
+    override fun getCurrentUserId(): String? {
+       return auth.currentUser?.uid
+    }
 
 
     override suspend fun getCurrentUserDocument(): Flow<Response<FarmDataUser>> = callbackFlow {

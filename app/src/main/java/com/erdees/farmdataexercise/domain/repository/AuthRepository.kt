@@ -1,6 +1,6 @@
-package com.erdees.farmdataexercise.feature_auth.domain.repository
+package com.erdees.farmdataexercise.domain.repository
 
-import com.erdees.farmdataexercise.feature_auth.domain.model.FarmDataUser
+import com.erdees.farmdataexercise.domain.model.FarmDataUser
 import com.erdees.farmdataexercise.feature_auth.domain.util.Registration
 import com.erdees.farmdataexercise.model.Response
 import com.google.android.gms.tasks.Task
@@ -9,6 +9,8 @@ import kotlinx.coroutines.flow.Flow
 interface AuthRepository {
 
     fun isUserAuthenticated(): Boolean
+
+    fun getCurrentUserId() : String?
 
     suspend fun getCurrentUserDocument() : Flow<Response<FarmDataUser>>
 

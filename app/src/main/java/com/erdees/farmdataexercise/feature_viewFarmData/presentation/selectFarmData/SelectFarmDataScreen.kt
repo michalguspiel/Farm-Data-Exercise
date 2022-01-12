@@ -59,7 +59,7 @@ fun SelectFarmDataScreen(
 
     Scaffold(
         topBar = {
-            MyTopAppBar(screen = "Browse farm data", navController)
+            MyTopAppBar(screen = Screen.SelectFarmDataScreen, navController = navController)
         }
     ) {
         when (val additionResponse = viewModel.isFarmDataAddedState.value) {
