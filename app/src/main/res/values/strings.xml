@@ -4,6 +4,8 @@
     <string name="add_farm">Add farm</string>
     <string name="farm_name">Farm name</string>
 
+    <string name="hello">Hello!</string>
+
     <string name="sensorType">Sensor Type</string>
     <string name="value">Value</string>
     <string name="add">Add</string>

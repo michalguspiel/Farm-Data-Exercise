@@ -2,8 +2,9 @@ package com.erdees.farmdataexercise.feature_auth.presentation.profile
 
 import android.util.Log
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.Button
+import androidx.compose.foundation.layout.height
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -14,10 +15,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.erdees.farmdataexercise.R
+import com.erdees.farmdataexercise.coreUtils.components.MyButton
 import com.erdees.farmdataexercise.coreUtils.components.MyTopAppBar
 import com.erdees.farmdataexercise.coreUtils.components.ProgressBar
 import com.erdees.farmdataexercise.coreUtils.utils.Screen
 import com.erdees.farmdataexercise.model.Response
+import com.erdees.farmdataexercise.ui.theme.LocalSpacing
+import com.erdees.farmdataexercise.ui.theme.Typography
 import kotlinx.coroutines.InternalCoroutinesApi
 
 @InternalCoroutinesApi
@@ -56,12 +60,20 @@ fun ProfileScreen(
                         modifier = Modifier.fillMaxSize(),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Text(text = "Hello ${userDocResponse.data.firstName} ${userDocResponse.data.lastName}")
-                        Button(onClick = {
+                        Spacer(modifier = Modifier.height(LocalSpacing.current.xLarge))
+                        Text(text = stringResource(id = R.string.hello),
+                            style = Typography.h4)
+                        Spacer(modifier = Modifier.height(LocalSpacing.current.default))
+                        Text(text = "${userDocResponse.data.firstName} ${userDocResponse.data.lastName}",
+                        modifier = Modifier,
+                        style = Typography.h3)
+                        Spacer(modifier = Modifier.height(LocalSpacing.current.default))
+                        Text(text = userDocResponse.data.email,
+                            style = Typography.body1)
+                        Spacer(modifier = Modifier.height(LocalSpacing.current.xLarge))
+                        MyButton(onClick = {
                             profileViewModel.signOut()
-                        }) {
-                            Text(text = stringResource(id = R.string.sign_out))
-                        }
+                        },text = stringResource(id = R.string.sign_out))
                     }
                 }
                 is Response.Error -> Log.i("profile_screen", userDocResponse.message)
