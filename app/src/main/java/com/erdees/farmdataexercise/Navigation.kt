@@ -17,13 +17,14 @@ import com.erdees.farmdataexercise.coreUtils.Constants.RANGE_SECOND
 import com.erdees.farmdataexercise.coreUtils.Constants.SENSOR_NAME
 import com.erdees.farmdataexercise.coreUtils.Constants.SENSOR_TYPE
 import com.erdees.farmdataexercise.coreUtils.utils.Screen
+import com.erdees.farmdataexercise.feature_FarmData.presentation.addFarmData.AddFarmScreen
+import com.erdees.farmdataexercise.feature_FarmData.presentation.detailedFarmDataGraphScreen.DetailedFarmDataGraphScreen
+import com.erdees.farmdataexercise.feature_FarmData.presentation.farmDataScreen.FarmDataScreen
+import com.erdees.farmdataexercise.feature_FarmData.presentation.selectFarm.SelectFarmScreen
+import com.erdees.farmdataexercise.feature_FarmData.presentation.selectFarmData.SelectFarmDataScreen
 import com.erdees.farmdataexercise.feature_auth.presentation.profile.ProfileScreen
 import com.erdees.farmdataexercise.feature_auth.presentation.signIn.SignInScreen
 import com.erdees.farmdataexercise.feature_auth.presentation.signUp.SignUpScreen
-import com.erdees.farmdataexercise.feature_viewFarmData.presentation.detailedFarmDataGraphScreen.DetailedFarmDataGraphScreen
-import com.erdees.farmdataexercise.feature_viewFarmData.presentation.farmDataScreen.FarmDataScreen
-import com.erdees.farmdataexercise.feature_viewFarmData.presentation.selectFarm.SelectFarmScreen
-import com.erdees.farmdataexercise.feature_viewFarmData.presentation.selectFarmData.SelectFarmDataScreen
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 
@@ -44,6 +45,22 @@ fun Navigation() {
         composable(route = Screen.SignInScreen.route){
             SignInScreen(navController = navController)
         }
+        composable(route = Screen.AddFarmDataScreen.route + "?$LOCATION_DOC_ID={$LOCATION_DOC_ID}&$LOCATION_NAME={$LOCATION_NAME}&$FARM_IMAGE_URL={$FARM_IMAGE_URL}",arguments = listOf(
+            navArgument(LOCATION_DOC_ID){
+                type = NavType.StringType
+                nullable = true
+            },
+            navArgument(LOCATION_NAME){
+                type = NavType.StringType
+                nullable = true
+            },
+            navArgument(FARM_IMAGE_URL){
+                type = NavType.StringType
+                defaultValue = FARM_DEFAULT_IMAGE
+            }
+        )) {
+            AddFarmScreen(navController = navController)
+        }
         composable(route = Screen.SelectFarmDataScreen.route + "?$LOCATION_DOC_ID={$LOCATION_DOC_ID}&$LOCATION_NAME={$LOCATION_NAME}&$FARM_IMAGE_URL={$FARM_IMAGE_URL}",arguments = listOf(
             navArgument(LOCATION_DOC_ID){
                 type = NavType.StringType
@@ -53,7 +70,7 @@ fun Navigation() {
                 type = NavType.StringType
                 nullable = true
             },
-            navArgument("argName"){
+            navArgument(FARM_IMAGE_URL){
                 type = NavType.StringType
                 defaultValue = FARM_DEFAULT_IMAGE
             }

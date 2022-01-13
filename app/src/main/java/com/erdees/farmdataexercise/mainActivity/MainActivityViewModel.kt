@@ -4,8 +4,8 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.erdees.farmdataexercise.feature_viewFarmData.domain.model.FarmInformation
-import com.erdees.farmdataexercise.feature_viewFarmData.domain.use_case.UseCases
+import com.erdees.farmdataexercise.feature_FarmData.domain.model.FarmInformation
+import com.erdees.farmdataexercise.feature_FarmData.domain.use_case.UseCases
 import com.erdees.farmdataexercise.model.Response
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect

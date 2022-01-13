@@ -4,17 +4,17 @@ import android.app.Application
 import androidx.room.Room
 import com.erdees.farmdataexercise.data.AuthRepositoryImpl
 import com.erdees.farmdataexercise.domain.repository.AuthRepository
+import com.erdees.farmdataexercise.feature_FarmData.data.local.FarmInformationDatabase
+import com.erdees.farmdataexercise.feature_FarmData.data.repository.FarmDataRepositoryImpl
+import com.erdees.farmdataexercise.feature_FarmData.data.repository.FarmInfoRepositoryImpl
+import com.erdees.farmdataexercise.feature_FarmData.data.repository.TemporaryFarmDataRepositoryImpl
+import com.erdees.farmdataexercise.feature_FarmData.domain.repository.FarmDataRepository
+import com.erdees.farmdataexercise.feature_FarmData.domain.repository.FarmInfoRepository
+import com.erdees.farmdataexercise.feature_FarmData.domain.repository.TemporaryFarmDataRepository
+import com.erdees.farmdataexercise.feature_FarmData.domain.use_case.*
+import com.erdees.farmdataexercise.feature_FarmData.domain.use_case.UseCases
 import com.erdees.farmdataexercise.feature_auth.domain.use_case.*
 import com.erdees.farmdataexercise.feature_auth.domain.use_case.IsUserAuthenticated
-import com.erdees.farmdataexercise.feature_viewFarmData.data.local.FarmInformationDatabase
-import com.erdees.farmdataexercise.feature_viewFarmData.data.repository.FarmDataRepositoryImpl
-import com.erdees.farmdataexercise.feature_viewFarmData.data.repository.FarmInfoRepositoryImpl
-import com.erdees.farmdataexercise.feature_viewFarmData.data.repository.TemporaryFarmDataRepositoryImpl
-import com.erdees.farmdataexercise.feature_viewFarmData.domain.repository.FarmDataRepository
-import com.erdees.farmdataexercise.feature_viewFarmData.domain.repository.FarmInfoRepository
-import com.erdees.farmdataexercise.feature_viewFarmData.domain.repository.TemporaryFarmDataRepository
-import com.erdees.farmdataexercise.feature_viewFarmData.domain.use_case.*
-import com.erdees.farmdataexercise.feature_viewFarmData.domain.use_case.UseCases
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
@@ -84,7 +84,7 @@ class AppModule {
         saveTemporaryFarmData = SaveTemporaryFarmData(temporaryFarmDataRepository),
         downloadAndSaveFarmsInformation = DownloadAndSaveFarmsInformation(farmInfoRepository),
         getLocalFarmsInformation = GetLocalFarmsInformation(farmInfoRepository),
-        isUserAuthenticated = com.erdees.farmdataexercise.feature_viewFarmData.domain.use_case.IsUserAuthenticated(authRepository),
+        isUserAuthenticated = com.erdees.farmdataexercise.feature_FarmData.domain.use_case.IsUserAuthenticated(authRepository),
         addFarm = AddFarm(farmInfoRepository),
         getCurrentUserId = GetCurrentUserId(authRepository)
     )

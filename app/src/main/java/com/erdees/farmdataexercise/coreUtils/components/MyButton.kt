@@ -18,8 +18,9 @@ import com.erdees.farmdataexercise.ui.theme.LocalSpacing
 import com.erdees.farmdataexercise.ui.theme.Yellow100
 
 @Composable
-fun MyButton(onClick: () -> Unit,text : String,enabled: Boolean = true, icon: ImageVector? = null) {
+fun MyButton(onClick: () -> Unit,text : String,modifier: Modifier = Modifier,enabled: Boolean = true, icon: ImageVector? = null) {
     androidx.compose.material.Button(
+        modifier = modifier,
         onClick = onClick,
         colors = ButtonDefaults.buttonColors(backgroundColor = Yellow100),
         elevation = ButtonDefaults.elevation(

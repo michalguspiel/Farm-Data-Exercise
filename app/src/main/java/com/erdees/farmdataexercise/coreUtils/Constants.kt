@@ -1,8 +1,8 @@
 package com.erdees.farmdataexercise.coreUtils
 
-import com.erdees.farmdataexercise.feature_viewFarmData.domain.model.PH
-import com.erdees.farmdataexercise.feature_viewFarmData.domain.model.Rainfall
-import com.erdees.farmdataexercise.feature_viewFarmData.domain.model.Temperature
+import com.erdees.farmdataexercise.feature_FarmData.domain.model.PH
+import com.erdees.farmdataexercise.feature_FarmData.domain.model.Rainfall
+import com.erdees.farmdataexercise.feature_FarmData.domain.model.Temperature
 
 object Constants {
     //FIRESTORE FARM DATA

@@ -28,6 +28,7 @@ fun MyTopAppBar(modifier: Modifier = Modifier ,screen: Screen, navController: Na
                 Text(
                     text = when(screen){
                         Screen.ProfileScreen -> "Profile"
+                        Screen.AddFarmDataScreen -> "Add farm data"
                         else -> "Select farm"
                     }
                 )
