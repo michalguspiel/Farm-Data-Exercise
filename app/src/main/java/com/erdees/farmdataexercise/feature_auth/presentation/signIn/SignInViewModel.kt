@@ -16,6 +16,10 @@ class SignInViewModel @Inject constructor(
     private val useCases: UseCases,
 ) : ViewModel() {
 
+    var email = mutableStateOf("")
+
+    var password = mutableStateOf("")
+
     val isUserAuthenticated get() = useCases.isUserAuthenticated()
 
     private val _signInState = mutableStateOf<Response<Boolean>>(Response.Success(false))
@@ -26,9 +30,9 @@ class SignInViewModel @Inject constructor(
         _signInState.value = Response.Success(false)
     }
 
-    fun signInWithEmail(email: String, password: String){
+    fun signInWithEmail(){
         viewModelScope.launch{
-            useCases.signInWithEmail(email,password).collect{ response ->
+            useCases.signInWithEmail(email.value,password.value).collect{ response ->
                 _signInState.value = response
             }
         }

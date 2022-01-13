@@ -15,7 +15,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material.icons.outlined.MailOutline
 import androidx.compose.material.icons.outlined.Person
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -37,7 +37,7 @@ import com.erdees.farmdataexercise.ui.theme.*
 
 @Composable
 fun SignUpContent(
-    signUpViewModel: SignUpViewModel = hiltViewModel(),
+    viewModel: SignUpViewModel = hiltViewModel(),
     navController: NavController
 ) {
 
@@ -46,22 +46,6 @@ fun SignUpContent(
         pushStringAnnotation(SIGN_UP_TAG, "")
         withStyle(style = SpanStyle(Color.Blue)) { append(stringResource(id = R.string.sign_in_excl)) }
         pop()
-    }
-
-    var email by remember {
-        mutableStateOf("")
-    }
-    var password by remember {
-        mutableStateOf("")
-    }
-    var confirmPassword by remember {
-        mutableStateOf("")
-    }
-    var firstName by remember {
-        mutableStateOf("")
-    }
-    var lastName by remember {
-        mutableStateOf("")
     }
 
     Column(
@@ -83,8 +67,8 @@ fun SignUpContent(
         )
         Spacer(Modifier.padding(LocalSpacing.current.large))
         TextField(
-            value = email,
-            onValueChange = { email = it },
+            value = viewModel.email.value,
+            onValueChange = { viewModel.email.value = it },
             modifier = Modifier.padding(LocalSpacing.current.xxSmall),
             leadingIcon = {
                 Icon(
@@ -104,7 +88,7 @@ fun SignUpContent(
         Spacer(Modifier.padding(LocalSpacing.current.default))
         Column(Modifier.width(IntrinsicSize.Min)) {
             TextField(
-                value = password, onValueChange = { password = it },
+                value = viewModel.password.value, onValueChange = { viewModel.password.value = it },
                 leadingIcon = {
                     Icon(
                         Icons.Outlined.Lock,
@@ -131,7 +115,7 @@ fun SignUpContent(
         Spacer(Modifier.padding(LocalSpacing.current.default))
         Column {
             TextField(
-                value = confirmPassword, onValueChange = { confirmPassword = it },
+                value = viewModel.confirmPassword.value, onValueChange = { viewModel.confirmPassword.value = it },
                 leadingIcon = {
                     Icon(
                         Icons.Outlined.Lock,
@@ -157,7 +141,7 @@ fun SignUpContent(
         }
         Spacer(Modifier.padding(LocalSpacing.current.default))
         TextField(
-            value = firstName, onValueChange = { firstName = it },
+            value = viewModel.firstName.value, onValueChange = { viewModel.firstName.value = it },
             leadingIcon = {
                 Icon(
                     Icons.Outlined.Person,
@@ -176,7 +160,7 @@ fun SignUpContent(
         )
         Spacer(Modifier.padding(LocalSpacing.current.default))
         TextField(
-            value = lastName, onValueChange = { lastName = it },
+            value = viewModel.lastName.value, onValueChange = { viewModel.lastName.value = it },
             leadingIcon = {
                 Icon(
                     Icons.Outlined.Person,
@@ -195,13 +179,7 @@ fun SignUpContent(
         )
         Spacer(Modifier.padding(LocalSpacing.current.default))
         MyButton(onClick = {
-            signUpViewModel.startSigningUpWithEmail(
-                password,
-                confirmPassword,
-                email,
-                firstName,
-                lastName
-            )
+            viewModel.startSigningUpWithEmail()
         }, text = stringResource(R.string.sign_up))
         Spacer(modifier = Modifier.padding(LocalSpacing.current.default))
         ClickableText(text = annotatedString, style = Typography.body1, onClick = { offset ->

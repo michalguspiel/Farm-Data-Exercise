@@ -23,19 +23,24 @@ class SignUpViewModel @Inject constructor(
     private val _signUpState = mutableStateOf<Response<Boolean>>(Response.Success(false))
     val signUpState: State<Response<Boolean>> = _signUpState
 
+    var email = mutableStateOf("")
+
+    var password = mutableStateOf("")
+
+    var confirmPassword = mutableStateOf("")
+
+    var firstName = mutableStateOf("")
+
+    var lastName = mutableStateOf("")
+
     fun resetSignUpState(){
         _signUpState.value = Response.Success(false)
     }
 
 
     fun startSigningUpWithEmail(
-        password: String,
-        confirmPassword: String,
-        email: String,
-        firstName: String,
-        lastName: String
     ) {
-        val registration = Registration(password, confirmPassword, email, firstName, lastName)
+        val registration = Registration(password.value, confirmPassword.value, email.value, firstName.value, lastName.value)
         _signUpState.value = Response.Loading
         if (!registration.isLegit()) {
             _signUpState.value = Response.Error(registration.errorMessage)

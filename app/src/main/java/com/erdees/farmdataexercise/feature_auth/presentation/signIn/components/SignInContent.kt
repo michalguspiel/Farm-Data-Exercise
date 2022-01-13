@@ -17,7 +17,7 @@ import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material.icons.outlined.MailOutline
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -40,7 +40,7 @@ import com.erdees.farmdataexercise.ui.theme.*
 
 @Composable
 fun SignInContent(
-    signInViewModel: SignInViewModel = hiltViewModel(),
+    viewModel: SignInViewModel = hiltViewModel(),
     navController: NavController
 ) {
 
@@ -57,12 +57,6 @@ fun SignInContent(
         pop()
     }
 
-    var email by remember {
-        mutableStateOf("")
-    }
-    var password by remember {
-        mutableStateOf("")
-    }
 
     Column(
         modifier = Modifier
@@ -83,8 +77,8 @@ fun SignInContent(
         )
         Spacer(Modifier.padding(LocalSpacing.current.default))
         TextField(
-            value = email,
-            onValueChange = { email = it },
+            value = viewModel.email.value,
+            onValueChange = { viewModel.email.value = it },
             modifier = Modifier.padding(LocalSpacing.current.xxSmall),
             leadingIcon = { Icon(Icons.Outlined.MailOutline, stringResource(id = R.string.icon), tint = OnPrimary) },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
@@ -97,7 +91,7 @@ fun SignInContent(
         )
         Spacer(Modifier.padding(LocalSpacing.current.default))
         TextField(
-            value = password, onValueChange = { password = it },
+            value = viewModel.password.value, onValueChange = { viewModel.password.value = it },
             leadingIcon = { Icon(Icons.Outlined.Lock, stringResource(id = R.string.icon), tint = OnPrimary) },
             textStyle = Typography.body2,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
@@ -112,10 +106,7 @@ fun SignInContent(
 
         Spacer(Modifier.padding(LocalSpacing.current.large))
         MyButton(onClick = {
-            signInViewModel.signInWithEmail(
-                email,
-                password,
-            )
+            viewModel.signInWithEmail()
         }, text = stringResource(id = R.string.sign_in))
         Spacer(Modifier.padding(LocalSpacing.current.medium))
         ClickableText(
