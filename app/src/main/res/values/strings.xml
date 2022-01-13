@@ -5,11 +5,16 @@
     <string name="add_farm">Add farm</string>
     <string name="farm_name">Farm name</string>
     <string name="select_farm">Select farm</string>
+    <string name="profile">Profile</string>
+
 
     <string name="hello">Hello!</string>
     <string name="date">Date</string>
     <string name="time">Time</string>
 
+
+    <string name="browse_farm_data">Browse farm data</string>
+    <string name="my_account">My account</string>
 
     <string name="sensorType">Sensor Type</string>
     <string name="value">Value</string>

@@ -9,7 +9,9 @@ import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
+import com.erdees.farmdataexercise.R
 import com.erdees.farmdataexercise.coreUtils.utils.Screen
 import com.erdees.farmdataexercise.ui.theme.BackgroundColor
 
@@ -27,9 +29,9 @@ fun MyTopAppBar(modifier: Modifier = Modifier ,screen: Screen, navController: Na
             ) {
                 Text(
                     text = when(screen){
-                        Screen.ProfileScreen -> "Profile"
-                        Screen.AddFarmDataScreen -> "Add farm data"
-                        else -> "Select farm"
+                        Screen.ProfileScreen -> stringResource(id = R.string.profile)
+                        Screen.AddFarmDataScreen -> stringResource(id = R.string.add_farm_data)
+                        else -> stringResource(id = R.string.select_farm)
                     }
                 )
                 Row(
@@ -64,7 +66,7 @@ fun MyTopAppBar(modifier: Modifier = Modifier ,screen: Screen, navController: Na
                             }
                         ) {
                             Text(
-                                text = "My account"
+                                text = stringResource(id = R.string.my_account)
                             )
                         }
                     }
@@ -75,7 +77,7 @@ fun MyTopAppBar(modifier: Modifier = Modifier ,screen: Screen, navController: Na
                             }
                         ) {
                             Text(
-                                text = "My account"
+                                text = stringResource(id = R.string.my_account)
                             )
                         }
                     }
@@ -85,7 +87,7 @@ fun MyTopAppBar(modifier: Modifier = Modifier ,screen: Screen, navController: Na
                             }
                         ) {
                             Text(
-                                text = "Browse farm data"
+                                text = stringResource(id = R.string.browse_farm_data)
                             )
                         }}
                 }
