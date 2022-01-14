@@ -8,9 +8,11 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.erdees.farmdataexercise.di.AppModule
 import com.erdees.farmdataexercise.mainActivity.MainActivity
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import dagger.hilt.android.testing.UninstallModules
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 import org.junit.Before
@@ -24,14 +26,17 @@ import org.junit.runner.RunWith
 @InternalCoroutinesApi
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
+@UninstallModules(AppModule::class)
 class UiTest {
 
     @ExperimentalCoroutinesApi
     @InternalCoroutinesApi
-    @get:Rule
-    val composeTestRule = createAndroidComposeRule<MainActivity>()
+
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
+
+    @get:Rule
+    val composeTestRule = createAndroidComposeRule<MainActivity>()
 
     lateinit var navController : TestNavHostController
 

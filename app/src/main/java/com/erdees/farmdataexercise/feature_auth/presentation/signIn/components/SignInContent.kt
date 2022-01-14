@@ -21,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -33,6 +34,7 @@ import androidx.navigation.NavController
 import com.erdees.farmdataexercise.R
 import com.erdees.farmdataexercise.coreUtils.Constants.CONTINUE_TAG
 import com.erdees.farmdataexercise.coreUtils.Constants.SIGN_IN_TAG
+import com.erdees.farmdataexercise.coreUtils.TestTags
 import com.erdees.farmdataexercise.coreUtils.components.MyButton
 import com.erdees.farmdataexercise.coreUtils.utils.Screen
 import com.erdees.farmdataexercise.feature_auth.presentation.signIn.SignInViewModel
@@ -74,6 +76,7 @@ fun SignInContent(
             style = Typography.h4,
             textAlign = TextAlign.Center,
             color = OnPrimary,
+            modifier = Modifier.testTag(TestTags.SIGN_IN_TAG)
         )
         Spacer(Modifier.padding(LocalSpacing.current.default))
         TextField(

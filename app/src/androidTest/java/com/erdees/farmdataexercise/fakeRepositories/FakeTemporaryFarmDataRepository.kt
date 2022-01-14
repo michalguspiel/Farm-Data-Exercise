@@ -5,9 +5,8 @@ import com.erdees.farmdataexercise.feature_FarmData.domain.repository.TemporaryF
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import javax.inject.Inject
 
-class FakeTemporaryFarmDataRepository @Inject constructor() : TemporaryFarmDataRepository {
+class FakeTemporaryFarmDataRepository() : TemporaryFarmDataRepository {
 
     private val fakeFarmData1 =
         FarmData(location = "Fake location1", datetime = "01-01-2022 15:33", "pH", "10")

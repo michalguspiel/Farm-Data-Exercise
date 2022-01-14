@@ -1,5 +1,6 @@
 package com.erdees.farmdataexercise.fakeRepositories
 
+import com.erdees.farmdataexercise.FakeConstants
 import com.erdees.farmdataexercise.domain.model.FarmDataUser
 import com.erdees.farmdataexercise.domain.repository.AuthRepository
 import com.erdees.farmdataexercise.feature_auth.domain.util.Registration
@@ -10,11 +11,11 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.flow
-import javax.inject.Inject
 
-class FakeAuthRepository @Inject constructor(private val isUserAuth : Boolean , val currUserId : String ) : AuthRepository {
+class FakeAuthRepository() : AuthRepository {
 
-
+    private val isUserAuth : Boolean = false
+    private val currUserId : String = FakeConstants.FAKE_OWNER_ID
     val fakeFarmDataUser = FarmDataUser("Fake","Faker","Faker@mail.com", listOf())
 
     override fun isUserAuthenticated(): Boolean {

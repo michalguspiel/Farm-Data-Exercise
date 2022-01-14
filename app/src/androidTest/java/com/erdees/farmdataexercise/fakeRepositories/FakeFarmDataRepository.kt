@@ -8,9 +8,8 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.flow
-import javax.inject.Inject
 
-class FakeFarmDataRepository @Inject constructor() : FarmDataRepository {
+class FakeFarmDataRepository (): FarmDataRepository {
 
     private val fakeFarmData1 =
         FarmData(location = "Fake location1", datetime = "01-01-2022 15:33", "pH", "10")

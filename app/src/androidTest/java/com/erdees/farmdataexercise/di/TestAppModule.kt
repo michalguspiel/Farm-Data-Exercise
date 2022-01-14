@@ -1,14 +1,12 @@
 package com.erdees.farmdataexercise.di
 
-import com.erdees.farmdataexercise.FakeConstants
-import com.erdees.farmdataexercise.domain.repository.AuthRepository
+import android.app.Application
+import androidx.room.Room
 import com.erdees.farmdataexercise.fakeRepositories.FakeAuthRepository
 import com.erdees.farmdataexercise.fakeRepositories.FakeFarmDataRepository
 import com.erdees.farmdataexercise.fakeRepositories.FakeFarmInformationRepository
 import com.erdees.farmdataexercise.fakeRepositories.FakeTemporaryFarmDataRepository
-import com.erdees.farmdataexercise.feature_FarmData.domain.repository.FarmDataRepository
-import com.erdees.farmdataexercise.feature_FarmData.domain.repository.FarmInfoRepository
-import com.erdees.farmdataexercise.feature_FarmData.domain.repository.TemporaryFarmDataRepository
+import com.erdees.farmdataexercise.feature_FarmData.data.local.FarmInformationDatabase
 import com.erdees.farmdataexercise.feature_FarmData.domain.use_case.*
 import com.erdees.farmdataexercise.feature_auth.domain.use_case.*
 import com.erdees.farmdataexercise.feature_auth.domain.use_case.IsUserAuthenticated
@@ -18,7 +16,6 @@ import dagger.Provides
 import dagger.hilt.components.SingletonComponent
 import dagger.hilt.testing.TestInstallIn
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import javax.inject.Singleton
 
 
 @ExperimentalCoroutinesApi
@@ -29,37 +26,33 @@ import javax.inject.Singleton
 )
 class TestAppModule {
 
-    @Singleton
-    @Provides
-    fun provideUserDocID() = FakeConstants.FAKE_OWNER_ID
 
-    @Singleton
     @Provides
-    fun provideBoolean() = false
-
-    @Singleton
-    @Provides
-    fun provideFakeAuthRepository(boolean : Boolean, id : String): AuthRepository =
-        FakeAuthRepository(boolean,id)
+    fun provideFakeAuthRepository(): FakeAuthRepository =
+        FakeAuthRepository()
 
 
-    @Singleton
     @Provides
-    fun provideFakeFarmDataRepository(): FarmDataRepository =
+    fun provideFakeFarmDataRepository(): FakeFarmDataRepository =
         FakeFarmDataRepository()
 
-    @Singleton
     @Provides
-    fun provideFakeFarmInfoRepository(): FarmInfoRepository =
-        FakeFarmInformationRepository()
+    fun provideFakeFarmInfoRepository(
+        db: FarmInformationDatabase,
+    ): FakeFarmInformationRepository = FakeFarmInformationRepository(
+        dao = db.farmInformationDao,
+    )
+
+    @Provides
+    fun provideFarmInformationDatabase(app: Application): FarmInformationDatabase {
+        return Room.inMemoryDatabaseBuilder(app, FarmInformationDatabase::class.java).build()
+    }
 
 
-    @Singleton
     @Provides
-    fun provideFakeTemporaryFarmDataRepository() :TemporaryFarmDataRepository =
+    fun provideFakeTemporaryFarmDataRepository() :FakeTemporaryFarmDataRepository =
         FakeTemporaryFarmDataRepository()
 
-    @Singleton
     @Provides
     fun provideFakeUseCases(fakeAuthRepository: FakeAuthRepository) = UseCases(
             isUserAuthenticated = IsUserAuthenticated(fakeAuthRepository),
@@ -69,7 +62,6 @@ class TestAppModule {
             signUpWithEmail = SignUpWithEmail(fakeAuthRepository)
         )
 
-    @Singleton
     @Provides
     fun provideFakeFarmDataUseCases(fakeAuthRepository: FakeAuthRepository,
                                     fakeFarmInformationRepository: FakeFarmInformationRepository,
@@ -88,5 +80,8 @@ class TestAppModule {
     )
 
 
+
 }
+
+
 
