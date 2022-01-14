@@ -13,7 +13,6 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-
 @HiltViewModel
 @InternalCoroutinesApi
 class ProfileViewModel @Inject constructor(

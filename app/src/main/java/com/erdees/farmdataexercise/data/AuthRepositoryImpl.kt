@@ -1,6 +1,5 @@
 package com.erdees.farmdataexercise.data
 
-import android.util.Log
 import com.erdees.farmdataexercise.coreUtils.Constants.ERROR_MESSAGE
 import com.erdees.farmdataexercise.domain.model.FarmDataUser
 import com.erdees.farmdataexercise.domain.repository.AuthRepository
@@ -34,9 +33,7 @@ class AuthRepositoryImpl @Inject constructor(
 
 
     override suspend fun getCurrentUserDocument(): Flow<Response<FarmDataUser>> = callbackFlow {
-        Log.i("AuthRepo","getCurrentUserDoc() Fired!")
         if(!isUserAuthenticated()){
-            Log.i("AuthRepo", "USER LOGGED OUT!")
             trySend(Response.Error("NO UID!"))
             awaitClose()
         }
