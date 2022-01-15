@@ -19,6 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -31,6 +32,7 @@ import com.erdees.farmdataexercise.R
 import com.erdees.farmdataexercise.coreUtils.Constants.FARM_IMAGE_URL
 import com.erdees.farmdataexercise.coreUtils.Constants.LOCATION_DOC_ID
 import com.erdees.farmdataexercise.coreUtils.Constants.LOCATION_NAME
+import com.erdees.farmdataexercise.coreUtils.TestTags
 import com.erdees.farmdataexercise.coreUtils.components.MyButton
 import com.erdees.farmdataexercise.coreUtils.components.MyTopAppBar
 import com.erdees.farmdataexercise.coreUtils.components.ProgressBar
@@ -141,7 +143,7 @@ fun SelectFarmScreen(
                             .toDp(density)
                     }
             ) {
-                AndroidView({ mapView }) { mapView ->
+                AndroidView({ mapView },modifier = Modifier.testTag(TestTags.MAP_TAG)) { mapView ->
                     CoroutineScope(Dispatchers.Main).launch {
 
                         val adapter = WindowAdapter(context)
@@ -155,7 +157,6 @@ fun SelectFarmScreen(
                         map.setInfoWindowAdapter(
                             adapter
                         )
-
 
                         map.setOnMarkerClickListener { marker ->
                             viewModel.selectFarm(marker)

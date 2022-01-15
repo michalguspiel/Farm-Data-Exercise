@@ -15,9 +15,14 @@ object Format {
         return dateTime.format(desiredFormat)
     }
 
-    fun formatDate(date: LocalDate): String {
+    fun formatDateAsStartOfDay(date: LocalDate): String {
         val desiredFormat = DateTimeFormatter.ofPattern("uuuu-MM-dd'T'HH:mm:ssX")
         return date.atStartOfDay().atOffset(ZoneOffset.UTC).format(desiredFormat)
+    }
+
+    fun formatDateAsEndOfDay(date: LocalDate) : String{
+        val desiredFormat = DateTimeFormatter.ofPattern("uuuu-MM-dd'T'HH:mm:ssX")
+        return date.atTime(23,59,59).atOffset(ZoneOffset.UTC).format(desiredFormat)
     }
 
     fun formatTemperature(value: String): String {

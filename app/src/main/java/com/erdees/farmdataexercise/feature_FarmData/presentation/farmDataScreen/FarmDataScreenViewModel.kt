@@ -29,8 +29,6 @@ class FarmDataScreenViewModel @Inject constructor(
     private val _isFarmDataAddedState = mutableStateOf<Response<Void?>>(Response.Empty(null))
     val isFarmDataAddedState: State<Response<Void?>> = _isFarmDataAddedState
 
-    var openDialogState = mutableStateOf(false)
-
     var isGraphShown = mutableStateOf(true)
 
     fun graphStateChanged(){

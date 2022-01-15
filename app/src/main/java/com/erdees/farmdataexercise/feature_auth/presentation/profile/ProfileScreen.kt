@@ -8,11 +8,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.erdees.farmdataexercise.R
+import com.erdees.farmdataexercise.coreUtils.TestTags
 import com.erdees.farmdataexercise.coreUtils.components.MyButton
 import com.erdees.farmdataexercise.coreUtils.components.MyTopAppBar
 import com.erdees.farmdataexercise.coreUtils.components.ProgressBar
@@ -50,7 +52,7 @@ fun ProfileScreen(
                 is Response.Success -> {
                     if (response.data) {
                         navController.popBackStack()
-                        navController.navigate(Screen.SignUpScreen.route)
+                        navController.navigate(Screen.SignInScreen.route)
                     }
                 }
                 is Response.Error -> Log.d("profile_screen", response.message)
@@ -60,7 +62,7 @@ fun ProfileScreen(
                 is Response.Loading -> ProgressBar()
                 is Response.Success -> {
 
-                    ConstraintLayout(modifier = Modifier.fillMaxSize()) {
+                    ConstraintLayout(modifier = Modifier.fillMaxSize().testTag(TestTags.PROFILE_SCREEN_TAG)) {
                         val (column, button) = createRefs()
                         Column(
                             modifier = Modifier.constrainAs(column){
@@ -101,7 +103,7 @@ fun ProfileScreen(
                                     bottom.linkTo(parent.bottom)
                                     start.linkTo(parent.start)
                                     end.linkTo(parent.end)
-                                }
+                                }.testTag(TestTags.PROFILE_SCREEN_SIGN_OUT_BTN)
                                 .padding(bottom = LocalSpacing.current.xLarge))
                     }
                 }

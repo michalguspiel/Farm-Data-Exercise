@@ -74,7 +74,7 @@ class SelectFarmScreenViewModel @Inject constructor(
         selectFarm(null)
     }
 
-    private fun selectFarm(farmInformation: FarmInformation?){
+    fun selectFarm(farmInformation: FarmInformation?){
         _selectedFarmState.value = farmInformation
     }
 

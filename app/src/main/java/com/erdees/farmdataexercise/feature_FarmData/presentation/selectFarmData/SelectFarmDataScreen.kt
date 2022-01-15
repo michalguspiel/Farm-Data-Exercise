@@ -21,7 +21,8 @@ import com.erdees.farmdataexercise.coreUtils.Constants.LOCATION_NAME
 import com.erdees.farmdataexercise.coreUtils.components.MyButton
 import com.erdees.farmdataexercise.coreUtils.components.MyTopAppBar
 import com.erdees.farmdataexercise.coreUtils.utils.Screen
-import com.erdees.farmdataexercise.feature_FarmData.domain.util.Format.formatDate
+import com.erdees.farmdataexercise.feature_FarmData.domain.util.Format.formatDateAsEndOfDay
+import com.erdees.farmdataexercise.feature_FarmData.domain.util.Format.formatDateAsStartOfDay
 import com.erdees.farmdataexercise.feature_FarmData.presentation.components.*
 import com.erdees.farmdataexercise.ui.theme.LocalSpacing
 import com.erdees.farmdataexercise.ui.theme.Yellow100
@@ -107,8 +108,8 @@ fun SelectFarmDataScreen(
                             viewModel.savedStateHandle.get<String>(LOCATION_NAME)
                                 .toString(),
                             sensorTypeDocument,
-                            formatDate(timeRange.first()),
-                            formatDate(timeRange[1]),
+                            formatDateAsStartOfDay(timeRange.first()),
+                            formatDateAsEndOfDay(timeRange[1]),
                             sensorTypeName
                         )
                     )

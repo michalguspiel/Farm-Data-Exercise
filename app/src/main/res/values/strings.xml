@@ -34,6 +34,8 @@
     <string name="pick_date">Pick date</string>
 
     <string name="oops_no_data">Ooops… looks like there is no data in that time.</string>
+    <string name="only_one_data">Looks like in that period there is only one data</string>
+
     <string name="back">Back</string>
     <string name="date_time">Date time</string>
     <string name="hide_graph">Hide graph</string>

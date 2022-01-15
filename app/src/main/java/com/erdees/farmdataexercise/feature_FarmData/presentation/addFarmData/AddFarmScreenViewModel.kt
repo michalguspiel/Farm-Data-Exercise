@@ -62,7 +62,7 @@ class AddFarmScreenViewModel @Inject constructor(
     fun addFarmData(
     ) {
         viewModelScope.launch {
-            useCases.addFarmData.invoke(savedStateHandle.get<String>(Constants.LOCATION_DOC_ID)!!, pickedDataTime, sensorTypeDocument.value, dataValue.value)
+            useCases.addFarmData.invoke(savedStateHandle.get<String>(Constants.LOCATION_NAME)!!, pickedDataTime, sensorTypeDocument.value, dataValue.value)
                 .collect { response ->
                     _isFarmDataAddedState.value = response
                 }

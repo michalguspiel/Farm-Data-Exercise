@@ -21,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -33,6 +34,8 @@ import androidx.navigation.NavController
 import com.erdees.farmdataexercise.R
 import com.erdees.farmdataexercise.coreUtils.Constants.CONTINUE_TAG
 import com.erdees.farmdataexercise.coreUtils.Constants.SIGN_IN_TAG
+import com.erdees.farmdataexercise.coreUtils.TestTags
+import com.erdees.farmdataexercise.coreUtils.TestTags.NAVIGATE_FROM_SIGN_IN_TO_SIGN_UP_BTN
 import com.erdees.farmdataexercise.coreUtils.components.MyButton
 import com.erdees.farmdataexercise.coreUtils.utils.Screen
 import com.erdees.farmdataexercise.feature_auth.presentation.signIn.SignInViewModel
@@ -74,12 +77,13 @@ fun SignInContent(
             style = Typography.h4,
             textAlign = TextAlign.Center,
             color = OnPrimary,
+            modifier = Modifier.testTag(TestTags.SIGN_IN_TAG)
         )
         Spacer(Modifier.padding(LocalSpacing.current.default))
         TextField(
             value = viewModel.email.value,
             onValueChange = { viewModel.email.value = it },
-            modifier = Modifier.padding(LocalSpacing.current.xxSmall),
+            modifier = Modifier.padding(LocalSpacing.current.xxSmall).testTag(TestTags.SIGN_IN_EMAIL),
             leadingIcon = { Icon(Icons.Outlined.MailOutline, stringResource(id = R.string.icon), tint = OnPrimary) },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
             shape = RoundedCornerShape(LocalCorner.current.default),
@@ -93,7 +97,7 @@ fun SignInContent(
         TextField(
             value = viewModel.password.value, onValueChange = { viewModel.password.value = it },
             leadingIcon = { Icon(Icons.Outlined.Lock, stringResource(id = R.string.icon), tint = OnPrimary) },
-            textStyle = Typography.body2,
+            textStyle = Typography.body2,modifier = Modifier.testTag(TestTags.SIGN_IN_PASSWORD),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
             visualTransformation = PasswordVisualTransformation(),
             shape = RoundedCornerShape(LocalCorner.current.default),
@@ -107,11 +111,11 @@ fun SignInContent(
         Spacer(Modifier.padding(LocalSpacing.current.large))
         MyButton(onClick = {
             viewModel.signInWithEmail()
-        }, text = stringResource(id = R.string.sign_in))
+        }, text = stringResource(id = R.string.sign_in),modifier = Modifier.testTag(TestTags.SIGN_IN_BUTTON_TAG))
         Spacer(Modifier.padding(LocalSpacing.current.medium))
         ClickableText(
             text = noAccountAnnotatedString,
-            style = Typography.body1,
+            style = Typography.body1,modifier = Modifier.testTag(NAVIGATE_FROM_SIGN_IN_TO_SIGN_UP_BTN),
             onClick = { offset ->
                 noAccountAnnotatedString.getStringAnnotations(
                     SIGN_IN_TAG,
@@ -125,6 +129,7 @@ fun SignInContent(
         Spacer(Modifier.padding(LocalSpacing.current.small))
         ClickableText(
             text = continueAnonymouslyAnnotatedString,
+            modifier = Modifier.testTag(TestTags.CONTINUE_ANONYMOUSLY),
             style = Typography.body1,
             onClick = { offset ->
                 continueAnonymouslyAnnotatedString.getStringAnnotations(

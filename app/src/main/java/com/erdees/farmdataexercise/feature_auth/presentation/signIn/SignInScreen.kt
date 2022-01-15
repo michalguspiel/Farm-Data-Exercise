@@ -1,15 +1,19 @@
 package com.erdees.farmdataexercise.feature_auth.presentation.signIn
 
-import androidx.compose.material.Button
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.erdees.farmdataexercise.R
+import com.erdees.farmdataexercise.coreUtils.TestTags
+import com.erdees.farmdataexercise.coreUtils.components.MyButton
 import com.erdees.farmdataexercise.coreUtils.components.ProgressBar
 import com.erdees.farmdataexercise.coreUtils.utils.Screen
+import com.erdees.farmdataexercise.feature_auth.presentation.components.AlertDialog
 import com.erdees.farmdataexercise.feature_auth.presentation.signIn.components.SignInContent
 import com.erdees.farmdataexercise.model.Response
 
@@ -32,22 +36,18 @@ fun SignInScreen(signInViewModel: SignInViewModel = hiltViewModel(), navControll
         Scaffold {
 
             if (openDialogState.value) {
-                androidx.compose.material.AlertDialog(onDismissRequest = {
-                    openDialogState.value = false
-                },
+                AlertDialog(
+                    modifier = Modifier.testTag(TestTags.ALERT_DIALOG_TAG),
+                    onDismissRequest = { openDialogState.value = false },
                     title = { Text(text = stringResource(id = R.string.error)) },
                     text = { Text(text = errorMessageState) },
-                    confirmButton = {},
                     dismissButton = {
-                        Button(
-
+                        MyButton(
                             onClick = {
                                 openDialogState.value = false
-                            }) {
-                            Text(stringResource(R.string.back))
-                        }
-                    }
-                )
+                            }, text = stringResource(id = R.string.back)
+                        )
+                    })
             }
 
             SignInContent(navController = navController)

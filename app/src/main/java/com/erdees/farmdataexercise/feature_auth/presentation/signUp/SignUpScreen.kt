@@ -1,16 +1,19 @@
 package com.erdees.farmdataexercise.feature_auth.presentation.signUp
 
-import android.util.Log
-import androidx.compose.material.Button
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.erdees.farmdataexercise.R
+import com.erdees.farmdataexercise.coreUtils.TestTags.ALERT_DIALOG_TAG
+import com.erdees.farmdataexercise.coreUtils.components.MyButton
 import com.erdees.farmdataexercise.coreUtils.components.ProgressBar
 import com.erdees.farmdataexercise.coreUtils.utils.Screen
+import com.erdees.farmdataexercise.feature_auth.presentation.components.AlertDialog
 import com.erdees.farmdataexercise.feature_auth.presentation.signUp.components.SignUpContent
 import com.erdees.farmdataexercise.model.Response
 
@@ -34,44 +37,40 @@ fun SignUpScreen(
     }
 
     if (!signUpViewModel.isUserAuthenticated) {
-        Scaffold(
-        ) {
+        Scaffold {
 
-            if(openDialogState.value){
-                androidx.compose.material.AlertDialog(onDismissRequest = { openDialogState.value = false },
-                    title = { Text(text = "Error") },
+            if (openDialogState.value) {
+                AlertDialog(
+                    modifier = Modifier.testTag(ALERT_DIALOG_TAG),
+                    onDismissRequest = { openDialogState.value = false },
+                    title = { Text(text = stringResource(R.string.error)) },
                     text = { Text(text = errorMessageState) },
-                    confirmButton = {},
                     dismissButton = {
-                        Button(
-
-                        onClick = {
-                            openDialogState.value = false
-                        }) {
-                        Text(stringResource(R.string.back))
-                    }
-                    }
-                )
+                        MyButton(
+                            onClick = {
+                                openDialogState.value = false
+                            }, text = stringResource(id = R.string.back)
+                        )
+                    })
             }
 
             SignUpContent(navController = navController)
-
-            when(val response = signUpViewModel.signUpState.value) {
+            when (val response = signUpViewModel.signUpState.value) {
                 is Response.Loading -> ProgressBar()
                 is Response.Success -> {
                     if (response.data) {
-                        navController.navigate(Screen.ProfileScreen.route){
+                        navController.navigate(Screen.ProfileScreen.route) {
                             popUpTo(Screen.SelectFarmDataScreen.route)
                         }
                     }
                 }
-                is Response.Error ->{
+                is Response.Error -> {
                     errorMessageState = response.message
                     openDialogState.value = true
                     signUpViewModel.resetSignUpState()
-                    Log.d("sign_up_screen", response.message)
                 }
             }
+
         }
     }
 }

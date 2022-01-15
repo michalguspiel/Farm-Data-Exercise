@@ -19,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -30,6 +31,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.erdees.farmdataexercise.R
 import com.erdees.farmdataexercise.coreUtils.Constants.SIGN_UP_TAG
+import com.erdees.farmdataexercise.coreUtils.TestTags
+import com.erdees.farmdataexercise.coreUtils.TestTags.SIGN_UP_BUTTON_TAG
 import com.erdees.farmdataexercise.coreUtils.components.MyButton
 import com.erdees.farmdataexercise.coreUtils.utils.Screen
 import com.erdees.farmdataexercise.feature_auth.presentation.signUp.SignUpViewModel
@@ -63,13 +66,13 @@ fun SignUpContent(
             text = stringResource(id = R.string.sign_up),
             style = Typography.h4,
             textAlign = TextAlign.Center,
-            color = OnPrimary,
+            color = OnPrimary,modifier = Modifier.testTag(SIGN_UP_TAG)
         )
         Spacer(Modifier.padding(LocalSpacing.current.large))
         TextField(
             value = viewModel.email.value,
             onValueChange = { viewModel.email.value = it },
-            modifier = Modifier.padding(LocalSpacing.current.xxSmall),
+            modifier = Modifier.padding(LocalSpacing.current.xxSmall).testTag(TestTags.SIGN_UP_EMAIL),
             leadingIcon = {
                 Icon(
                     Icons.Outlined.MailOutline,
@@ -104,7 +107,8 @@ fun SignUpContent(
                     textColor = OnPrimaryLightest,
                     backgroundColor = Yellow300
                 ), placeholder = { Text(text = stringResource(id = R.string.enter_password)) },
-                singleLine = true
+                singleLine = true,
+                modifier = Modifier.testTag(TestTags.SIGN_UP_PASSWORD)
             )
             Text(
                 text = stringResource(id = R.string.password_req),
@@ -131,7 +135,8 @@ fun SignUpContent(
                     textColor = OnPrimaryLightest,
                     backgroundColor = Yellow300
                 ), placeholder = { Text(text = stringResource(id = R.string.confirm_password)) },
-                singleLine = true
+                singleLine = true,
+                modifier = Modifier.testTag(TestTags.SIGN_UP_CONFIRMPASSWORD)
             )
             Text(
                 text = stringResource(id = R.string.make_sure_passwords_are_same),
@@ -156,7 +161,8 @@ fun SignUpContent(
                 textColor = OnPrimaryLightest,
                 backgroundColor = Yellow300
             ), placeholder = { Text(text = stringResource(R.string.enter_first_name)) },
-            singleLine = true
+            singleLine = true,
+                    modifier = Modifier.testTag(TestTags.SIGN_UP_NAME)
         )
         Spacer(Modifier.padding(LocalSpacing.current.default))
         TextField(
@@ -175,14 +181,15 @@ fun SignUpContent(
                 textColor = OnPrimaryLightest,
                 backgroundColor = Yellow300
             ), placeholder = { Text(text = stringResource(R.string.enter_last_name)) },
-            singleLine = true
+            singleLine = true,
+            modifier = Modifier.testTag(TestTags.SIGN_UP_LASTNAME)
         )
         Spacer(Modifier.padding(LocalSpacing.current.default))
         MyButton(onClick = {
             viewModel.startSigningUpWithEmail()
-        }, text = stringResource(R.string.sign_up))
+        }, text = stringResource(R.string.sign_up),modifier = Modifier.testTag(SIGN_UP_BUTTON_TAG))
         Spacer(modifier = Modifier.padding(LocalSpacing.current.default))
-        ClickableText(text = annotatedString, style = Typography.body1, onClick = { offset ->
+        ClickableText(text = annotatedString,modifier = Modifier.testTag(TestTags.NAVIGATE_FROM_SIGN_UP_TO_SIGN_IN_BUTTON), style = Typography.body1, onClick = { offset ->
             annotatedString.getStringAnnotations(SIGN_UP_TAG, start = offset, end = offset)
                 .firstOrNull().let {
                     navController.navigate(Screen.SignInScreen.route)
