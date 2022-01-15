@@ -1,6 +1,6 @@
 # Farm-Data-Exercise
 
-## Description
+## Some instructions
 
 In order to get an app running place the google-services.json file that I provided in email attachment into  Android app module root directory.
 Credentials for administrator account are provided in file with instructions.
@@ -11,6 +11,7 @@ In order to run this test download both repository branch, open cmd, change dire
 
 Android tests can be run straight from Android studio.
 
+## Description
 
 I accomplished all of the features for Frontend and technically some for backend since I used Firebase cloud(I did CSV parse and validation, ).
 I am quite satisfied of the final result since I had limited time and treated this as a hobby project with a bigger meaning(applying for an academy).
