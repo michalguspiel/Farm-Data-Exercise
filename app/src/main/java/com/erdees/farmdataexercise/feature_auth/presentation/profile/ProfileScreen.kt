@@ -10,6 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -81,7 +82,8 @@ fun ProfileScreen(
                             Text(
                                 text = "${userDocResponse.data.firstName} ${userDocResponse.data.lastName}",
                                 modifier = Modifier,
-                                style = Typography.h3
+                                style = Typography.h3,
+                                textAlign = TextAlign.Center
                             )
                             Spacer(modifier = Modifier.height(LocalSpacing.current.default))
                             Text(
