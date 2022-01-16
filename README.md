@@ -49,7 +49,8 @@ however with bigger amount of time I would probably try to implement more tests 
 - Authentication
 - Splash screen
 - Map which shows farms
-- Data Graph
+- General Data Graph
+- More detailed Data Graph with possibility to check each data point (Click on the first general graph to get there)
 - Data table
 - Possibility to add new farms for authenticated user
 - Possibility to add new farm data restricted for farm owner
