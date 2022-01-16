@@ -48,4 +48,17 @@ class FarmDataUtilTest {
         val number =""
         assertEquals(true, isNumber(number))
     }
+
+    @Test
+    fun `minus should return true`(){
+        val number = "-"
+        assertEquals(true, isNumber(number))
+    }
+
+    @Test
+    fun `minus number should return true`(){
+        val number = "-12.3"
+        assertEquals(true, isNumber(number))
+    }
+
 }
