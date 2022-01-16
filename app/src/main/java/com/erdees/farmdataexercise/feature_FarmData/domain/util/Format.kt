@@ -1,18 +1,26 @@
 package com.erdees.farmdataexercise.feature_FarmData.domain.util
 
-import android.annotation.SuppressLint
-import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
+import java.util.*
 
 object Format {
 
-    fun formatISO8601String(string: String): String {
+    fun formatISO8601String(string: String, tZone: TimeZone = TimeZone.getDefault()): String {
+        val timeZone =  tZone.toZoneId()
         val desiredFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
         val dateTime = OffsetDateTime.parse(string)
-        return dateTime.format(desiredFormat)
+        return dateTime.format(desiredFormat.withZone(timeZone))
+    }
+
+    fun formatDateAndTimeToISO8601(date: LocalDate, hour: Int,minutes: Int, tZone : TimeZone = TimeZone.getDefault()): String{
+        val timeZone = tZone.toZoneId()
+        val desiredFormat = DateTimeFormatter.ofPattern("uuuu-MM-dd'T'HH:mm:ssX")
+        val dateTime = date.atTime(hour,minutes)
+        val dateTimeWithZone = dateTime.atZone(timeZone)
+        return dateTimeWithZone.format(desiredFormat)
     }
 
     fun formatDateAsStartOfDay(date: LocalDate): String {
@@ -38,13 +46,6 @@ object Format {
     fun formatToSeconds(string: String): Long {
         val date = OffsetDateTime.parse(string)
         return date.toEpochSecond()
-    }
-
-    @SuppressLint("SimpleDateFormat")
-    fun formatStringToDatabaseFormat(string: String): String {
-        val simpleFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(string)
-        val databaseFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-        return databaseFormat.format(simpleFormat)
     }
 
 }

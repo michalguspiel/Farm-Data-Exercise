@@ -24,6 +24,7 @@ import com.erdees.farmdataexercise.feature_FarmData.presentation.addFarmData.Add
 import com.erdees.farmdataexercise.feature_FarmData.presentation.components.FarmCard
 import com.erdees.farmdataexercise.feature_FarmData.presentation.components.Spinner
 import com.erdees.farmdataexercise.ui.theme.*
+import java.time.LocalDate
 
 @Composable
 fun AddFarmContent(
@@ -77,7 +78,11 @@ fun AddFarmContent(
                 onClick = { viewModel.isDatePickerShown.value = true },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(text = if (viewModel.pickedDate.value == "") stringResource(id = R.string.pick_date) else viewModel.pickedDate.value)
+                Text(
+                    text = if (viewModel.pickedDate.value == LocalDate.of(0, 1, 1)) stringResource(
+                        id = R.string.pick_date
+                    ) else viewModel.pickedDate.value.toString()
+                )
             }
 
             Spacer(modifier = Modifier.height(LocalSpacing.current.large))
@@ -86,7 +91,13 @@ fun AddFarmContent(
                 onClick = { viewModel.isTimePickerShown.value = true },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(text = if (viewModel.pickedTime.value == "") stringResource(id = R.string.pick_time) else viewModel.pickedTime.value)
+                Text(
+                    text = if (viewModel.pickedTime.value == Pair(
+                            0,
+                            0
+                        )
+                    ) stringResource(id = R.string.pick_time) else viewModel.pickedTime.value.first.toString() + ":" + viewModel.pickedTime.value.second.toString()
+                )
             }
 
             Spacer(modifier = Modifier.height(LocalSpacing.current.large))
@@ -118,5 +129,9 @@ fun AddFarmContent(
 }
 
 fun isTimeAndDatePicked(viewModel: AddFarmScreenViewModel): Boolean {
-    return (viewModel.pickedDate.value != "" && viewModel.pickedTime.value != "")
+    return (viewModel.pickedDate.value != LocalDate.of(
+        0,
+        1,
+        1
+    ) && viewModel.pickedTime.value != Pair(0, 0))
 }
