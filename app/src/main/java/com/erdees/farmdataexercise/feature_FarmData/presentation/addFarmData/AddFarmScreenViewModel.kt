@@ -58,7 +58,8 @@ class AddFarmScreenViewModel @Inject constructor(
 
     fun addFarmData(
     ) {
-        if (isDataInvalid()) { _isFarmDataAddedState.value = Response.Error("Data value invalid!")
+        if (isDataInvalid()) {
+            _isFarmDataAddedState.value = Response.Error("Data value invalid!")
         } else {
             viewModelScope.launch {
                 useCases.addFarmData.invoke(
