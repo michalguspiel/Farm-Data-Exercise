@@ -2,6 +2,8 @@
 
 ## Some instructions
 
+App has to be run in android studio!
+
 In order to get an app running place the google-services.json file that I provided in email attachment into  Android app module root directory.
 Credentials for administrator account are provided in file with instructions. Without it project won't compile. 
 
