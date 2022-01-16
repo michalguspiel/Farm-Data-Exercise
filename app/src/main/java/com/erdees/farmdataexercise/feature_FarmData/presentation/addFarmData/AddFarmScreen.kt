@@ -44,7 +44,7 @@ fun AddFarmScreen(
                 Toast(stringResource(R.string.data_added_successfully))
                 viewModel.dataValue.value = ""
             }
-            is Error -> Toast(additionResponse.message)
+            is Error -> Toast("Data input invalid!")
         }
 
             if (viewModel.isDatePickerShown.value) {

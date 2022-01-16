@@ -58,12 +58,38 @@ class AddFarmScreenViewModel @Inject constructor(
 
     fun addFarmData(
     ) {
-        viewModelScope.launch {
-            useCases.addFarmData.invoke(savedStateHandle.get<String>(Constants.LOCATION_DOC_ID)!!, pickedDataTime, sensorTypeDocument.value, dataValue.value)
-                .collect { response ->
-                    _isFarmDataAddedState.value = response
-                }
+        if (isDataInvalid()) { _isFarmDataAddedState.value = Response.Error("Data value invalid!")
+        } else {
+            viewModelScope.launch {
+                useCases.addFarmData.invoke(
+                    savedStateHandle.get<String>(Constants.LOCATION_DOC_ID)!!,
+                    pickedDataTime,
+                    sensorTypeDocument.value,
+                    dataValue.value
+                )
+                    .collect { response ->
+                        _isFarmDataAddedState.value = response
+                    }
+            }
         }
+    }
+
+    /**
+     * Returns true if data is invalid*/
+    private fun isDataInvalid():Boolean{
+        return when(sensorTypeDocument.value){
+            "pH" -> {
+                dataValue.value.toDouble() > 14.0 || dataValue.value.toDouble() < 0
+            }
+            "temperature" -> {
+                dataValue.value.toDouble() > 100 || dataValue.value.toDouble() < -50
+            }
+            else -> {
+                dataValue.value.toDouble() > 500 || dataValue.value.toDouble() < 0
+            }
+        }
+
+
     }
 
 }
